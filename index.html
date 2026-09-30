@@ -117,6 +117,7 @@
       </div>
 
       <div class="hero__map">
+       <div class="hero__edge">
        <div class="hero__frame">
         <div class="map-slot" id="heroSlot">
           <!-- The illustrated map. Base layer (streets, river, contours) = images/map-base.svg,
@@ -252,12 +253,12 @@
             </g>
 
             <!-- landmarks (data-place = key in PLACES, script.js) -->
-            <g class="lm" data-place="premte" transform="translate(200 402)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Kisha e Shën Premtes</text></g></g>
-            <g class="lm" data-place="hamam" transform="translate(507 451)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hamami</text></g></g>
-            <g class="lm" data-place="lidhja" transform="translate(630 410)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">Lidhja e Prizrenit</text></g></g>
-            <g class="lm" data-place="rrapi" transform="translate(716 338)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Rrapi shekullor</text></g></g>
+            <g class="lm lm--minor" data-place="premte" transform="translate(200 402)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Kisha e Shën Premtes</text></g></g>
+            <g class="lm lm--minor" data-place="hamam" transform="translate(507 451)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hamami</text></g></g>
+            <g class="lm lm--minor" data-place="lidhja" transform="translate(630 410)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">Lidhja e Prizrenit</text></g></g>
+            <g class="lm lm--minor" data-place="rrapi" transform="translate(716 338)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Rrapi shekullor</text></g></g>
             <g class="lm" data-place="ura" transform="translate(452 556)"><g class="sc__i"><use href="#s-bridge"/><text class="lm__name" y="-45" data-i18n="pl_ura_s">Ura e Gurit</text></g></g>
-            <g class="lm" data-place="shadervan" transform="translate(454 592)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name lm__name--end" x="-13" y="-2" data-i18n="pl_shadervan_s">Shadërvani</text></g></g>
+            <g class="lm" data-place="shadervan" transform="translate(454 592)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name" y="16" data-i18n="pl_shadervan_s">Shadërvani</text></g></g>
             <g class="lm" data-place="sinan" transform="translate(510 596)"><g class="sc__i"><use href="#s-mosque"/><text class="lm__name lm__name--start" x="18" y="16" data-i18n="pl_sinan_s">Xhamia e Sinan Pashës</text></g></g>
             <g class="lm lm--big" data-place="kalaja" transform="translate(730 580)"><g class="sc__i"><use href="#s-castle"/><text class="lm__name lm__name--big" y="-74" data-i18n="pl_kalaja_s">Kalaja</text></g></g>
 
@@ -269,8 +270,8 @@
             <g class="lm lm--start" data-place="start" transform="translate(861.4 695.4)"><g class="sc__i">
               <circle class="pulse" r="7"/>
               <use href="#s-pin"/>
-              <text class="lm__name lm__name--zip" x="18" y="-26">Zipline Prizren</text>
-              <text class="lm__name lm__name--start" x="18" y="-10" data-i18n="pl_start_s">Pikënisja</text>
+              <text class="lm__name lm__name--zip" y="30">Zipline Prizren</text>
+              <text class="lm__name" y="47" data-i18n="pl_start_s">Pikënisja</text>
             </g></g>
           </svg>
         </div>
@@ -287,11 +288,32 @@
         </ul>
         <span class="compass" aria-hidden="true"><svg><use href="#i-compass"/></svg></span>
        </div>
+       </div>
+        <a class="btn btn--lg hero__route" data-dir href="#">
+          <svg class="ico" aria-hidden="true"><use href="#i-nav"/></svg>
+          <span data-i18n="dest_btn">Hap rrugën në Google Maps</span>
+        </a>
       </div>
       <div class="speedlines" aria-hidden="true"><i></i><i></i><i></i></div>
     </section>
 
-    <!-- ============ 2. RULES ============ -->
+    <!-- ============ 2. THE SETTING (photos) ============ -->
+    <section class="section view" id="pamja">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <p class="kicker" data-i18n="view_kicker">Ambienti</p>
+          <h2 data-i18n="view_title">Prizreni nga lart</h2>
+        </header>
+      </div>
+      <div class="gallery">
+        <figure class="g g--rider"><img src="images/hero.jpg" width="1440" height="1920" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_rider"></figure>
+        <figure class="g g--town"><img src="images/oldtown.jpg" width="1290" height="730" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_town"></figure>
+        <figure class="g g--group"><img src="images/rider-1.jpg" width="1300" height="990" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_group"></figure>
+        <figure class="g g--sunset"><img src="images/view.jpg" width="1290" height="545" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_sunset"></figure>
+      </div>
+    </section>
+
+    <!-- ============ 3. RULES ============ -->
     <section class="section rules" id="rregullat">
       <div class="wrap">
         <header class="section-head reveal">
@@ -304,7 +326,7 @@
       </div>
     </section>
 
-    <!-- ============ 3. ERCA ============ -->
+    <!-- ============ 4. ERCA ============ -->
     <section class="section erca" id="erca">
       <div class="wrap erca__grid">
         <div class="erca__badge reveal">
@@ -329,7 +351,7 @@
       </div>
     </section>
 
-    <!-- ============ 4. CONTACT (WhatsApp) ============ -->
+    <!-- ============ 5. CONTACT (WhatsApp) ============ -->
     <section class="section contact" id="kontakt">
       <div class="wrap contact__grid">
         <div class="contact__intro reveal">

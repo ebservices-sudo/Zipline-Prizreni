@@ -8,7 +8,7 @@
 
 /* ---------- 1) CONFIG ---------------------------------------------------- */
 const CONFIG = {
-  waNumber: '38348100095',          // WhatsApp for questions (+ group bookings), without "+"
+  waNumber: '38348100095',          // WhatsApp for questions, without "+"
   phone: '+383 48 100 095',
   instagram: 'https://www.instagram.com/ziplineprizren/',
   facebook: 'https://www.facebook.com/p/Zipline-Prizren-61576753757141/',
@@ -36,7 +36,6 @@ const PLACES = [
 
 /* Small line icons for the rules (24×24, stroked). */
 const RULE_ICONS = {
-  height: '<circle cx="15" cy="5" r="2"/><path d="M15 8v6m-3-4h6m-5 11 2-7 2 7M6 3v18M4 5l2-2 2 2M4 19l2 2 2-2"/>',
   weight: '<path d="M9.5 8a2.5 2.5 0 1 1 5 0"/><path d="M5.5 21l1.8-11.5h9.4L18.5 21z"/><path d="M10 15h4"/>',
   health: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M7.5 12h2.5l1.2-2 1.6 4 1.2-2h2.5"/>',
   alcohol: '<path d="M10 3h4M10.5 3v4.5L9 10v10h6V10l-1.5-2.5V3"/><path d="M4 4l16 16"/>',
@@ -90,13 +89,19 @@ const STRINGS = {
       rrapi: ['Rrapi shekullor', 'Rrapi i vjetër i Marashit, buzë Lumbardhit.']
     },
 
+    view_kicker: 'Ambienti',
+    view_title: 'Prizreni nga lart',
+    alt_ph_rider: 'Fluturues me krahë hapur në platformën e nisjes, nën qiellin blu',
+    alt_ph_town: 'Çatitë e kuqe të Prizrenit të para nga lart',
+    alt_ph_group: 'Pesë fluturues me helmeta dhe harqe sigurie në platformë, me qytetin pas tyre',
+    alt_ph_sunset: 'Perëndim dielli portokalli mbi malet',
+
     // TODO: placeholder rules written by EB Services. Replace with the client's official rules.
     rules_kicker: 'Rregullat',
     rules_title: 'Para se të fluturosh',
     rules_intro: 'Rregulla të thjeshta që e mbajnë çdo fluturim të sigurt. Ekipi i kalon me secilin fluturues para nisjes.',
     rules: [
-      ['height', 'Mosha dhe gjatësia', 'Të paktën 6 vjeç dhe 130 cm. Fluturuesit nën 14 vjeç kanë nevojë për pëlqimin e prindit ose kujdestarit.'],
-      ['weight', 'Pesha', 'Nga 40 deri në 100 kg, që frenimi në fund të linjës të punojë në mënyrë të sigurt.'],
+      ['weight', 'Pesha', 'Minimumi 40 kg, maksimumi 100 kg.'],
       ['health', 'Shëndeti', 'Nuk lejohet gjatë shtatzënisë, me probleme zemre, shpine ose qafe, apo pas një operacioni të fundit.'],
       ['alcohol', 'Pa alkool', 'Nuk fluturohet nën ndikimin e alkoolit, drogave ose ilaçeve që ndikojnë te ti.'],
       ['shoes', 'Veshja', 'Këpucë të mbyllura dhe flokë të lidhur. Pa sandale, shalle apo rroba të lirshme që varen.'],
@@ -118,10 +123,10 @@ const STRINGS = {
 
     contact_kicker: 'Kontakti',
     contact_title: 'Ke një pyetje?',
-    contact_sub: 'Shkruaje këtu dhe hapim WhatsApp-in me mesazhin gati. Nuk bëjmë rezervime individuale: thjesht eja gjatë orarit. Rezervime pranojmë vetëm për grupe.',
+    contact_sub: 'Shkruaje këtu dhe hapim WhatsApp-in me mesazhin gati. Ekipi të përgjigjet atje.',
     contact_direct: 'Ose na shkruaj direkt në WhatsApp:',
     q_name: 'Emri', q_optional: '(opsional)', q_topic: 'Tema', q_text: 'Pyetja jote',
-    q_topics: ['Pyetje', 'Orari dhe moti', 'Rezervim për grup', 'Tjetër'],
+    q_topics: ['Pyetje', 'Orari dhe moti', 'Grupe', 'Tjetër'],
     q_btn: 'Dërgo në WhatsApp',
     q_hint: 'Butoni hap WhatsApp-in në telefon ose WhatsApp Web në kompjuter.',
     q_err: 'Shkruaj pyetjen tënde.',
@@ -190,12 +195,18 @@ const STRINGS = {
       rrapi: ['The old plane tree', 'Marash’s centuries-old plane tree by the Lumbardhi.']
     },
 
+    view_kicker: 'The setting',
+    view_title: 'Prizren from above',
+    alt_ph_rider: 'A rider with arms spread wide on the launch platform under a blue sky',
+    alt_ph_town: 'The red roofs of Prizren seen from above',
+    alt_ph_group: 'Five riders in helmets and harnesses on the platform, with the city behind them',
+    alt_ph_sunset: 'An orange sunset over the mountains',
+
     rules_kicker: 'Rules',
     rules_title: 'Before you fly',
     rules_intro: 'Simple rules that keep every flight safe. The team goes through them with every rider before launch.',
     rules: [
-      ['height', 'Age and height', 'At least 6 years old and 130 cm tall. Riders under 14 need a parent’s or guardian’s consent.'],
-      ['weight', 'Weight', 'Between 40 and 100 kg, so the braking at the end of the line works safely.'],
+      ['weight', 'Weight', 'Minimum 40 kg, maximum 100 kg.'],
       ['health', 'Health', 'Not allowed during pregnancy, with heart, back or neck problems, or after recent surgery.'],
       ['alcohol', 'No alcohol', 'No riding under the influence of alcohol, drugs or medication that affects you.'],
       ['shoes', 'Clothing', 'Closed shoes and hair tied back. No sandals, scarves or loose, hanging clothes.'],
@@ -217,10 +228,10 @@ const STRINGS = {
 
     contact_kicker: 'Contact',
     contact_title: 'Got a question?',
-    contact_sub: 'Write it here and we open WhatsApp with your message ready. We don’t take individual reservations: just come during opening hours. Reservations are for groups only.',
+    contact_sub: 'Write it here and we open WhatsApp with your message ready. The team replies there.',
     contact_direct: 'Or message us directly on WhatsApp:',
     q_name: 'Name', q_optional: '(optional)', q_topic: 'Topic', q_text: 'Your question',
-    q_topics: ['Question', 'Hours and weather', 'Group booking', 'Other'],
+    q_topics: ['Question', 'Hours and weather', 'Groups', 'Other'],
     q_btn: 'Send on WhatsApp',
     q_hint: 'The button opens WhatsApp on your phone, or WhatsApp Web on a computer.',
     q_err: 'Please write your question.',
@@ -354,11 +365,11 @@ const STRINGS = {
   const map = { svg: null, vb: null, open: false, pop: null, opener: null, fly: 0 };
   const FULL = { x: 0, y: 0, w: 1600, h: 1100 };
   const FOCUS_WIDE = { x: 330, y: 310, w: 920, h: 440 };      // hero on wide screens
-  const FOCUS_NARROW = { x: 348, y: 318, w: 664, h: 420 };    // hero + full screen on phones
+  const FOCUS_NARROW = { x: 402, y: 330, w: 556, h: 420 };    // hero + full screen on phones
   const M_PER_UNIT = 1.5;
 
   function setK(ppu) {   // ppu = screen pixels per map unit
-    map.svg.style.setProperty('--k', clamp(Math.pow(ppu, -0.75), 0.2, 1.1).toFixed(3));
+    map.svg.style.setProperty('--k', clamp(Math.pow(ppu, -0.75), 0.2, 1.3).toFixed(3));
   }
 
   function heroView() {
