@@ -35,11 +35,12 @@ const PLACES = [
 ];
 
 /* Photos in the map pop-ups: images/places/, 720×480, cropped to 3:2.
-   `start` is the client's own photo of the launch platform. The others are from
+   `start` and `landing` are the client's own photos. The others are from
    Wikimedia Commons; their licences ask for the author, the licence and a note
    that the photo was changed (we cropped them), which the pop-up shows.          */
 const PHOTOS = {
   start:     { src: 'images/places/start.jpg' },
+  landing:   { src: 'images/places/landing.jpg' },
   kalaja:    { src: 'images/places/kalaja.jpg',    by: 'Tom.whitehead337', lic: 'CC BY-SA 4.0', file: 'Prizren_Fortress_(Kalaja_e_Prizrenit).jpg' },
   ura:       { src: 'images/places/ura.jpg',       by: 'Pudelek',          lic: 'CC BY-SA 4.0', file: 'Stone_Bridge_in_Prizren_(by_Pudelek).JPG' },
   shadervan: { src: 'images/places/shadervan.jpg', by: 'GentiBehramaj',    lic: 'CC BY-SA 4.0', file: 'Sheshi_Shadervan.jpg' },
@@ -107,10 +108,11 @@ const STRINGS = {
 
     view_kicker: 'Ambienti',
     view_title: 'Prizreni nga lart',
-    alt_ph_rider: 'Fluturues me krahë hapur në platformën e nisjes, nën qiellin blu',
-    alt_ph_town: 'Çatitë e kuqe të Prizrenit të para nga lart',
-    alt_ph_group: 'Pesë fluturues me helmeta dhe harqe sigurie në platformë, me qytetin pas tyre',
-    alt_ph_sunset: 'Perëndim dielli portokalli mbi malet',
+    alt_ph_a: 'Fluturues në kabllo mbi luginë, me Kalanë e Prizrenit në kodër pas tij',
+    alt_ph_b: 'Tri shoqe në pufat e Zipline Prizren, me perëndimin e diellit mbi Prizren',
+    alt_ph_c: 'Fluturuese e qeshur në kabllo, mbi shpatin me bar',
+    alt_ph_d: 'Fluturues me krahë hapur sapo niset nga platforma, me qytetin poshtë',
+    alt_ph_e: 'Fluturuese e gëzuar në platformën e nisjes',
 
     // TODO: placeholder rules written by EB Services. Replace with the client's official rules.
     rules_kicker: 'Rregullat',
@@ -214,10 +216,11 @@ const STRINGS = {
 
     view_kicker: 'The setting',
     view_title: 'Prizren from above',
-    alt_ph_rider: 'A rider with arms spread wide on the launch platform under a blue sky',
-    alt_ph_town: 'The red roofs of Prizren seen from above',
-    alt_ph_group: 'Five riders in helmets and harnesses on the platform, with the city behind them',
-    alt_ph_sunset: 'An orange sunset over the mountains',
+    alt_ph_a: 'A rider on the cable above the valley, with Prizren Fortress on the hill behind',
+    alt_ph_b: 'Three friends on Zipline Prizren beanbags, with the sunset over Prizren',
+    alt_ph_c: 'A smiling rider on the cable above the grassy slope',
+    alt_ph_d: 'A rider with arms spread just leaving the platform, the city below',
+    alt_ph_e: 'An excited rider on the launch platform',
 
     rules_kicker: 'Rules',
     rules_title: 'Before you fly',
@@ -383,7 +386,7 @@ const STRINGS = {
   const map = { svg: null, vb: null, open: false, pop: null, opener: null, fly: 0 };
   const FULL = { x: 0, y: 0, w: 1600, h: 1100 };
   const FOCUS_WIDE = { x: 330, y: 310, w: 920, h: 440 };      // hero on wide screens
-  const FOCUS_NARROW = { x: 402, y: 330, w: 556, h: 420 };    // hero + full screen on phones
+  const FOCUS_NARROW = { x: 376, y: 330, w: 590, h: 420 };    // hero + full screen on phones
   const M_PER_UNIT = 1.5;
 
   function setK(ppu) {   // ppu = screen pixels per map unit
