@@ -1,7 +1,7 @@
 /* ==========================================================================
    Zipline Prizren — script.js
    1) CONFIG   : phone, location, links. Edit here.
-   2) PLACES   : landmarks on the map (position in map units + drawing).
+   2) PLACES   : landmarks on the map (position in map units + drawing + photo).
    3) STRINGS  : ALL visible text, Albanian (sq, default) + English (en).
    4) Behaviour: language, links, contact form, map (hero + full screen), menu.
    ========================================================================== */
@@ -33,6 +33,22 @@ const PLACES = [
   { id: 'premte',      x: 200,    y: 402,    h: 56,   icon: 's-church',    vb: '-25 -56 50 58' },
   { id: 'rrapi',       x: 716,    y: 338,    h: 30,   icon: 's-tree',      vb: '-20 -30 40 32' }
 ];
+
+/* Photos in the map pop-ups: images/places/, 720×480, cropped to 3:2.
+   `start` is the client's own photo of the launch platform. The others are from
+   Wikimedia Commons; their licences ask for the author, the licence and a note
+   that the photo was changed (we cropped them), which the pop-up shows.          */
+const PHOTOS = {
+  start:     { src: 'images/places/start.jpg' },
+  kalaja:    { src: 'images/places/kalaja.jpg',    by: 'Tom.whitehead337', lic: 'CC BY-SA 4.0', file: 'Prizren_Fortress_(Kalaja_e_Prizrenit).jpg' },
+  ura:       { src: 'images/places/ura.jpg',       by: 'Pudelek',          lic: 'CC BY-SA 4.0', file: 'Stone_Bridge_in_Prizren_(by_Pudelek).JPG' },
+  shadervan: { src: 'images/places/shadervan.jpg', by: 'GentiBehramaj',    lic: 'CC BY-SA 4.0', file: 'Sheshi_Shadervan.jpg' },
+  sinan:     { src: 'images/places/sinan.jpg',     by: 'Ravi Dwivedi',     lic: 'CC BY-SA 4.0', file: 'Sinan_Pasha_Mosque,_Prizren,_Kosovo.jpg' },
+  hamam:     { src: 'images/places/hamam.jpg',     by: 'ShkelzenRexha',    lic: 'CC BY-SA 3.0', file: '36_Prizreni_-_Hamami_mesjetar_-_Midle_Century_Hamam.JPG' },
+  lidhja:    { src: 'images/places/lidhja.jpg',    by: 'Bujar Imer Gashi', lic: 'CC BY-SA 3.0', file: 'Prizren_-_The_complex_of_Prizren_League.jpg' },
+  premte:    { src: 'images/places/premte.jpg',    by: 'Marcin Konsek',    lic: 'CC BY-SA 4.0', file: '2011_Prizren,_Cerkiew_Bogurodzicy_Ljevi%C5%A1kiej_10.JPG' },
+  rrapi:     { src: 'images/places/rrapi.jpg',     by: 'Mergim.emini',     lic: 'CC BY-SA 4.0', file: 'Rrapi_Prizren7.jpg' }
+};
 
 /* Small line icons for the rules (24×24, stroked). */
 const RULE_ICONS = {
@@ -140,6 +156,7 @@ const STRINGS = {
     dest_kicker: 'Destinacioni',
     dest_name: 'Zipline Prizren · Pikënisja',
     gps_copy: 'Kopjo', gps_copied: 'U kopjua',
+    photo_by: 'Foto', photo_cropped: 'e prerë',
     dest_btn: 'Hap rrugën në Google Maps',
     dest_hint: 'Google Maps hapet me rrugën nga vendndodhja jote deri te pikënisja.',
     walk_info: 'Në këmbë nga Shadërvani: rreth 940 m, 15–20 min përpjetë.',
@@ -245,6 +262,7 @@ const STRINGS = {
     dest_kicker: 'Destination',
     dest_name: 'Zipline Prizren · Start',
     gps_copy: 'Copy', gps_copied: 'Copied',
+    photo_by: 'Photo', photo_cropped: 'cropped',
     dest_btn: 'Open the route in Google Maps',
     dest_hint: 'Google Maps opens with the route from where you are to the start point.',
     walk_info: 'On foot from Shadërvan: about 940 m, 15–20 min uphill.',
@@ -434,34 +452,55 @@ const STRINGS = {
   function goTo(id) {
     const p = PLACES.find((x) => x.id === id); if (!p) return;
     const r = stage().getBoundingClientRect(); const w = r.width < 640 ? 440 : 720; const h = w * r.height / r.width;
-    flyTo({ x: p.x - w / 2, y: p.y - h * (r.width < 640 ? 0.7 : 0.62), w, h });
     $$('.lm').forEach((g) => g.classList.toggle('is-hot', g.dataset.place === id));
     $$('.place').forEach((b) => b.classList.toggle('is-on', b.dataset.go === id));
     showPop(id);
+    // place the landmark low enough for its pop-up (photo + text) to fit above it
+    const ppu = r.width / w; const k = clamp(Math.pow(ppu, -0.75), 0.2, 1.3);
+    const need = popTop() + $('#mapPop').offsetHeight + 16 + (p.h + 8) * k * ppu + 12;   // same sums as placePop(), plus a margin
+    const sy = clamp(need, r.height * 0.5, r.height - 24);
+    flyTo({ x: p.x - w / 2, y: p.y - sy / ppu, w, h });
   }
 
   /* --- popover on a landmark --- */
+  function photoHTML(id, alt) {
+    const ph = PHOTOS[id]; if (!ph) return '';
+    const credit = ph.by
+      ? '<figcaption><a href="https://commons.wikimedia.org/wiki/File:' + ph.file + '" target="_blank" rel="noopener">' + esc(t('photo_by')) + ': ' + esc(ph.by) +
+        '</a> · <a href="https://creativecommons.org/licenses/' + ph.lic.replace('CC ', '').replace(/ (\d\.\d)$/, '/$1').toLowerCase() + '/" target="_blank" rel="noopener">' +
+        esc(ph.lic) + '</a>, ' + esc(t('photo_cropped')) + '</figcaption>'
+      : '';
+    return '<figure class="pop__img"><img src="' + ph.src + '" alt="' + esc(alt) + '" width="720" height="480">' + credit + '</figure>';
+  }
   function showPop(id) {
     const pop = $('#mapPop'); const d = place(id); if (!d) return;
     map.pop = { id };
-    pop.innerHTML = '<b>' + esc(d[0]) + '</b><p>' + esc(d[1]) + '</p>' +
+    pop.classList.toggle('has-img', !!PHOTOS[id]);
+    pop.innerHTML = photoHTML(id, d[0]) + '<b>' + esc(d[0]) + '</b><p>' + esc(d[1]) + '</p>' +
       (id === 'start' ? '<a class="btn" href="' + dirLink() + '" target="_blank" rel="noopener"><span>' + esc(t('dest_btn')) + '</span></a>' : '');
     pop.hidden = false; placePop();
+  }
+  let photosLoaded = false;
+  function preloadPhotos() {
+    if (photosLoaded) return; photosLoaded = true;
+    Object.values(PHOTOS).forEach((ph) => { const i = new Image(); i.src = ph.src; });
   }
   function hidePop() {
     map.pop = null; $('#mapPop').hidden = true;
     $$('.lm.is-hot').forEach((g) => g.classList.remove('is-hot'));
     $$('.place.is-on').forEach((b) => b.classList.remove('is-on'));
   }
+  const popTop = () => (stage().getBoundingClientRect().width < 640 ? 122 : 70);   // keep pop-ups clear of the tool buttons (+ compass on phones)
   function placePop() {
     if (!map.pop || !map.open) return;
     const p = PLACES.find((x) => x.id === map.pop.id); const r = stage().getBoundingClientRect(); const v = map.vb;
     const x = (p.x - v.x) / v.w * r.width, y = (p.y - v.y) / v.h * r.height;
     const k = parseFloat(map.svg.style.getPropertyValue('--k')) || 1;
     const pop = $('#mapPop'); const top = y - (p.h + 8) * k * (r.width / v.w);
-    const below = top - pop.offsetHeight - 16 < 70;
+    const below = top - pop.offsetHeight - 16 < popTop();
     pop.classList.toggle('is-below', below);
-    pop.style.left = clamp(x, 140, r.width - 140) + 'px';
+    const half = pop.offsetWidth / 2 + 8;
+    pop.style.left = clamp(x, half, r.width - half) + 'px';
     pop.style.top = (below ? y + 18 : top) + 'px';
   }
 
@@ -477,6 +516,7 @@ const STRINGS = {
     if (!opts.fromHistory) { try { history.pushState({ zpMap: 1 }, '', '#harta'); } catch (e) { /* file:// in some browsers */ } }
     $('#mapClose').focus({ preventScroll: true });
     if (reduced || opts.noIntro) $('#mapIntro').hidden = true; else playIntro();
+    preloadPhotos();
   }
   function closeMap(fromHistory) {
     if (!map.open) return;
@@ -654,12 +694,44 @@ const STRINGS = {
     });
   }
 
+  // the landmark (drawing or its label) under a point of the hero map; the "open map" button lies on top of it
+  function landmarkAt(x, y) {
+    if (map.open) return null;
+    const hits = $$('#heroSlot .lm').map((g) => ({ g, r: g.getBoundingClientRect() }))
+      .filter(({ r }) => r.width && x >= r.left - 4 && x <= r.right + 4 && y >= r.top - 4 && y <= r.bottom + 4)
+      .sort((a, b) => a.r.width * a.r.height - b.r.width * b.r.height);   // the smallest one wins where they overlap
+    return hits.length ? hits[0].g : null;
+  }
+  function initHeroPicks() {
+    const btn = $('.hero__open'); let hot = null;
+    const setHot = (lm) => {
+      if (lm === hot) return;
+      if (hot) hot.classList.remove('is-hover');
+      hot = lm; if (lm) lm.classList.add('is-hover');
+      btn.classList.toggle('is-on-place', !!lm);
+    };
+    btn.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse') setHot(landmarkAt(e.clientX, e.clientY)); });
+    btn.addEventListener('pointerleave', () => setHot(null));
+    return (e) => {
+      const lm = e.detail ? landmarkAt(e.clientX, e.clientY) : null;   // e.detail = 0 for keyboard clicks
+      setHot(null);
+      if (!lm) return false;
+      openMap({ noIntro: true }); goTo(lm.dataset.place);
+      return true;
+    };
+  }
+
   function initMap() {
     map.svg = $('#map');
     heroView();
     if ('ResizeObserver' in window) new ResizeObserver(() => { if (!map.open) heroView(); }).observe($('#heroSlot'));
     if (reduced && map.svg.pauseAnimations) map.svg.pauseAnimations();
-    $$('[data-open-map]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); openMap(); }));
+    const pickFromHero = initHeroPicks();
+    $$('[data-open-map]').forEach((b) => b.addEventListener('click', (e) => {
+      e.preventDefault(); closeMenu();
+      if (b.classList.contains('hero__open') && pickFromHero(e)) return;
+      openMap();
+    }));
     initMapInput();
     if (location.hash === '#harta') openMap({ fromHistory: true, noIntro: true });
   }
@@ -677,6 +749,7 @@ const STRINGS = {
     $$('a', nav).forEach((a) => a.addEventListener('click', closeMenu));
     $$('.lang-btn').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('zp-lang', lang); applyLang(); }));
     $('#year').textContent = new Date().getFullYear();
+    if (reduced) $$('svg.ridge').forEach((r) => { if (r.pauseAnimations) r.pauseAnimations(); });
 
     // official ERCA member logo: shown only if images/erca-logo.png exists
     const logo = $('.erca__logo');

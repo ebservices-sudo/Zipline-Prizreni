@@ -1,13 +1,18 @@
 """
-Builds images/map-base.svg: the white base layer of the illustrated Prizren map
-(contour lines, the Lumbardhi river, streets, the fortress walls).
+Builds the two base layers of the illustrated Prizren map:
+
+  images/map-relief.webp   terrain raster: hill shading, green hills, warm town
+  images/map-base.svg      vector layers on top of it: woods and parks, rock,
+                           buildings, contour lines, the Lumbardhi, streets and
+                           footpaths, the fortress walls, single trees
+  images/topo-lines.svg    the contour lines alone, a texture for the dark sections
 
 Landmarks, labels, the zipline and the walking route are drawn by hand in
-index.html on top of this layer; this script prints their projected
+index.html on top of these layers; this script prints their projected
 coordinates so they line up.
 
-Data:  streets, river, landmarks  (c) OpenStreetMap contributors, ODbL
-       elevation                  AWS Terrain Tiles (terrarium, SRTM-based)
+Data:  streets, water, land cover, buildings  (c) OpenStreetMap contributors, ODbL
+       elevation                              AWS Terrain Tiles (terrarium, SRTM-based)
 
 Usage: python tools/build-map.py      (needs numpy, matplotlib, pillow)
 Downloads are cached in tools/.cache/ (git-ignored).
@@ -15,7 +20,7 @@ Downloads are cached in tools/.cache/ (git-ignored).
 import heapq, json, math, os, sys, urllib.parse, urllib.request
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFilter
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -23,6 +28,8 @@ import matplotlib.pyplot as plt
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, "tools", ".cache")
 OUT = os.path.join(ROOT, "images", "map-base.svg")
+OUT_RELIEF = os.path.join(ROOT, "images", "map-relief.webp")
+OUT_TOPO = os.path.join(ROOT, "images", "topo-lines.svg")
 UA = {"User-Agent": "zipline-prizren-map-build/1.0"}
 
 # ---- projection: 1 SVG unit = 1.5 m, map is 1600 x 1100 units (2.4 x 1.65 km)
@@ -31,6 +38,12 @@ LAT0, LON0 = 42.2096, 20.7468             # map centre (between fortress and zip
 KY = 111_080 / M_PER_UNIT                  # units per degree latitude
 KX = 111_320 * math.cos(math.radians(LAT0)) / M_PER_UNIT
 BBOX = "42.198,20.722,42.221,20.772"      # download box, a little larger than the map
+
+# ---- colours (paper and greens sit under the logo's navy / blue / orange)
+PAPER = (245, 242, 233)                    # outside the map + edge fade   #F5F2E9
+TOWN = (244, 239, 229)                     # built-up valley floor
+MEADOW = (222, 234, 205)                   # open hillsides
+HILL = (202, 222, 184)                     # higher ground
 
 
 def P(lat, lon):
@@ -49,7 +62,7 @@ def fetch(name, url, data=None):
 
 
 def overpass(name, q):
-    q = "[out:json][timeout:120];" + q.replace("BBOX", BBOX)
+    q = "[out:json][timeout:150];" + q.replace("BBOX", BBOX)
     return json.load(open(fetch(name, "https://overpass-api.de/api/interpreter", q), encoding="utf-8"))["elements"]
 
 
@@ -67,6 +80,14 @@ def dp(pts, tol):
     return [pts[0], pts[-1]]
 
 
+def dp_ring(pts, tol):
+    """Douglas-Peucker for a closed ring: split it at the point farthest from the first one."""
+    if len(pts) < 4:
+        return pts
+    i = max(range(len(pts)), key=lambda k: (pts[k][0] - pts[0][0]) ** 2 + (pts[k][1] - pts[0][1]) ** 2)
+    return dp(pts[: i + 1], tol)[:-1] + dp(pts[i:], tol)
+
+
 def inside(p, m=60):
     return -m <= p[0] <= W + m and -m <= p[1] <= H + m
 
@@ -78,6 +99,8 @@ def path_d(lines, prec=1, closed=False):
     for pts in lines:
         if len(pts) < 2:
             continue
+        if closed and pts[0] == pts[-1]:
+            pts = pts[:-1]
         x, y = pts[0]
         out.append("M%s %s" % (f(x), f(y)))
         cx, cy = round(x, prec), round(y, prec)
@@ -108,6 +131,47 @@ def clip_runs(pts):
     return runs
 
 
+def join(segs):
+    """Join the member ways of a multipolygon into closed rings."""
+    segs = [s[:] for s in segs if len(s) > 1]
+    rings = []
+    while segs:
+        cur = segs.pop(0)
+        while cur[0] != cur[-1]:
+            for i, s in enumerate(segs):
+                if s[0] == cur[-1]:
+                    cur += s[1:]
+                    break
+                if s[-1] == cur[-1]:
+                    cur += s[::-1][1:]
+                    break
+            else:
+                break
+            segs.pop(i)
+        if len(cur) > 3:
+            rings.append(cur)
+    return rings
+
+
+def rings_of(e):
+    """Outer + inner rings (map units) of an OSM closed way or multipolygon relation."""
+    if e["type"] == "way":
+        g = e.get("geometry") or []
+        return [[P(p["lat"], p["lon"]) for p in g]] if len(g) > 3 else []
+    out = []
+    for inner in (False, True):
+        segs = [[(p["lat"], p["lon"]) for p in m["geometry"]] for m in e.get("members", [])
+                if m["type"] == "way" and m.get("geometry") and (m.get("role") == "inner") == inner]
+        out += [[P(*q) for q in r] for r in join(segs)]
+    return out
+
+
+def on_map(rings, m=40):
+    xs_ = [x for r in rings for x, _ in r]
+    ys_ = [y for r in rings for _, y in r]
+    return xs_ and max(xs_) > -m and min(xs_) < W + m and max(ys_) > -m and min(ys_) < H + m
+
+
 # ---- 1. streets
 roads = overpass("roads.json", "(way[highway](BBOX););out geom;")
 CLASSES = {
@@ -126,11 +190,16 @@ for e in roads:
     for run in clip_runs(pts):
         street_lines[cls].append(dp(run, 0.7))
 
-# ---- 2. river (centre line) + lake
+# ---- 2. river (centre line + river-area polygons) and streams
 water = overpass("water.json", "(way[waterway](BBOX);relation[waterway](BBOX);way[natural=water](BBOX););out geom;")
-river, streams = [], []
+river, streams, water_areas = [], [], []
 for e in water:
     t = e.get("tags", {})
+    if t.get("natural") == "water":
+        r = rings_of(e)
+        if on_map(r):
+            water_areas += [dp_ring(x, 0.6) for x in r]
+        continue
     if e["type"] != "way" or not e.get("geometry"):
         continue
     pts = [P(g["lat"], g["lon"]) for g in e["geometry"]]
@@ -139,11 +208,48 @@ for e in water:
     elif t.get("waterway") in ("stream", "canal"):
         streams += [dp(r, 0.8) for r in clip_runs(pts)]
 
-# ---- 3. fortress walls (OSM way 136001313, "Kalaja e Prizrenit")
+# ---- 3. land cover: woods, scrub, grass and parks, rock, sports pitches, single trees
+LC = "(way[landuse](BBOX);relation[landuse](BBOX);way[natural~\"wood|scrub|grassland|heath|bare_rock|scree\"](BBOX);" \
+     "relation[natural~\"wood|scrub|grassland|heath\"](BBOX);way[leisure~\"park|garden|pitch|playground|stadium|sports_centre\"](BBOX);" \
+     "relation[leisure~\"park|garden\"](BBOX);way[amenity~\"grave_yard|school|parking\"](BBOX);node[natural=tree](BBOX););out geom;"
+cover = overpass("landcover.json", LC)
+LAND = {
+    "wood": lambda t: t.get("landuse") == "forest" or t.get("natural") == "wood",
+    "scrub": lambda t: t.get("natural") in ("scrub", "heath"),
+    "grass": lambda t: t.get("landuse") in ("grass", "meadow", "village_green", "recreation_ground", "cemetery", "allotments")
+    or t.get("natural") == "grassland" or t.get("leisure") in ("park", "garden") or t.get("amenity") == "grave_yard",
+    "rock": lambda t: t.get("natural") in ("bare_rock", "scree"),
+    "pitch": lambda t: t.get("leisure") in ("pitch", "stadium", "sports_centre", "playground"),
+}
+land = {k: [] for k in LAND}
+trees = []
+for e in cover:
+    t = e.get("tags", {})
+    if e["type"] == "node":
+        p = P(e["lat"], e["lon"])
+        if inside(p, 0):
+            trees.append(p)
+        continue
+    cls = next((k for k, f in LAND.items() if f(t)), None)
+    if not cls:
+        continue
+    r = rings_of(e)
+    if on_map(r):
+        land[cls] += [dp_ring(x, 0.8) for x in r]
+
+# ---- 4. buildings
+bld = overpass("buildings.json", "(way[building](BBOX);relation[building](BBOX););out geom;")
+buildings = []
+for e in bld:
+    for r in rings_of(e):
+        if all(inside(p, 4) for p in r):
+            buildings.append(dp_ring(r, 0.35))
+
+# ---- 5. fortress walls (OSM way 136001313, "Kalaja e Prizrenit")
 pois = overpass("fortress.json", "(way(136001313););out geom;")
 fortress = [[P(g["lat"], g["lon"]) for g in pois[0]["geometry"]]] if pois else []
 
-# ---- 4. contour lines from terrain tiles
+# ---- 6. terrain tiles -> contour lines + hill-shaded relief raster
 Z = 15
 
 
@@ -192,37 +298,129 @@ for lvl, segs in zip(cs.levels, cs.allsegs):
             if len(run) > 2:
                 contours["major" if int(lvl) % 50 == 0 else "minor"].append(run)
 
-# ---- 5. write the SVG
+# relief raster, 1 px = 1 map unit
+yy, xx = np.mgrid[0:H, 0:W] + 0.5
+lat = LAT0 - (yy - H / 2) / KY
+lon = LON0 + (xx - W / 2) / KX
+n = 2 ** Z
+TX = (lon + 180) / 360 * n * 256 - xs[0] * 256
+TY = (1 - np.log(np.tan(np.radians(lat)) + 1 / np.cos(np.radians(lat))) / np.pi) / 2 * n * 256 - ys[0] * 256
+dem_fine = blur(mosaic, 10)          # the SRTM steps need a wide blur before shading
+x0, y0 = np.floor(TX).astype(int), np.floor(TY).astype(int)
+fx, fy = TX - x0, TY - y0
+elev = (dem_fine[y0, x0] * (1 - fx) * (1 - fy) + dem_fine[y0, x0 + 1] * fx * (1 - fy)
+        + dem_fine[y0 + 1, x0] * (1 - fx) * fy + dem_fine[y0 + 1, x0 + 1] * fx * fy)
+
+gy, gx = np.gradient(elev, M_PER_UNIT)             # rise per metre, x = east, y = south
+EXAG, ALT = 1.4, math.radians(45)
+nx, ny, nz = -gx * EXAG, -gy * EXAG, np.ones_like(elev)
+norm = np.sqrt(nx ** 2 + ny ** 2 + nz ** 2)
+lx, ly, lz = -math.cos(ALT) * math.sqrt(.5), -math.cos(ALT) * math.sqrt(.5), math.sin(ALT)   # sun from the north-west
+shade = (nx * lx + ny * ly + nz * lz) / norm - math.sin(ALT)    # 0 on flat ground
+
+# built-up area = where the buildings are dense
+mask = Image.new("L", (W, H), 0)
+draw = ImageDraw.Draw(mask)
+for r in buildings:
+    if len(r) > 2:
+        draw.polygon([(x, y) for x, y in r], fill=255)
+dens = np.asarray(mask.filter(ImageFilter.GaussianBlur(20))).astype(float) / 255
+
+
+def smooth(a, lo, hi):
+    t = np.clip((a - lo) / (hi - lo), 0, 1)
+    return t * t * (3 - 2 * t)
+
+
+town = smooth(dens, 0.05, 0.2)
+high = smooth(elev, 430, 720)[..., None]
+green = (np.array(MEADOW) * (1 - high) + np.array(HILL) * high)
+base = np.array(TOWN) * town[..., None] + green * (1 - town[..., None])
+light = np.clip(np.where(shade > 0, 1 + shade * 0.4, 1 + shade * 0.75), 0.74, 1.08)[..., None]
+# shadows a little cooler
+cool = 1 + (np.array([0.96, 0.99, 1.04]) - 1) * np.clip(-shade * 5, 0, 1)[..., None]
+img = np.clip(base * light * cool, 0, 255)
+
+# soft fade into the paper colour at the edges
+edge = np.minimum.reduce([xx, W - xx, yy, H - yy])
+fade = smooth(edge, 0, 70)[..., None]
+img = np.array(PAPER) * (1 - fade) + img * fade
+Image.fromarray(img.astype(np.uint8)).save(OUT_RELIEF, "WEBP", quality=80, method=6)
+print("wrote", OUT_RELIEF, os.path.getsize(OUT_RELIEF) // 1024, "KB", file=sys.stderr)
+
+
+def dots(pts, r):
+    return "".join("M%.1f %.1fm-%sa%s %s 0 1 0 %s 0a%s %s 0 1 0-%s 0" % (x, y, r, r, r, 2 * r, r, r, 2 * r) for x, y in pts)
+
+
+# ---- 7. write the SVG (transparent; the relief raster sits under it in index.html)
+pc = "#%02X%02X%02X" % PAPER
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">
 <!-- Generated by tools/build-map.py. Map data (c) OpenStreetMap contributors (ODbL). Elevation: AWS Terrain Tiles. -->
+<defs>
+<pattern id="tr" width="18" height="16" patternUnits="userSpaceOnUse"><path d="M4.5 7.5a3 3 0 1 1 .1 0zM13.5 15.5a3 3 0 1 1 .1 0z" fill="#A9CC92"/><path d="M4.5 7.5v2M13.5 15.5v.5M13.5-.5v1" stroke="#8DB577" stroke-width="1"/></pattern>
+<pattern id="rk" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M2 2.5h1.4M6.5 7h1.4" stroke="#BDB2A0" stroke-width="1.1" stroke-linecap="round"/></pattern>
+<linearGradient id="fx"><stop offset="0" stop-color="{pc}"/><stop offset="1" stop-color="{pc}" stop-opacity="0"/></linearGradient>
+<linearGradient id="fy" x2="0" y2="1"><stop offset="0" stop-color="{pc}"/><stop offset="1" stop-color="{pc}" stop-opacity="0"/></linearGradient>
+</defs>
 <style>
-.c{{fill:none;stroke:#E8ECF4;stroke-width:1}}.C{{fill:none;stroke:#DCE3EF;stroke-width:1.4}}
-.r0,.r1,.r2,.r3{{fill:none;stroke-linecap:round;stroke-linejoin:round}}
-.r0{{stroke:#DCE1EA;stroke-width:8}}.r1{{stroke:#E6E9F0;stroke-width:5}}.r2{{stroke:#EDEFF4;stroke-width:3}}
-.r3{{stroke:#DFE3EA;stroke-width:1.6;stroke-dasharray:4 3}}
-.w0{{fill:none;stroke:#B9D2F3;stroke-width:15;stroke-linecap:round;stroke-linejoin:round}}
-.w1{{fill:none;stroke:#DCEAFB;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}}
-.ws{{fill:none;stroke:#CFE0F8;stroke-width:2.5;stroke-linecap:round}}
-.fw{{fill:#F1F6FD;stroke:#9DB9E4;stroke-width:1.6;stroke-linejoin:round}}
+.gw{{fill:#C3DCAA}}.gs{{fill:#D3E5BE}}.gg{{fill:#D6E9C4}}.gp{{fill:#C7E0B4;stroke:#fff;stroke-width:1}}.rk{{fill:#E8E2D6}}
+.c{{fill:none;stroke:#6F8A5A;stroke-opacity:.17;stroke-width:1}}.C{{fill:none;stroke:#6F8A5A;stroke-opacity:.3;stroke-width:1.3}}
+.b{{fill:#E9DCCB;stroke:#D2BFA6;stroke-width:.6;stroke-linejoin:round}}
+.k0,.k1,.k2,.f0,.f1,.f2{{fill:none;stroke-linecap:round;stroke-linejoin:round}}
+.k0{{stroke:#D9B878;stroke-width:9.5}}.f0{{stroke:#FFEFC9;stroke-width:7}}
+.k1{{stroke:#D8CDBB;stroke-width:6.4}}.f1{{stroke:#fff;stroke-width:4.4}}
+.k2{{stroke:#DDD3C3;stroke-width:3.8}}.f2{{stroke:#fff;stroke-width:2.2}}
+.p{{fill:none;stroke:#A88D6C;stroke-width:1.3;stroke-dasharray:3.2 2.6;stroke-linecap:round;stroke-opacity:.75}}
+.wa{{fill:#B6D9F3;stroke:#86BAE4;stroke-width:1.2}}
+.w0{{fill:none;stroke:#86BAE4;stroke-width:15;stroke-linecap:round;stroke-linejoin:round}}
+.w1{{fill:none;stroke:#B6D9F3;stroke-width:12;stroke-linecap:round;stroke-linejoin:round}}
+.ws{{fill:none;stroke:#9CC8EC;stroke-width:2.4;stroke-linecap:round}}
+.fw{{fill:#EFE6D3;fill-opacity:.85;stroke:#A8936F;stroke-width:1.8;stroke-linejoin:round}}
+.t{{fill:#9CC484;stroke:#78A562;stroke-width:.8}}
 </style>
-<rect width="{W}" height="{H}" fill="#fff"/>
+<path class="gs" d="{path_d(land['scrub'], 1, closed=True)}"/>
+<path class="gg" d="{path_d(land['grass'], 1, closed=True)}" fill-rule="evenodd"/>
+<path class="gw" d="{path_d(land['wood'], 1, closed=True)}" fill-rule="evenodd"/>
+<path fill="url(#tr)" d="{path_d(land['wood'], 1, closed=True)}" fill-rule="evenodd"/>
+<path class="rk" d="{path_d(land['rock'], 1, closed=True)}"/>
+<path fill="url(#rk)" d="{path_d(land['rock'], 1, closed=True)}"/>
+<path class="gp" d="{path_d(land['pitch'], 1, closed=True)}"/>
 <path class="c" d="{path_d(contours['minor'], 0)}"/>
 <path class="C" d="{path_d(contours['major'], 0)}"/>
+<path class="b" d="{path_d(buildings, 1, closed=True)}"/>
 <path class="fw" d="{path_d(fortress, 1, closed=True)}"/>
 <path class="ws" d="{path_d(streams, 0)}"/>
-<path class="r3" d="{path_d(street_lines['path'], 1)}"/>
-<path class="r2" d="{path_d(street_lines['service'], 1)}"/>
-<path class="r1" d="{path_d(street_lines['minor'], 1)}"/>
-<path class="r0" d="{path_d(street_lines['major'], 1)}"/>
+<path class="wa" d="{path_d(water_areas, 1, closed=True)}" fill-rule="evenodd"/>
 <path class="w0" d="{path_d(river, 1)}"/>
 <path class="w1" d="{path_d(river, 1)}"/>
+<path class="p" d="{path_d(street_lines['path'], 1)}"/>
+<path class="k2" d="{path_d(street_lines['service'], 1)}"/>
+<path class="k1" d="{path_d(street_lines['minor'], 1)}"/>
+<path class="k0" d="{path_d(street_lines['major'], 1)}"/>
+<path class="f2" d="{path_d(street_lines['service'], 1)}"/>
+<path class="f1" d="{path_d(street_lines['minor'], 1)}"/>
+<path class="f0" d="{path_d(street_lines['major'], 1)}"/>
+<path class="t" d="{dots(trees, 2.6)}"/>
+<rect width="70" height="{H}" fill="url(#fx)"/><rect x="{W}" width="70" height="{H}" fill="url(#fx)" transform="scale(-1 1) translate(-{2 * W} 0)"/>
+<rect width="{W}" height="70" fill="url(#fy)"/><rect y="{H}" width="{W}" height="70" fill="url(#fy)" transform="scale(1 -1) translate(0 -{2 * H})"/>
 </svg>
 '''
 with open(OUT, "w", encoding="utf-8") as f:
     f.write(svg)
 print("wrote", OUT, len(svg) // 1024, "KB", file=sys.stderr)
 
-# ---- 6. walking route: Shadërvan square -> zipline start (shortest path on walkable ways)
+# ---- 8. the same contour lines as a texture for the dark sections of the page (background-image)
+topo = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" preserveAspectRatio="xMidYMid slice">
+<!-- Contour lines of Prizren, generated by tools/build-map.py. Elevation: AWS Terrain Tiles. -->
+<path d="{path_d(contours['minor'], 0)}" fill="none" stroke="#fff" stroke-opacity=".05" stroke-width="1.2"/>
+<path d="{path_d(contours['major'], 0)}" fill="none" stroke="#fff" stroke-opacity=".09" stroke-width="1.6"/>
+</svg>
+'''
+with open(OUT_TOPO, "w", encoding="utf-8") as f:
+    f.write(topo)
+
+# ---- 9. walking route: Shadërvan square -> zipline start (shortest path on walkable ways)
 WALK = CLASSES["minor"] | CLASSES["service"] | CLASSES["path"] | {"tertiary", "secondary"}
 graph, coord = {}, {}
 for e in roads:
