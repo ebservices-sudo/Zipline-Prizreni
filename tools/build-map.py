@@ -2,15 +2,18 @@
 Builds the two base layers of the illustrated Prizren map:
 
   images/map-relief.webp   terrain raster: hill shading, green hills, warm town
-  images/map-base.svg      vector layers on top of it: woods and parks, rock,
-                           buildings, contour lines, the Lumbardhi, streets and
-                           footpaths, the fortress walls. Kept deliberately calm:
-                           no tree symbols, no driveways, no small sheds, only the
-                           50 m contours (the user asked for fewer details).
+  images/map-base.svg      vector layers on top of it: woods (with a light tree
+                           texture) and parks, rock, buildings, 10 m contours with
+                           the 50 m ones stronger and labelled, the Lumbardhi,
+                           streets, service roads (e.g. the gravel road up to the
+                           zipline station) and footpaths, the fortress walls.
+                           Still no driveways or small sheds.
   images/topo-lines.svg    the contour lines alone, a texture for the dark sections
+  index.html               the street-name labels between the "street names" markers
+                           are rewritten on every run (they need the page font)
 
-Landmarks, labels, the zipline and the walking route are drawn by hand in
-index.html on top of these layers; this script prints their projected
+Landmarks, points of interest, the zipline and the walking route are drawn by
+hand in index.html on top of these layers; this script prints their projected
 coordinates so they line up.
 
 Data:  streets, water, land cover, buildings  (c) OpenStreetMap contributors, ODbL
@@ -186,10 +189,12 @@ street_lines = {k: [] for k in CLASSES}
 for e in roads:
     hw = e["tags"].get("highway")
     cls = next((k for k, v in CLASSES.items() if hw in v), None)
-    if not cls:
+    if not cls or e["tags"].get("service") in ("driveway", "parking_aisle", "drive-through"):
         continue
     pts = [P(g["lat"], g["lon"]) for g in e["geometry"]]
     for run in clip_runs(pts):
+        if cls == "service" and sum(math.hypot(b[0] - a[0], b[1] - a[1]) for a, b in zip(run, run[1:])) < 20:
+            continue                                            # tiny yard access stubs
         street_lines[cls].append(dp(run, 0.7))
 
 # ---- 2. river (centre line + river-area polygons) and streams
@@ -287,6 +292,7 @@ def px_to_svg(px, py):
 levels = list(range(380, 1100, 10))
 cs = plt.contour(dem, levels=levels)
 contours = {"minor": [], "major": []}
+major_runs = []                                  # (level, run) for the elevation labels
 for lvl, segs in zip(cs.levels, cs.allsegs):
     for seg in segs:
         pts = [px_to_svg(x, y) for x, y in seg]
@@ -294,6 +300,42 @@ for lvl, segs in zip(cs.levels, cs.allsegs):
             run = dp(run, 1.2)
             if len(run) > 2:
                 contours["major" if int(lvl) % 50 == 0 else "minor"].append(run)
+                if int(lvl) % 50 == 0:
+                    major_runs.append((int(lvl), run))
+
+
+def along(run, dist):
+    """Point and direction (degrees) at a distance along a polyline."""
+    for (ax, ay), (bx, by) in zip(run, run[1:]):
+        seg = math.hypot(bx - ax, by - ay)
+        if dist <= seg and seg > 0:
+            t = dist / seg
+            return ax + (bx - ax) * t, ay + (by - ay) * t, math.degrees(math.atan2(by - ay, bx - ax))
+        dist -= seg
+    return None
+
+
+def run_len(run):
+    return sum(math.hypot(b[0] - a[0], b[1] - a[1]) for a, b in zip(run, run[1:]))
+
+
+# one elevation number per long 50 m contour, kept apart from each other and off the map edge
+contour_labels, placed = [], []
+for lvl, run in sorted(major_runs, key=lambda r: -run_len(r[1])):
+    L = run_len(run)
+    if L < 240:
+        continue
+    for frac in (0.5, 0.3, 0.7):
+        p = along(run, L * frac)
+        if not p:
+            continue
+        x, y, a = p
+        if not (90 < x < W - 90 and 90 < y < H - 90) or any(math.hypot(x - u, y - v) < 230 for u, v in placed):
+            continue
+        a = a + 180 if a > 90 else a - 180 if a < -90 else a      # keep the numbers upright
+        placed.append((x, y))
+        contour_labels.append((x, y, a, lvl))
+        break
 
 # relief raster, 1 px = 1 map unit
 yy, xx = np.mgrid[0:H, 0:W] + 0.5
@@ -353,14 +395,19 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 <defs>
 <linearGradient id="fx"><stop offset="0" stop-color="{pc}"/><stop offset="1" stop-color="{pc}" stop-opacity="0"/></linearGradient>
 <linearGradient id="fy" x2="0" y2="1"><stop offset="0" stop-color="{pc}"/><stop offset="1" stop-color="{pc}" stop-opacity="0"/></linearGradient>
+<pattern id="tr" width="11" height="10" patternUnits="userSpaceOnUse"><g fill="#A6C88B"><circle cx="2.5" cy="2.5" r="1.5"/><circle cx="8" cy="7.5" r="1.5"/></g></pattern>
+<path id="wd" fill-rule="evenodd" d="{path_d(land['wood'], 1, closed=True)}"/>
 </defs>
 <style>
 .gw{{fill:#C3DCAA}}.gs{{fill:#D3E5BE}}.gg{{fill:#D6E9C4}}.gp{{fill:#C7E0B4;stroke:#fff;stroke-width:1}}.rk{{fill:#E8E2D6}}
-.C{{fill:none;stroke:#6F8A5A;stroke-opacity:.2;stroke-width:1.2}}
+.c{{fill:none;stroke:#6F8A5A;stroke-opacity:.1;stroke-width:.8}}
+.C{{fill:none;stroke:#6F8A5A;stroke-opacity:.24;stroke-width:1.2}}
+.cl{{font:italic 600 10px sans-serif;fill:#6F8A5A;fill-opacity:.85;text-anchor:middle;paint-order:stroke;stroke:#EEF3E4;stroke-width:3.2px;stroke-linejoin:round}}
 .b{{fill:#ECE1D1}}
-.k0,.k1,.f0,.f1{{fill:none;stroke-linecap:round;stroke-linejoin:round}}
+.k0,.k1,.k2,.f0,.f1,.f2{{fill:none;stroke-linecap:round;stroke-linejoin:round}}
 .k0{{stroke:#D9B878;stroke-width:9.5}}.f0{{stroke:#FFEFC9;stroke-width:7}}
 .k1{{stroke:#D8CDBB;stroke-width:6.4}}.f1{{stroke:#fff;stroke-width:4.4}}
+.k2{{stroke:#D8CDBB;stroke-width:4.4}}.f2{{stroke:#FBF8F1;stroke-width:2.6}}
 .p{{fill:none;stroke:#A88D6C;stroke-width:1.1;stroke-dasharray:3 3;stroke-linecap:round;stroke-opacity:.45}}
 .wa{{fill:#B6D9F3;stroke:#86BAE4;stroke-width:1.2}}
 .w0{{fill:none;stroke:#86BAE4;stroke-width:15;stroke-linecap:round;stroke-linejoin:round}}
@@ -370,10 +417,13 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 </style>
 <path class="gs" d="{path_d(land['scrub'], 1, closed=True)}"/>
 <path class="gg" d="{path_d(land['grass'], 1, closed=True)}" fill-rule="evenodd"/>
-<path class="gw" d="{path_d(land['wood'], 1, closed=True)}" fill-rule="evenodd"/>
+<use href="#wd" class="gw"/>
+<use href="#wd" fill="url(#tr)" opacity=".55"/>
 <path class="rk" d="{path_d(land['rock'], 1, closed=True)}"/>
 <path class="gp" d="{path_d(land['pitch'], 1, closed=True)}"/>
+<path class="c" d="{path_d(contours['minor'], 0)}"/>
 <path class="C" d="{path_d(contours['major'], 0)}"/>
+{''.join('<text class="cl" transform="translate(%.0f %.0f) rotate(%.0f)" dy="3.4">%d</text>' % c for c in contour_labels)}
 <path class="b" d="{path_d(buildings, 1, closed=True)}"/>
 <path class="fw" d="{path_d(fortress, 1, closed=True)}"/>
 <path class="ws" d="{path_d(streams, 0)}"/>
@@ -381,6 +431,8 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 <path class="w0" d="{path_d(river, 1)}"/>
 <path class="w1" d="{path_d(river, 1)}"/>
 <path class="p" d="{path_d(street_lines['path'], 1)}"/>
+<path class="k2" d="{path_d(street_lines['service'], 1)}"/>
+<path class="f2" d="{path_d(street_lines['service'], 1)}"/>
 <path class="k1" d="{path_d(street_lines['minor'], 1)}"/>
 <path class="k0" d="{path_d(street_lines['major'], 1)}"/>
 <path class="f1" d="{path_d(street_lines['minor'], 1)}"/>
@@ -402,6 +454,92 @@ topo = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="
 '''
 with open(OUT_TOPO, "w", encoding="utf-8") as f:
     f.write(topo)
+
+# ---- 8b. street names -> index.html (between the "street names" markers inside the map SVG)
+# Only the streets a visitor uses around the old town, the fortress and the start. Each name goes on
+# the straightest stretch of its street that stays clear of the hand-drawn landmarks and the cable.
+STREETS = ["Remzi Ademaj", "Adem Jashari", "Enver Haradinaj", "Ismet Jashari Kumanova", "Vatrat Shqiptare",
+           "Rruga për në Kala", "Rrugëtimi i Gurit", "Prevalla", "Saraçët", "Mimar Sinan", "Yunus Emre",
+           "Fehmi Lladrovci", "Shën Albani", "Hysen Rexhepi", "Evlija Çelebi"]
+KEEP_CLEAR = [(730, 560, 70), (452, 548, 40), (510, 585, 34), (454, 595, 26), (507, 445, 36), (630, 395, 40),
+              (716, 330, 36), (200, 395, 40), (861, 690, 50), (872, 411, 30), (588, 688, 60), (330, 475, 60),
+              (630, 318, 40), (470, 728, 40)]          # landmark drawings + labels already on the map
+
+
+def chains(ways):
+    """Join ways that share end nodes into longer polylines (lists of (lat, lon))."""
+    segs = [list(zip(w["nodes"], [(g["lat"], g["lon"]) for g in w["geometry"]])) for w in ways]
+    out = []
+    while segs:
+        cur = segs.pop(0)
+        grown = True
+        while grown:
+            grown = False
+            for i, s in enumerate(segs):
+                if s[0][0] == cur[-1][0]:
+                    cur += s[1:]
+                elif s[-1][0] == cur[-1][0]:
+                    cur += s[::-1][1:]
+                elif s[-1][0] == cur[0][0]:
+                    cur = s[:-1] + cur
+                elif s[0][0] == cur[0][0]:
+                    cur = s[::-1][:-1] + cur
+                else:
+                    continue
+                segs.pop(i)
+                grown = True
+                break
+        out.append([c for _, c in cur])
+    return out
+
+
+def resample(run, step):
+    L, out, d = run_len(run), [], 0.0
+    while d <= L:
+        p = along(run, d)
+        if p:
+            out.append(p[:2])
+        d += step
+    return out
+
+
+labels = []
+for name in STREETS:
+    ways = [e for e in roads if e["tags"].get("name") == name and e.get("geometry")]
+    need = len(name) * 5.6 + 36                     # label length at the default zoom, plus room to spare
+    best = None
+    for ch in chains(ways):
+        for run in clip_runs([P(*c) for c in ch]):
+            pts = [p for p in resample(run, 4) if 40 < p[0] < W - 40 and 40 < p[1] < H - 40]
+            n = int(need / 4)
+            for i in range(0, max(0, len(pts) - n), 2):
+                win = pts[i:i + n + 1]
+                if len(win) < n or run_len(win) < need * 0.95:
+                    continue
+                turn = sum(abs((math.degrees(math.atan2(c[1] - b[1], c[0] - b[0]) - math.atan2(b[1] - a[1], b[0] - a[0])) + 180) % 360 - 180)
+                           for a, b, c in zip(win, win[1:], win[2:]))
+                if any(math.hypot(x - u, y - v) < r for x, y in win[::3] for u, v, r in KEEP_CLEAR):
+                    continue
+                if any(845 < x < 890 and 400 < y < 705 for x, y in win):   # the zipline cable
+                    continue
+                if best is None or turn < best[0]:
+                    best = (turn, win)
+    if best and best[0] < 120:
+        win = best[1]
+        if win[-1][0] < win[0][0]:
+            win = win[::-1]                                 # read left to right
+        labels.append((name, dp(win, 0.5)))
+
+lab_html = "".join('\n              <path id="st%d" d="%s"/><text><textPath href="#st%d" startOffset="50%%">%s</textPath></text>'
+                   % (i, path_d([pts], 1), i, name) for i, (name, pts) in enumerate(labels, 1))
+INDEX = os.path.join(ROOT, "index.html")
+A, B = "<!-- street names (generated by tools/build-map.py) -->", "<!-- /street names -->"
+page = open(INDEX, "rb").read().decode("utf-8")
+if A in page and B in page:
+    head, rest = page.split(A, 1)
+    page = head + A + '\r\n            <g class="streets" aria-hidden="true">' + lab_html.replace("\n", "\r\n") + "\r\n            </g>\r\n            " + B + rest.split(B, 1)[1]
+    open(INDEX, "wb").write(page.encode("utf-8"))
+    print("street names:", ", ".join(n for n, _ in labels), file=sys.stderr)
 
 # ---- 9. walking route: Shadërvan square -> zipline start (shortest path on walkable ways)
 WALK = CLASSES["minor"] | CLASSES["service"] | CLASSES["path"] | {"tertiary", "secondary"}

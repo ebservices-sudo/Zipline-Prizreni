@@ -93,6 +93,7 @@ const STRINGS = {
     pl_kalaja_s: 'Kalaja', pl_ura_s: 'Ura e Gurit', pl_shadervan_s: 'Shadërvani', pl_sinan_s: 'Xhamia e Sinan Pashës',
     pl_hamam_s: 'Hamami', pl_lidhja_s: 'Lidhja e Prizrenit', pl_premte_s: 'Kisha e Shën Premtes', pl_rrapi_s: 'Rrapi shekullor',
     pl_landing_s: 'Ulja', pl_start_s: 'Pikënisja',
+    poi_view: 'Pikë panoramike',
     places: {
       start: ['Zipline Prizren · Pikënisja', 'Këtu fillon fluturimi mbi Lumbardh. Butoni i Google Maps të sjell pikërisht këtu.'],
       kalaja: ['Kalaja e Prizrenit', 'Kalaja mbi qytet, me pamje nga e gjithë lugina. Pikënisja është pak më në juglindje të saj.'],
@@ -108,11 +109,18 @@ const STRINGS = {
 
     view_kicker: 'Ambienti',
     view_title: 'Prizreni nga lart',
-    alt_ph_a: 'Fluturues në kabllo mbi luginë, me Kalanë e Prizrenit në kodër pas tij',
-    alt_ph_b: 'Tri shoqe në pufat e Zipline Prizren, me perëndimin e diellit mbi Prizren',
-    alt_ph_c: 'Fluturuese e qeshur në kabllo, mbi shpatin me bar',
+    view_sub: 'Pikënisja është në shpatin mbi luginën e Lumbardhit, me gjithë Prizrenin përpara. Në tarracë ka pufa dhe hije: shiko të tjerët duke fluturuar, pastaj vjen radha jote.',
+    alt_band: 'Tri shoqe në pufat e Zipline Prizren, me perëndimin e diellit mbi Prizren',
+    reels_title: 'Nga kablloja',
+    reels_sub: 'Pamje të vërteta nga fluturimet te Zipline Prizren.',
+    reel_toggle: 'Luaj ose ndal videon',
+    reel_sunset: 'Perëndimi mbi Prizren', reel_gorge: 'Mbi grykën e Lumbardhit', reel_cable: 'Pamja nga kablloja',
+    reel_valley: 'Lugina dhe qyteti', reel_kalaja: 'Kodra e Kalasë',
+    alt_ph_a: 'Stacioni prej druri i Zipline Prizren në shpat, me vizitorë para tij',
+    alt_ph_b: 'Tarraca me pufa e karrige nën strehë, me qytetin poshtë',
+    alt_ph_c: 'Fluturuese përshëndet nga kablloja në perëndim të diellit, me Prizrenin poshtë',
     alt_ph_d: 'Fluturues me krahë hapur sapo niset nga platforma, me qytetin poshtë',
-    alt_ph_e: 'Fluturuese e gëzuar në platformën e nisjes',
+    alt_ph_e: 'Dy shoqe në pufat e Zipline Prizren, me kabllon dhe qytetin përpara',
 
     // TODO: placeholder rules written by EB Services. Replace with the client's official rules.
     rules_kicker: 'Rregullat',
@@ -201,6 +209,7 @@ const STRINGS = {
     pl_kalaja_s: 'Fortress', pl_ura_s: 'Stone Bridge', pl_shadervan_s: 'Shadërvan', pl_sinan_s: 'Sinan Pasha Mosque',
     pl_hamam_s: 'Hammam', pl_lidhja_s: 'League of Prizren', pl_premte_s: 'Our Lady of Ljeviš', pl_rrapi_s: 'Old plane tree',
     pl_landing_s: 'Landing', pl_start_s: 'Start point',
+    poi_view: 'Viewpoint',
     places: {
       start: ['Zipline Prizren · Start', 'Where the ride begins, above the Lumbardhi. The Google Maps button brings you exactly here.'],
       kalaja: ['Prizren Fortress', 'The fortress above the city, with views over the whole valley. The zipline start is just south-east of it.'],
@@ -216,11 +225,18 @@ const STRINGS = {
 
     view_kicker: 'The setting',
     view_title: 'Prizren from above',
-    alt_ph_a: 'A rider on the cable above the valley, with Prizren Fortress on the hill behind',
-    alt_ph_b: 'Three friends on Zipline Prizren beanbags, with the sunset over Prizren',
-    alt_ph_c: 'A smiling rider on the cable above the grassy slope',
+    view_sub: 'The start sits on the slope above the Lumbardhi valley, with all of Prizren in front of you. The terrace has beanbags and shade: watch the others fly, then it’s your turn.',
+    alt_band: 'Three friends on Zipline Prizren beanbags, with the sunset over Prizren',
+    reels_title: 'From the cable',
+    reels_sub: 'Real footage from rides at Zipline Prizren.',
+    reel_toggle: 'Play or pause the video',
+    reel_sunset: 'Sunset over Prizren', reel_gorge: 'Over the Lumbardhi gorge', reel_cable: 'The view from the cable',
+    reel_valley: 'The valley and the city', reel_kalaja: 'The Kalaja hill',
+    alt_ph_a: 'The wooden Zipline Prizren station on the hillside, with visitors in front',
+    alt_ph_b: 'The covered terrace with beanbags and chairs, the city below',
+    alt_ph_c: 'A rider waves from the cable at sunset, Prizren below',
     alt_ph_d: 'A rider with arms spread just leaving the platform, the city below',
-    alt_ph_e: 'An excited rider on the launch platform',
+    alt_ph_e: 'Two friends on Zipline Prizren beanbags, the cable and the city ahead',
 
     rules_kicker: 'Rules',
     rules_title: 'Before you fly',
@@ -760,15 +776,35 @@ const STRINGS = {
       new IntersectionObserver(([en]) => float.classList.toggle('is-away', en.isIntersecting), { threshold: 0.35 }).observe($('#top'));
     }
 
-    const els = $$('.reveal:not(.in)');
+    const els = $$('.reveal:not(.in), .zoom');
     if ('IntersectionObserver' in window && !reduced) {
       const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
       els.forEach((el) => io.observe(el));
     } else { els.forEach((el) => el.classList.add('in')); }
   }
 
+  /* ----- reels: each clip loads and plays only while it is on screen; a tap pauses / plays it ----- */
+  function initReels() {
+    const reels = $$('.reel');
+    const play = (v) => { if (!v.src) v.src = v.dataset.src; const p = v.play(); if (p) p.catch(() => {}); };
+    reels.forEach((r) => {
+      const v = $('video', r);
+      v.addEventListener('playing', () => r.classList.add('is-playing'));
+      v.addEventListener('pause', () => r.classList.remove('is-playing'));
+      $('.reel__play', r).addEventListener('click', () => {
+        if (v.paused) { delete r.dataset.held; play(v); } else { r.dataset.held = ''; v.pause(); }
+      });
+    });
+    if (reduced || !('IntersectionObserver' in window)) return;   // no autoplay: the posters show, a tap plays
+    const io = new IntersectionObserver((es) => es.forEach((en) => {
+      const v = $('video', en.target);
+      if (!en.isIntersecting) { if (!v.paused) v.pause(); } else if (!('held' in en.target.dataset)) play(v);
+    }), { threshold: 0.4 });
+    reels.forEach((r) => io.observe(r));
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     map.svg = $('#map');
-    applyLang(); initForm(); initChrome(); initMap();
+    applyLang(); initForm(); initChrome(); initMap(); initReels();
   });
 })();
