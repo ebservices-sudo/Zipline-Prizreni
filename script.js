@@ -133,11 +133,11 @@ const STRINGS = {
 
     erca_kicker: 'Siguria',
     erca_title: 'Anëtar i ERCA',
-    erca_tag: 'Anëtar',
     erca_p1: 'Zipline Prizren është anëtar i European Ropes Course Association (ERCA), shoqatës evropiane të parqeve me litarë dhe zipline-ve, dhe ka nënshkruar deklaratën e vetëangazhimit të ERCA-s.',
     erca_p2: 'Linja u ndërtua sipas standardit evropian EN 15567-1, nën mbikëqyrjen e Paul de Gast (Ropes Course Solutions), trup inspektimi dhe trajnimi i certifikuar nga ERCA.',
     erca_facts: ['Anëtar i ERCA', 'Ndërtuar sipas standardit EN 15567-1', 'Helmetë, hark dhe trajnim sigurie për çdo fluturues'],
-    erca_verify: 'Shiko profilin në faqen e ERCA',
+    erca_seal_alt: 'Shenja ERCA Certified Inspection Body e Ropes Course Solutions',
+    erca_seal_cap: 'Trup inspektimi i certifikuar nga ERCA, që mbikëqyri ndërtimin e linjës',
 
     contact_kicker: 'Kontakti',
     contact_title: 'Ke një pyetje?',
@@ -240,11 +240,11 @@ const STRINGS = {
 
     erca_kicker: 'Safety',
     erca_title: 'ERCA member',
-    erca_tag: 'Member',
     erca_p1: 'Zipline Prizren is a member of the European Ropes Course Association (ERCA), the European association for ropes courses and ziplines, and has signed ERCA’s self-commitment declaration.',
     erca_p2: 'The line was built to the European standard EN 15567-1 under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body.',
     erca_facts: ['ERCA member', 'Built to standard EN 15567-1', 'Helmet, harness and safety training for every rider'],
-    erca_verify: 'See the profile on the ERCA website',
+    erca_seal_alt: 'ERCA Certified Inspection Body label of Ropes Course Solutions',
+    erca_seal_cap: 'ERCA-certified inspection body that supervised the build of the line',
 
     contact_kicker: 'Contact',
     contact_title: 'Got a question?',
@@ -753,11 +753,6 @@ const STRINGS = {
     $$('.lang-btn').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('zp-lang', lang); applyLang(); }));
     $('#year').textContent = new Date().getFullYear();
     if (reduced) $$('svg.ridge').forEach((r) => { if (r.pauseAnimations) r.pauseAnimations(); });
-
-    // official ERCA member logo: shown only if images/erca-logo.png exists
-    const logo = $('.erca__logo');
-    logo.addEventListener('load', () => { logo.hidden = false; });
-    if (logo.complete && logo.naturalWidth) logo.hidden = false;
 
     // the floating "question?" button waits until the hero has scrolled away
     const float = $('.wa-float');

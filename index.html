@@ -351,24 +351,22 @@
     <!-- ============ 4. ERCA ============ -->
     <section class="section erca" id="erca">
       <div class="wrap erca__grid">
-        <div class="erca__badge reveal">
-          <!-- Official ERCA member logo: ask the owner to download it from their ERCA member account and
-               save it as images/erca-logo.png. It appears here automatically; until then the card below shows. -->
-          <img class="erca__logo" src="images/erca-logo.png" alt="ERCA — European Ropes Course Association" width="240" height="240" hidden>
-          <div class="erca__card">
-            <svg class="erca__shield" aria-hidden="true"><use href="#i-shield"/></svg>
-            <p class="erca__name">ERCA</p>
-            <p class="erca__full">European Ropes Course Association</p>
-            <p class="erca__tag" data-i18n="erca_tag">Anëtar</p>
-          </div>
-        </div>
+        <!-- The "Certified Inspection Body" label belongs to Ropes Course Solutions (listed on erca.uk as an
+             ERCA certified inspection body), not to Zipline Prizren, so the caption must keep naming them.
+             No link to the ERCA profile: it shows the owner's private phone number. -->
+        <figure class="erca__badge reveal">
+          <img class="erca__seal" src="images/erca-inspection-body.png" width="600" height="600" loading="lazy" decoding="async" alt="ERCA Certified Inspection Body" data-i18n-attr="alt:erca_seal_alt">
+          <figcaption class="erca__cap">
+            <b>Ropes Course Solutions</b>
+            <span data-i18n="erca_seal_cap">Trup inspektimi i certifikuar nga ERCA, që mbikëqyri ndërtimin e linjës</span>
+          </figcaption>
+        </figure>
         <div class="erca__body">
           <p class="kicker" data-i18n="erca_kicker">Siguria</p>
           <h2 data-i18n="erca_title">Anëtar i ERCA</h2>
           <p class="erca__lead" data-i18n="erca_p1"></p>
           <p data-i18n="erca_p2"></p>
           <ul class="erca__facts" id="ercaFacts"></ul>
-          <a class="link-arrow" href="https://www.erca.uk/index.php/en/component/comprofiler/userprofile/ziplineprizreni" target="_blank" rel="noopener"><span data-i18n="erca_verify">Shiko profilin në faqen e ERCA</span> <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
