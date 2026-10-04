@@ -196,7 +196,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .hero__text > :not(.hero__head) { position: relative; z-index: 1; }
   .hero__photo img { object-position: 50% 0; transform: scale(1.08); transform-origin: 60% 30%; }
   .hero__photo::after { background: linear-gradient(180deg, rgba(4, 27, 84, 0) 0%, rgba(4, 27, 84, .05) 42%, rgba(2, 15, 53, .82) 100%); }
-  .hero h1 { font-size: clamp(4.2rem, 5.8vw, 5.8rem); }   /* "Fluturo / mbi Prizren" stays on two lines at every width */
+  .hero h1 { font-size: clamp(4.2rem, 5.8vw, 5.8rem); }   /* the headline stays on two lines at every desktop width */
   /* two matching buttons, same size and shape, one under the other */
   .hero__cta { margin-top: 28px; display: grid; gap: 12px; width: min(100%, 320px); }
   .hero__cta .btn { box-shadow: none; }
