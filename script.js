@@ -484,12 +484,7 @@ const STRINGS = {
   /* --- popover on a landmark --- */
   function photoHTML(id, alt) {
     const ph = PHOTOS[id]; if (!ph) return '';
-    const credit = ph.by
-      ? '<figcaption><a href="https://commons.wikimedia.org/wiki/File:' + ph.file + '" target="_blank" rel="noopener">' + esc(t('photo_by')) + ': ' + esc(ph.by) +
-        '</a> · <a href="https://creativecommons.org/licenses/' + ph.lic.replace('CC ', '').replace(/ (\d\.\d)$/, '/$1').toLowerCase() + '/" target="_blank" rel="noopener">' +
-        esc(ph.lic) + '</a>, ' + esc(t('photo_cropped')) + '</figcaption>'
-      : '';
-    return '<figure class="pop__img"><img src="' + ph.src + '" alt="' + esc(alt) + '" width="720" height="480">' + credit + '</figure>';
+    return '<figure class="pop__img"><img src="' + ph.src + '" alt="' + esc(alt) + '" width="720" height="480"></figure>';
   }
   function showPop(id) {
     const pop = $('#mapPop'); const d = place(id); if (!d) return;
@@ -735,7 +730,7 @@ const STRINGS = {
       const lm = e.detail ? landmarkAt(e.clientX, e.clientY) : null;   // e.detail = 0 for keyboard clicks
       setHot(null);
       if (!lm) return false;
-      openMap({ noIntro: true }); goTo(lm.dataset.place);
+      openMap(); goTo(lm.dataset.place);   // the intro still plays; the landmark pop-up appears as it ends
       return true;
     };
   }
