@@ -132,7 +132,6 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .hero__erca svg { width: 22px; height: 22px; color: var(--blue); flex: none; }
 .hero__erca:hover { border-color: var(--navy); }
 
-/* the orange edge along the slanted side comes from the drop-shadow of the wrapper */
 .hero__map { position: relative; z-index: 1; }
 .hero__frame { position: relative; height: clamp(380px, 100vw, 600px); background: var(--paper); border-top: 4px solid var(--orange); border-bottom: 1px solid var(--stone); overflow: hidden; }
 .hero__route { display: flex; margin: 16px var(--gutter) 0; }
@@ -186,32 +185,36 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .chip { margin: 12px 0 0 12px; padding: 10px 15px; font-size: .86rem; }
 }
 
+/* desktop: two rounded panels on the page colour, like the phone (photo + headline left, map right),
+   and a strip of page colour under them so the hero never runs straight into the sunset band */
 @media (min-width: 1000px) {
-  .hero { display: grid; grid-template-columns: minmax(400px, 35fr) 65fr; min-height: calc(100svh - var(--hh)); background: var(--navy); }
-  /* the photo fills the left column and runs on under the slanted map edge */
-  .hero__text, .hero__head { position: static; z-index: auto; }   /* a grid item with a z-index would lift the photo above the map */
-  /* desktop keeps the left side to the photo, the headline and two buttons; hours and ERCA are in the footer and the ERCA section */
+  .hero { display: grid; grid-template-columns: minmax(400px, 35fr) 65fr; gap: 14px; padding: 14px 14px clamp(36px, 6vh, 64px); min-height: calc(100svh - var(--hh)); }
+  /* the left panel is only the photo, the headline and two buttons; hours and ERCA are in the ERCA section and the footer */
   .hero .eyebrow, .hero__sub, .hero__note, .hero__erca { display: none; }
-  /* text sits low, over the grass, so the rider and the Kalaja stay visible; left padding follows the page grid,
-     but never squeezes the text column below ~450px on very wide screens */
-  .hero__text { align-self: end; padding: 48px 34px clamp(44px, 8vh, 84px) max(var(--gutter), min(calc((100vw - 1320px) / 2), calc(35vw - 480px))); }
-  .hero__text > :not(.hero__head), .hero__head > :not(.hero__photo) { position: relative; z-index: 2; }
-  .hero__photo { inset: 0 auto 0 0; width: calc(max(400px, 35%) + 7%); }
-  .hero__photo img { object-position: 50% 0; transform: scale(1.12); transform-origin: 60% 0; }
-  .hero__photo::after { background: linear-gradient(180deg, rgba(2, 10, 30, .12) 0%, rgba(2, 10, 30, .12) 40%, rgba(2, 10, 30, .78) 100%); }
-  .hero h1 { font-size: clamp(4.4rem, 6.6vw, 6rem); }   /* capped so "Fluturo / mbi Prizren" stays on two lines in the ~446px column */
-  /* two buttons of the same size, one under the other */
-  .hero__cta { margin-top: 30px; display: grid; gap: 14px; width: min(100%, 320px); }
+  .hero__text { z-index: auto; display: flex; flex-direction: column; justify-content: flex-end; padding: 48px clamp(28px, 3vw, 44px) clamp(32px, 6vh, 56px); border-radius: 20px; overflow: hidden; }
+  .hero__head { position: static; }   /* the photo fills the whole panel, not only the headline */
+  .hero__text > :not(.hero__head) { position: relative; z-index: 1; }
+  .hero__photo img { object-position: 50% 0; transform: scale(1.08); transform-origin: 60% 30%; }
+  .hero__photo::after { background: linear-gradient(180deg, rgba(4, 27, 84, 0) 0%, rgba(4, 27, 84, .05) 42%, rgba(2, 15, 53, .82) 100%); }
+  .hero h1 { font-size: clamp(4.2rem, 5.8vw, 5.8rem); }   /* "Fluturo / mbi Prizren" stays on two lines at every width */
+  /* two matching buttons, same size and shape, one under the other */
+  .hero__cta { margin-top: 28px; display: grid; gap: 12px; width: min(100%, 320px); }
   .hero__cta .btn { box-shadow: none; }
   .hero__cta .btn:hover { box-shadow: 0 8px 0 rgba(0, 0, 0, .22); }
-  .hero .btn--ghost { color: #fff; box-shadow: inset 0 0 0 2px #fff; }
-  .hero .btn--ghost:hover { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px #fff, 0 8px 0 rgba(0, 0, 0, .22); }
-  .hero__edge { position: absolute; inset: 0; filter: drop-shadow(-7px 0 0 var(--orange)); }
-  .hero__frame { position: absolute; inset: 0; height: auto; border: 0; clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%); }
-  .hero__route { position: absolute; z-index: 4; left: 7%; bottom: 20px; margin: 0; }
-  .legend { top: 18px; left: 11%; }
+  .hero .btn--ghost { background: #fff; color: var(--navy); }
+  .hero .btn--ghost:hover { background: #fff; color: var(--navy); }
+  .hero__map { border-radius: 20px; overflow: hidden; }
+  .hero__edge { position: absolute; inset: 0; }
+  .hero__frame { position: absolute; inset: 0; height: auto; border: 0; }
+  .hero__route { position: absolute; z-index: 4; left: 18px; bottom: 18px; margin: 0; }
+  .legend { top: 18px; left: 18px; }
   .compass { top: 18px; right: 18px; width: 52px; height: 52px; }
   .chip { margin: 0 18px 18px 0; }
+}
+/* small laptops: the map panel is too narrow for the route button and the chip side by side, so the chip goes up next to the compass */
+@media (min-width: 1000px) and (max-width: 1199px) {
+  .hero__open { align-items: flex-start; }
+  .chip { margin: 22px 82px 0 0; }
 }
 
 /* ---------- the map (hero + full screen) ---------- */
