@@ -80,6 +80,10 @@ const STRINGS = {
     hero_cta_wa: 'Pyetje? Na shkruaj',
     hero_note: 'Çdo ditë 13:00–19:00 · Mbyllur kur ka erë, shi ose mjegull',
     hero_erca: 'Anëtar i ERCA · Ndërtuar sipas EN 15567-1',
+    fact_start_k: 'Pikënisja', fact_start_v: 'Te Kalaja e Prizrenit',
+    fact_walk_k: 'Në këmbë', fact_walk_v: '15–20 min nga Shadërvani',
+    fact_weight_k: 'Pesha', fact_weight_v: '40–100 kg',
+    fact_gear_k: 'Pajisjet', fact_gear_v: 'Helmetë, hark, trajnim',
 
     map_title: 'Harta e Zipline Prizren: nga Shadërvani te Kalaja dhe te pikënisja e zipline-it, me Urën e Gurit, Xhaminë e Sinan Pashës dhe lumin Lumbardh.',
     map_open: 'Hap hartën e plotë',
@@ -196,6 +200,10 @@ const STRINGS = {
     hero_cta_wa: 'Questions? Message us',
     hero_note: 'Every day 1–7 PM · Closed in wind, rain or fog',
     hero_erca: 'ERCA member · Built to EN 15567-1',
+    fact_start_k: 'Start point', fact_start_v: 'At Prizren Fortress',
+    fact_walk_k: 'On foot', fact_walk_v: '15–20 min from Shadërvan',
+    fact_weight_k: 'Weight', fact_weight_v: '40–100 kg',
+    fact_gear_k: 'Gear', fact_gear_v: 'Helmet, harness, briefing',
 
     map_title: 'Map of Zipline Prizren: from Shadërvan up to the fortress and the zipline start, with the Stone Bridge, Sinan Pasha Mosque and the Lumbardhi river.',
     map_open: 'Open the full map',

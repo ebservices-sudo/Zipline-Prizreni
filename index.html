@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261005c">
+  <link rel="stylesheet" href="styles.css?v=20261005d">
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data. TODO: add "url" once the final domain is confirmed; hours/price are from the client. -->
@@ -119,6 +119,7 @@
             <span data-i18n="hero_cta_wa">Pyetje? Na shkruaj</span>
           </a>
         </div>
+        <div class="speedlines" aria-hidden="true"><i></i><i></i><i></i></div>
         <p class="hero__note" data-i18n="hero_note">Çdo ditë 13:00–19:00 · Mbyllur kur ka erë, shi ose mjegull</p>
         <a class="hero__erca" href="#erca">
           <svg aria-hidden="true"><use href="#i-shield"/></svg>
@@ -346,6 +347,16 @@
         </a>
       </div>
     </section>
+
+    <!-- ============ 1b. FACTS (desktop): a strip of page colour between the hero and the sunset band ============ -->
+    <div class="facts">
+      <ul class="wrap facts__list">
+        <li><span class="facts__k" data-i18n="fact_start_k">Pikënisja</span><span class="facts__v" data-i18n="fact_start_v">Te Kalaja e Prizrenit</span></li>
+        <li><span class="facts__k" data-i18n="fact_walk_k">Në këmbë</span><span class="facts__v" data-i18n="fact_walk_v">15–20 min nga Shadërvani</span></li>
+        <li><span class="facts__k" data-i18n="fact_weight_k">Pesha</span><span class="facts__v" data-i18n="fact_weight_v">40–100 kg</span></li>
+        <li><span class="facts__k" data-i18n="fact_gear_k">Pajisjet</span><span class="facts__v" data-i18n="fact_gear_v">Helmetë, hark, trajnim</span></li>
+      </ul>
+    </div>
 
     <!-- ============ 2. THE SETTING: sunset band, reels, photos of the place (all client photos/videos) ============ -->
     <section class="view" id="pamja" aria-labelledby="viewTitle">
@@ -604,6 +615,6 @@
     <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.3 12.2l2.6 2.6 5-5.3"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261005"></script>
+  <script src="script.js?v=20261005d"></script>
 </body>
 </html>
