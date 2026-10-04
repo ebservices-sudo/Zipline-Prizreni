@@ -484,10 +484,7 @@ const STRINGS = {
   /* --- popover on a landmark --- */
   function photoHTML(id, alt) {
     const ph = PHOTOS[id]; if (!ph) return '';
-    const credit = ph.by
-      ? '<figcaption>' + esc(t('photo_by')) + ': ' + esc(ph.by) + ' · ' + esc(ph.lic) + ', ' + esc(t('photo_cropped')) + '</figcaption>'
-      : '';
-    return '<figure class="pop__img"><img src="' + ph.src + '" alt="' + esc(alt) + '" width="720" height="480">' + credit + '</figure>';
+    return '<figure class="pop__img"><img src="' + ph.src + '" alt="' + esc(alt) + '" width="720" height="480"></figure>';
   }
   function showPop(id) {
     const pop = $('#mapPop'); const d = place(id); if (!d) return;
