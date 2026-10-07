@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261007b">
+  <link rel="stylesheet" href="styles.css?v=20261007d">
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data. TODO: add "url" once the final domain is confirmed; the price is from the client.
@@ -98,24 +98,20 @@
           </div>
           <p class="eyebrow" data-i18n="hero_eyebrow">Zipline te Kalaja e Prizrenit</p>
           <h1 data-i18n="hero_title">Fluturo mbi Prizren</h1>
-          <p class="hero__sub" data-i18n="hero_sub">Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit.</p>
+          <!-- desktop shows only the second sentence (less text beside the buttons); phones show both -->
+          <p class="hero__sub"><span class="hero__sub-a" data-i18n="hero_sub_a">Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit.</span> <span data-i18n="hero_sub_b">Qyteti i vjetër poshtë teje, era në fytyrë.</span></p>
           <ul class="hero__facts" aria-hidden="true">
             <li>ERCA · EN 15567-1</li>
             <li>€13–€15</li>
           </ul>
           <!-- quick links: Google (opening hours, route) + social media with their own logos.
                Phones: inside the photo, under the headline. Desktop: under the buttons (CSS order). -->
-          <div class="quick" role="group" aria-label="Orari, rruga dhe rrjetet sociale" data-i18n-attr="aria-label:quick_label">
-            <ul class="quick__google">
-              <li><a class="quick__btn" data-hours href="#">
-                <span class="quick__chip"><svg aria-hidden="true"><use href="#l-google"/></svg></span>
-                <span><b data-i18n="quick_hours">Shiko orarin</b> <small data-i18n="quick_hours_sub">në Google</small></span>
-              </a></li>
-              <li><a class="quick__btn" data-dir href="#">
-                <span class="quick__chip"><svg aria-hidden="true"><use href="#l-gmaps"/></svg></span>
-                <span><b data-i18n="quick_route">Hap rrugën</b> <small data-i18n="quick_route_sub">në Google Maps</small></span>
-              </a></li>
-            </ul>
+          <!-- (the route to Google Maps is the big orange button by the map, so it isn't repeated here) -->
+          <div class="quick" role="group" aria-label="Orari dhe rrjetet sociale" data-i18n-attr="aria-label:quick_label">
+            <a class="quick__btn" data-hours href="#">
+              <span class="quick__chip"><svg aria-hidden="true"><use href="#l-google"/></svg></span>
+              <span><b data-i18n="quick_hours">Shiko orarin</b> <small data-i18n="quick_hours_sub">në Google</small></span>
+            </a>
             <div class="quick__social">
               <p class="quick__lbl" data-i18n="quick_follow">Na ndiq</p>
               <ul>
@@ -640,7 +636,7 @@
   </svg>
 
   <!-- Brand logos in their own colours (the official marks; Facebook, Instagram and TikTok shapes from
-       Simple Icons, CC0; Google Maps pin from Wikimedia Commons) -->
+       Simple Icons, CC0) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <radialGradient id="l-ig-bg" cx=".3" cy="1.07" r="1.5">
@@ -653,9 +649,8 @@
     <symbol id="l-ig" viewBox="0 0 24 24"><rect width="24" height="24" rx="6.5" fill="url(#l-ig-bg)"/><use href="#l-ig-glyph" fill="#fff" transform="translate(4.4 4.4) scale(.633)"/></symbol>
     <symbol id="l-tt" viewBox="0 0 24 24"><rect width="24" height="24" rx="6.5" fill="#010101"/><g transform="translate(4.9 4.3) scale(.64)"><use href="#l-tt-glyph" fill="#25F4EE" transform="translate(-1.1 -.9)"/><use href="#l-tt-glyph" fill="#FE2C55" transform="translate(1.1 .9)"/><use href="#l-tt-glyph" fill="#fff"/></g></symbol>
     <symbol id="l-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></symbol>
-    <symbol id="l-gmaps" viewBox="0 0 92.3 132.3"><path fill="#1a73e8" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z"/><path fill="#ea4335" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z"/><path fill="#4285f4" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3"/><path fill="#fbbc04" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3"/><path fill="#34a853" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261007b"></script>
+  <script src="script.js?v=20261007d"></script>
 </body>
 </html>
