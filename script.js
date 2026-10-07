@@ -409,7 +409,7 @@ const STRINGS = {
       const on = b.dataset.lang === lang; b.setAttribute('aria-pressed', on); b.classList.toggle('is-on', on);
     });
     renderLists(); updateLinks();
-    if (map.svg) placeHeroPhoto();   // the hours button changes width with the language
+    if (map.svg) fitHoursButton();   // the hours button changes width with the language
     $('#menuBtn').setAttribute('aria-label', t($('#nav').classList.contains('open') ? 'menu_close' : 'menu_open'));
     if (map.pop) showPop(map.pop.id);
   }
@@ -870,27 +870,46 @@ const STRINGS = {
     if (location.hash === '#harta') openMap({ fromHistory: true, noIntro: true });
   }
 
-  /* ----- desktop hero photo: the rider's shin stands 10 px to the right of the "opening hours" button ----- */
-  // left edge of the rider's shin in images/hero.jpg (pixels of the 1536×2048 photo); gap = space to the button
-  const HERO_LEG = { x: 685, y: 1250, gap: 10 };
-  function placeHeroPhoto() {
-    const img = $('.hero__photo img'); const btn = $('.quick__btn');
-    if (innerWidth < 1000 || !img.naturalWidth || !btn) { img.removeAttribute('style'); return; }   // phones: CSS crop
-    const box = img.parentElement.getBoundingClientRect(); const b = btn.getBoundingClientRect();
-    const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);   // the "cover" size
-    const w = img.naturalWidth * s, h = img.naturalHeight * s, px = HERO_LEG.x * s, py = HERO_LEG.y * s;
-    const tx = b.right + HERO_LEG.gap - box.left, ty = b.top + b.height / 2 - box.top;  // where the shin must land
-    // the smallest zoom that puts the shin there and still fills the whole box (no empty edges)
-    const k = Math.max(1, tx / px, (box.width - tx) / (w - px), ty / py, (box.height - ty) / (h - py));
-    img.style.cssText = 'width:' + w.toFixed(1) + 'px;height:' + h.toFixed(1) + 'px;max-width:none;object-fit:fill;transform-origin:0 0;' +
-      'transform:translate(' + (tx - k * px).toFixed(1) + 'px,' + (ty - k * py).toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+  /* ----- desktop: the "opening hours" button stretches to ~10 px from the rider's leg in the photo -----
+     The photo stays where styles.css puts it; only the button's width changes. */
+  // left edge of the rider's leg in images/hero.jpg, [y, x] in pixels of the 1536×2048 photo, hip → knee → shin → shoe
+  const HERO_LEG = [[980, 683], [1100, 683], [1130, 694], [1160, 699], [1190, 688], [1220, 685], [1290, 684], [1320, 678], [1340, 675], [1400, 680]];
+  const LEG_GAP = 10;
+  const SKEW = Math.tan(8 * Math.PI / 180);   // the button's slanted edge (skewX(-8deg)) leans right at the top
+  function legAt(iy) {   // the leg's x at a photo row, or null above the hip / below the shoe
+    for (let i = 1; i < HERO_LEG.length; i++) {
+      const [y0, x0] = HERO_LEG[i - 1], [y1, x1] = HERO_LEG[i];
+      if (iy >= y0 && iy <= y1) return x0 + (x1 - x0) * (iy - y0) / (y1 - y0);
+    }
+    return null;
   }
-  function initHeroPhoto() {
-    const img = $('.hero__photo img');
-    img.addEventListener('load', placeHeroPhoto);
-    addEventListener('resize', placeHeroPhoto);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeHeroPhoto);   // the button's width depends on the font
-    placeHeroPhoto();
+  function fitHoursButton() {
+    const btn = $('.quick__btn'); const img = $('.hero__photo img');
+    if (!btn) return;
+    btn.style.width = '';
+    if (innerWidth < 1000 || !img.naturalWidth) return;   // phones: the leg is above the headline, the button keeps its size
+    // where the photo is drawn: object-fit "cover" + object-position, then the CSS transform (scale around transform-origin)
+    const box = img.parentElement.getBoundingClientRect(); const cs = getComputedStyle(img);
+    const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
+    const pos = cs.objectPosition.split(' ').map((v, i) => (v.endsWith('%')
+      ? (i ? box.height - img.naturalHeight * s : box.width - img.naturalWidth * s) * parseFloat(v) / 100 : parseFloat(v)));
+    const m = cs.transform === 'none' ? new DOMMatrix() : new DOMMatrix(cs.transform);
+    const [Ox, Oy] = cs.transformOrigin.split(' ').map(parseFloat);
+    const toScreenX = (ix, iy) => { const x = pos[0] + ix * s - Ox, y = pos[1] + iy * s - Oy; return box.left + Ox + m.a * x + m.c * y + m.e; };
+    const toPhotoY = (sy) => (Oy + (sy - box.top - Oy - m.f) / m.d - pos[1]) / s;
+    const b = btn.getBoundingClientRect(); const cy = b.top + b.height / 2;
+    let right = Infinity;
+    for (let sy = b.top; sy <= b.bottom; sy += 2) {   // the closest the leg comes along the button's height
+      const iy = toPhotoY(sy); const ix = legAt(iy); if (ix === null) continue;
+      right = Math.min(right, toScreenX(ix, iy) - LEG_GAP + SKEW * (sy - cy));
+    }
+    if (right !== Infinity && right - b.left > b.width) btn.style.width = (right - b.left).toFixed(1) + 'px';
+  }
+  function initHoursButton() {
+    $('.hero__photo img').addEventListener('load', fitHoursButton);
+    addEventListener('resize', fitHoursButton);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHoursButton);   // the button's own width depends on the font
+    fitHoursButton();
   }
 
   /* ----- header, menu, reveal ----- */
@@ -943,6 +962,6 @@ const STRINGS = {
 
   document.addEventListener('DOMContentLoaded', () => {
     map.svg = $('#map');
-    applyLang(); initForm(); initChrome(); initMap(); initReels(); initHeroPhoto();
+    applyLang(); initForm(); initChrome(); initMap(); initReels(); initHoursButton();
   });
 })();
