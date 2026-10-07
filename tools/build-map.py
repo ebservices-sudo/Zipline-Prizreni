@@ -520,7 +520,7 @@ for name in STREETS:
                            for a, b, c in zip(win, win[1:], win[2:]))
                 if any(math.hypot(x - u, y - v) < r for x, y in win[::3] for u, v, r in KEEP_CLEAR):
                     continue
-                if any(845 < x < 890 and 400 < y < 705 for x, y in win):   # the zipline cable
+                if any(840 < x < 875 and 335 < y < 710 for x, y in win):   # the zipline cable (ZIPLINE in script.js)
                     continue
                 if best is None or turn < best[0]:
                     best = (turn, win)
