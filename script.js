@@ -1,12 +1,21 @@
 /* ==========================================================================
    Zipline Prizren — script.js
-   1) CONFIG   : phone, location, links. Edit here.
-   2) PLACES   : landmarks on the map (position in map units + drawing + photo).
+   1) CONFIG   : phone, location, links, map download. Edit here.
+   2) MAP      : every object on the map (position, turn, mirror) + photos.
    3) STRINGS  : ALL visible text, Albanian (sq, default) + English (en).
    4) Behaviour: language, links, contact form, map (hero + full screen), menu.
    ========================================================================== */
 
 /* ---------- 1) CONFIG ---------------------------------------------------- */
+// The opening hours are not on the site (the owner changes them by season); every
+// "Orari" link opens the Google listing, where he keeps them up to date. This is the
+// listing's permanent link; an empty string falls back to a Google Maps search.
+const GOOGLE_PROFILE_URL = 'https://maps.google.com/?cid=13558656802540752476';
+const TIKTOK_URL = 'https://www.tiktok.com/@ziplineprizren';   // empty string = TikTok buttons hidden
+// "Shkarko hartën" (footer): put the owner's map at MAP_DOWNLOAD_FILE, then set the flag to true.
+const MAP_DOWNLOAD_ENABLED = false;
+const MAP_DOWNLOAD_FILE = 'downloads/harta-zipline-prizren.pdf';
+
 const CONFIG = {
   waNumber: '38348100095',          // WhatsApp for questions, without "+"
   phone: '+383 48 100 095',
@@ -17,22 +26,53 @@ const CONFIG = {
   lng: 20.7476875
 };
 
-/* ---------- 2) PLACES ----------------------------------------------------
-   x/y = map units (1 unit = 1.5 m, see tools/build-map.py), h = height of the
-   drawing above that point. `icon` = drawing id in index.html, `vb` = its box
-   for the small icon in the list.                                             */
+/* ---------- 2) MAP --------------------------------------------------------
+   Everything drawn by hand on the map is placed from here; index.html only
+   holds the drawings. x/y = map units (1 unit = 1.5 m, north up, see
+   tools/build-map.py). Positions checked against Google Maps on 2026-10-07.
+     rot   = turn the drawing, degrees clockwise
+     scale = make the drawing smaller / bigger (1 = as drawn)
+     flip  = mirror the drawing left-right
+   The name labels never turn. h = height of the drawing above its point (for
+   the pop-up), `icon` + `vb` = the small icon in the full map's list.         */
+const ZIPLINE = {
+  start: { x: 848.8, y: 700.9 },   // launch = the "Zipline Prizren" pin on Google Maps
+  end: { x: 862.8, y: 345.6 },     // landing on the slope north of the river: the OSM line
+                                   // (way 1423491824) drawn 25% longer, at the owner's request
+  label: 0.3                       // where the "Zipline" label sits (0 = start, 1 = landing)
+};
+// Stairs from the landing down the slope to the nearest point of the road (Enver Haradinaj),
+// drawn as a few simple lines. They are not on OSM or in any photo, so the points are a best
+// guess until the owner confirms: add points for a bend, or show: false to hide them.
+const STAIRS = { show: true, points: [[857, 350], [808, 391]] };
+
 const PLACES = [
-  { id: 'start',       x: 861.4,  y: 695.4,  h: 42,   icon: 's-pin',       vb: '-16 -42 32 44' },
-  { id: 'kalaja',      x: 730,    y: 580,    h: 92,   icon: 's-castle',    vb: '-62 -68 126 72' },
-  { id: 'landing',     x: 872.6,  y: 411.2,  h: 8,    icon: null },
-  { id: 'ura',         x: 452,    y: 556,    h: 44,   icon: 's-bridge',    vb: '-54 -42 108 56' },
-  { id: 'shadervan',   x: 454,    y: 592,    h: 18,   icon: 's-fountain',  vb: '-12 -18 24 20' },
-  { id: 'sinan',       x: 510,    y: 596,    h: 68,   icon: 's-mosque',    vb: '-24 -68 48 70' },
-  { id: 'hamam',       x: 507,    y: 451,    h: 28,   icon: 's-hamam',     vb: '-28 -30 56 32' },
-  { id: 'lidhja',      x: 630,    y: 410,    h: 44,   icon: 's-house',     vb: '-27 -44 54 46' },
-  { id: 'premte',      x: 200,    y: 402,    h: 56,   icon: 's-church',    vb: '-25 -56 50 58' },
-  { id: 'rrapi',       x: 716,    y: 338,    h: 30,   icon: 's-tree',      vb: '-20 -30 40 32' }
+  { id: 'start',       ...ZIPLINE.start, h: 42,   icon: 's-pin',       vb: '-16 -42 32 44' },
+  { id: 'kalaja',      x: 722.9,  y: 567.4,  h: 92,   icon: 's-castle',    vb: '-62 -68 126 72' },
+  { id: 'landing',     ...ZIPLINE.end,   h: 8,    icon: null },
+  // the bridge crosses the Lumbardhi north-south (OSM way 88338996), so its drawing is turned across the river
+  { id: 'ura',         x: 460.3,  y: 552.7,  rot: 90, scale: .6, h: 32, icon: 's-bridge', vb: '-54 -42 108 56' },
+  { id: 'shadervan',   x: 457.4,  y: 594.5,  h: 18,   icon: 's-fountain',  vb: '-12 -18 24 20' },
+  { id: 'sinan',       x: 501.7,  y: 595.9,  h: 68,   icon: 's-mosque',    vb: '-24 -68 48 70' },
+  { id: 'hamam',       x: 513.2,  y: 462.7,  h: 28,   icon: 's-hamam',     vb: '-28 -30 56 32' },
+  { id: 'lidhja',      x: 632.6,  y: 415.7,  h: 44,   icon: 's-house',     vb: '-27 -44 54 46' },
+  { id: 'premte',      x: 200.2,  y: 400.2,  h: 56,   icon: 's-church',    vb: '-25 -56 50 58' },
+  { id: 'rrapi',       x: 732.7,  y: 359.7,  h: 30,   icon: 's-tree',      vb: '-20 -30 40 32' }
 ];
+
+/* Smaller points of interest (data-poi in index.html). Google Maps positions, except
+   the museum and the viewpoint, which Google doesn't list: those are OSM.        */
+const POIS = {
+  gjergji:    { x: 428.8, y: 662.2 },
+  katedralja: { x: 339.5, y: 693.4 },
+  arasta:     { x: 529.5, y: 495.1 },
+  gazi:       { x: 598.2, y: 411.2 },
+  katip:      { x: 515.8, y: 228.8 },
+  kalter:     { x: 372.2, y: 550.3 },
+  view:       { x: 659,   y: 643 },
+  muzeu:      { x: 386,   y: 407 },
+  sahat:      { x: 238.5, y: 425.2 }
+};
 
 /* Photos in the map pop-ups: images/places/, 720×480, cropped to 3:2.
    `start` and `landing` are the client's own photos. The others are from
@@ -51,17 +91,12 @@ const PHOTOS = {
   rrapi:     { src: 'images/places/rrapi.jpg',     by: 'Mergim.emini',     lic: 'CC BY-SA 4.0', file: 'Rrapi_Prizren7.jpg' }
 };
 
-/* Small line icons for the rules (24×24, stroked). */
+/* Small line icons for the rules (24×24, stroked): the same four signs as on the rules board at the station. */
 const RULE_ICONS = {
-  weight: '<path d="M9.5 8a2.5 2.5 0 1 1 5 0"/><path d="M5.5 21l1.8-11.5h9.4L18.5 21z"/><path d="M10 15h4"/>',
-  health: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M7.5 12h2.5l1.2-2 1.6 4 1.2-2h2.5"/>',
-  alcohol: '<path d="M10 3h4M10.5 3v4.5L9 10v10h6V10l-1.5-2.5V3"/><path d="M4 4l16 16"/>',
-  shoes: '<path d="M3 17v-5l4-1 2-3 3 3 5 1.5c2 .6 4 1.6 4 3.5v1z"/><path d="M3 17v2h18v-2M9 11l1 1.5M11.5 10l1 1.5"/>',
-  items: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2M4 4l16 16"/>',
-  helmet: '<path d="M4 16a8 8 0 0 1 16 0v1H4z"/><path d="M12 8v4M8.5 9.5 10 12M15.5 9.5 14 12M3 17h18"/>',
-  hands: '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12M11 11V5a1.5 1.5 0 0 1 3 0v6M14 11V6.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6 7-2.5 0-4-1.2-5.5-3.5L3.8 15a1.4 1.4 0 0 1 2.3-1.6L8 15.5"/>',
-  landing: '<path d="M4 20h16M12 4v11M7.5 10.5 12 15l4.5-4.5"/>',
-  weather: '<path d="M7 16h9a4 4 0 0 0 .5-8A5.5 5.5 0 0 0 6 8.5 3.8 3.8 0 0 0 7 16z"/><path d="M4 20h8M14 20h5"/>'
+  allowed: '<circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.8 2.8L16.2 9.6"/>',
+  banned: '<circle cx="12" cy="12" r="9"/><path d="M5.7 5.7l12.6 12.6"/>',
+  dress: '<path d="M9 3.5L4 5.6 1.9 10.6l3.6 1.5.5-1.3v9.7h12v-9.7l.5 1.3 3.6-1.5L20 5.6l-5-2.1c-.4 1.5-1.6 2.5-3 2.5S9.4 5 9 3.5z"/>',
+  warning: '<path d="M12 3.6l9.4 16.4H2.6z"/><path d="M12 9.6v4.8M12 17.2v.2"/>'
 };
 
 /* ---------- 3) STRINGS --------------------------------------------------- */
@@ -78,8 +113,10 @@ const STRINGS = {
     hero_sub: 'Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit. Qyteti i vjetër poshtë teje, era në fytyrë.',
     hero_cta_map: 'Shiko hartën',
     hero_cta_wa: 'Pyetje? Na shkruaj',
-    hero_note: 'Çdo ditë 13:00–19:00 · Mbyllur kur ka erë, shi ose mjegull',
     hero_erca: 'Anëtar i ERCA · Ndërtuar sipas EN 15567-1',
+    quick_label: 'Orari, rruga dhe rrjetet sociale',
+    quick_hours: 'Shiko orarin', quick_hours_sub: 'në Google',
+    quick_route: 'Hap rrugën', quick_route_sub: 'në Google Maps',
     fact_start_k: 'Pikënisja', fact_start_v: 'Te Kalaja e Prizrenit',
     fact_walk_k: 'Në këmbë', fact_walk_v: '15–20 min nga Shadërvani',
     fact_weight_k: 'Pesha', fact_weight_v: '40–100 kg',
@@ -92,6 +129,7 @@ const STRINGS = {
     legend_walk: 'Shtegu nga Shadërvani',
     map_walk: '15–20 min në këmbë',
     map_zip: 'Zipline',
+    map_stairs: 'Shkallët',
     area_oldtown: 'Qyteti i vjetër',
     area_gorge: 'Gryka e Lumbardhit ↘',
     pl_kalaja_s: 'Kalaja', pl_ura_s: 'Ura e Gurit', pl_shadervan_s: 'Shadërvani', pl_sinan_s: 'Xhamia e Sinan Pashës',
@@ -126,22 +164,33 @@ const STRINGS = {
     alt_ph_d: 'Fluturues me krahë hapur sapo niset nga platforma, me qytetin poshtë',
     alt_ph_e: 'Dy shoqe në pufat e Zipline Prizren, me kabllon dhe qytetin përpara',
 
-    // TODO: placeholder rules written by EB Services. Replace with the client's official rules.
+    // The official rules, word for word from the rules board at the station (Albanian side). On purpose,
+    // the site leaves out the board's age (6) and height (130 cm) limits and "Fëmijë nën 6 vjeç".
     rules_kicker: 'Rregullat',
     rules_title: 'Para se të fluturosh',
-    rules_intro: 'Rregulla të thjeshta që e mbajnë çdo fluturim të sigurt. Ekipi i kalon me secilin fluturues para nisjes.',
+    rules_intro: 'Rregullat e përdorimit të Zip Line Prizren',
     rules: [
-      ['weight', 'Pesha', 'Minimumi 40 kg, maksimumi 100 kg.'],
-      ['health', 'Shëndeti', 'Nuk lejohet gjatë shtatzënisë, me probleme zemre, shpine ose qafe, apo pas një operacioni të fundit.'],
-      ['alcohol', 'Pa alkool', 'Nuk fluturohet nën ndikimin e alkoolit, drogave ose ilaçeve që ndikojnë te ti.'],
-      ['shoes', 'Veshja', 'Këpucë të mbyllura dhe flokë të lidhur. Pa sandale, shalle apo rroba të lirshme që varen.'],
-      ['items', 'Sendet personale', 'Telefoni, syzet dhe çelësat lihen te ekipi ose në xhep me zinxhir. Fotot t’i bën ekipi.'],
-      ['helmet', 'Helmeta dhe harku', 'Mbahen gjatë gjithë kohës dhe kontrollohen nga ekipi para çdo nisjeje.'],
-      ['hands', 'Gjatë fluturimit', 'Duart te rripat, asnjëherë te kablloja apo rrotulla. Mos provo të frenosh vetë.'],
-      ['landing', 'Ulja', 'Këmbët përpara dhe prit sinjalin e ekipit para se të zgjidhesh.'],
-      ['weather', 'Moti', 'Linja mbyllet kur ka erë të fortë, shi, mjegull ose stuhi. Në ditë të pasigurta, na shkruaj para se të nisesh.']
+      ['allowed', 'Lejohet pjesëmarrja vetëm për persona që plotësojnë këto kushte:', [
+        'Pesha minimale: 40 kg',
+        'Pesha maksimale: 100 kg',
+        'Të jeni shëndetplotë dhe të aftë fizikisht']],
+      ['banned', 'Nuk lejohet pjesëmarrja për:', [
+        'Persona nën ndikimin e alkoolit ose e drogës',
+        'Gra shtatzëna',
+        'Persona me probleme të zemrës, frymëmarrjes, shpinës, ekuilibrit apo epilepsi',
+        'Persona me çrregullime mendore ose frikë të theksuar nga lartësitë']],
+      ['dress', 'Kodi i veshjes:', [
+        'Këpucë të mbyllura dhe të forta (Nuk lejohen sandale, taka, flip-flops)',
+        'Pa shalla, çadra, selfie-sticks apo sende të tjera të varura',
+        'Flokët e gjatë duhet të lidhen mbrapa',
+        'Bizhuteritë, çelësat dhe telefonat duhet të hiqen ose të ruhen në çanta',
+        'Syzet të sigurohen me shirit sportiv']],
+      ['warning', 'Udhëzime të tjera të rëndësishme:', [
+        'Ndiqni udhëzimet e instruktorëve në çdo moment',
+        'Mos filloni lëshimin pa lejen e qartë të instruktorit',
+        'Mbani duart në dorezë gjatë lëshimit',
+        'Mos përdorni Zip Line nëse ndiheni të pasigurt ose të sëmurë']]
     ],
-    rules_note: 'Ekipi mund ta refuzojë një fluturim nëse këto rregulla nuk plotësohen. Udhëzimet e ekipit kanë gjithmonë përparësi.',
 
     erca_kicker: 'Siguria',
     erca_title: 'Anëtar i ERCA',
@@ -179,8 +228,8 @@ const STRINGS = {
 
     foot_tag: 'Fluturo mbi Prizren.',
     foot_contact: 'Kontakti', foot_wa: 'WhatsApp dhe telefon', foot_ask: 'Dërgo një pyetje',
-    foot_hours: 'Orari', foot_hours_v: 'Çdo ditë 13:00–19:00', foot_closed: 'Mbyllur kur ka erë, shi ose mjegull.',
-    foot_find: 'Na gjej', foot_map: 'Harta e plotë', foot_route: 'Rruga në Google Maps',
+    foot_hours: 'Orari', foot_hours_link: 'Shiko orarin në Google',
+    foot_find: 'Na gjej', foot_map: 'Harta e plotë', foot_route: 'Rruga në Google Maps', foot_download: 'Shkarko hartën',
     foot_rights: 'Të gjitha të drejtat e rezervuara.',
     foot_mapdata: 'Të dhënat e hartës',
     foot_demo: 'Faqe demo e përgatitur nga EB Services.'
@@ -198,8 +247,10 @@ const STRINGS = {
     hero_sub: 'Fly across the Lumbardhi valley from Prizren Fortress. The old town below you, wind in your face.',
     hero_cta_map: 'See the map',
     hero_cta_wa: 'Questions? Message us',
-    hero_note: 'Every day 1–7 PM · Closed in wind, rain or fog',
     hero_erca: 'ERCA member · Built to EN 15567-1',
+    quick_label: 'Opening hours, directions and social media',
+    quick_hours: 'Opening hours', quick_hours_sub: 'on Google',
+    quick_route: 'Directions', quick_route_sub: 'in Google Maps',
     fact_start_k: 'Start point', fact_start_v: 'At Prizren Fortress',
     fact_walk_k: 'On foot', fact_walk_v: '15–20 min from Shadërvan',
     fact_weight_k: 'Weight', fact_weight_v: '40–100 kg',
@@ -212,6 +263,7 @@ const STRINGS = {
     legend_walk: 'Footpath from Shadërvan',
     map_walk: '15–20 min walk',
     map_zip: 'Zipline',
+    map_stairs: 'Stairs',
     area_oldtown: 'Old town',
     area_gorge: 'Lumbardhi Gorge ↘',
     pl_kalaja_s: 'Fortress', pl_ura_s: 'Stone Bridge', pl_shadervan_s: 'Shadërvan', pl_sinan_s: 'Sinan Pasha Mosque',
@@ -248,19 +300,30 @@ const STRINGS = {
 
     rules_kicker: 'Rules',
     rules_title: 'Before you fly',
-    rules_intro: 'Simple rules that keep every flight safe. The team goes through them with every rider before launch.',
+    rules_intro: 'Rules for the use of Zip Line Prizren',
+    // the English side of the same rules board, word for word (same items left out as in Albanian)
     rules: [
-      ['weight', 'Weight', 'Minimum 40 kg, maximum 100 kg.'],
-      ['health', 'Health', 'Not allowed during pregnancy, with heart, back or neck problems, or after recent surgery.'],
-      ['alcohol', 'No alcohol', 'No riding under the influence of alcohol, drugs or medication that affects you.'],
-      ['shoes', 'Clothing', 'Closed shoes and hair tied back. No sandals, scarves or loose, hanging clothes.'],
-      ['items', 'Personal items', 'Leave phones, glasses and keys with the team or in a zipped pocket. The team takes your photos.'],
-      ['helmet', 'Helmet and harness', 'Worn the whole time and checked by the team before every launch.'],
-      ['hands', 'During the ride', 'Hands on the straps, never on the cable or the trolley. Do not try to brake yourself.'],
-      ['landing', 'Landing', 'Legs forward, and wait for the team’s signal before you unclip.'],
-      ['weather', 'Weather', 'The line closes in strong wind, rain, fog or storms. On uncertain days, message us before you set off.']
+      ['allowed', 'Participation is permitted only for persons who meet the following conditions:', [
+        'Minimum weight: 40kg',
+        'Maximum weight: 100kg',
+        'Must be in good health and physically fit']],
+      ['banned', 'Participation is not allowed for:', [
+        'Persons under the influence of alcohol or drugs',
+        'Pregnant women',
+        'Persons with heart, respiratory, spinal or balance disorders, or epilepsy',
+        'Persons with mental disorders or a strong fear of heights']],
+      ['dress', 'Dress code:', [
+        'Closed, sturdy footwear (sandals, heels, flip-flops are not allowed)',
+        'No scarves, umbrellas, selfie-sticks or hanging items',
+        'Long hair must be tied back',
+        'Jewelry, keys and mobile phones must be removed or secured in a bag',
+        'Goggles/glasses must be secured with a sports strap']],
+      ['warning', 'Additional important instructions:', [
+        'Follow the instructors’ directions at all times',
+        'Do not start the ride without the instructor’s clear permission',
+        'Keep your hands on the handles during the ride',
+        'Do not use the Zip Line if you feel unsafe or unwell']]
     ],
-    rules_note: 'The team may refuse a ride if these rules are not met. The team’s instructions always come first.',
 
     erca_kicker: 'Safety',
     erca_title: 'ERCA member',
@@ -298,8 +361,8 @@ const STRINGS = {
 
     foot_tag: 'Fly over Prizren.',
     foot_contact: 'Contact', foot_wa: 'WhatsApp and phone', foot_ask: 'Send a question',
-    foot_hours: 'Hours', foot_hours_v: 'Every day 1–7 PM', foot_closed: 'Closed in wind, rain or fog.',
-    foot_find: 'Find us', foot_map: 'Full map', foot_route: 'Route in Google Maps',
+    foot_hours: 'Hours', foot_hours_link: 'See opening hours on Google',
+    foot_find: 'Find us', foot_map: 'Full map', foot_route: 'Route in Google Maps', foot_download: 'Download the map',
     foot_rights: 'All rights reserved.',
     foot_mapdata: 'Map data',
     foot_demo: 'Demo site prepared by EB Services.'
@@ -326,6 +389,7 @@ const STRINGS = {
 
   const waLink = (text) => 'https://wa.me/' + CONFIG.waNumber + (text ? '?text=' + encodeURIComponent(text) : '');
   const dirLink = () => 'https://www.google.com/maps/dir/?api=1&destination=' + CONFIG.lat + ',' + CONFIG.lng;
+  const hoursLink = () => GOOGLE_PROFILE_URL || 'https://www.google.com/maps/search/?api=1&query=Zipline+Prizren';
   const gps = () => CONFIG.lat.toFixed(5) + ', ' + CONFIG.lng.toFixed(5);
 
   /* ----- language ----- */
@@ -355,7 +419,8 @@ const STRINGS = {
   function renderLists() {
     $('#rulesList').innerHTML = t('rules').map((r) =>
       '<li class="rule reveal in"><span class="rule__ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + RULE_ICONS[r[0]] +
-      '</svg></span><div><h3>' + r[1] + '</h3><p>' + r[2] + '</p></div></li>').join('');
+      '</svg></span><div><h3>' + r[1] + '</h3><ul class="rule__list">' + r[2].map((x) => '<li>' + x + '</li>').join('') +
+      '</ul></div></li>').join('');
     $('#ercaFacts').innerHTML = t('erca_facts').map((x) => '<li>' + x + '</li>').join('');
 
     const topics = $('#qTopics'); const checked = (topics.querySelector('input:checked') || {}).value || '0';
@@ -372,7 +437,7 @@ const STRINGS = {
     }).join('');
   }
 
-  /* ----- links (WhatsApp, maps, social) ----- */
+  /* ----- links (WhatsApp, maps, Google hours, social, map download) ----- */
   function updateLinks() {
     $$('[data-wa]').forEach((a) => {
       const k = a.getAttribute('data-wa');
@@ -380,8 +445,14 @@ const STRINGS = {
       a.target = '_blank'; a.rel = 'noopener';
     });
     $$('[data-dir]').forEach((a) => { a.href = dirLink(); a.target = '_blank'; a.rel = 'noopener'; });
+    $$('[data-hours]').forEach((a) => { a.href = hoursLink(); a.target = '_blank'; a.rel = 'noopener'; });
     $$('[data-ig]').forEach((a) => { a.href = CONFIG.instagram; a.target = '_blank'; a.rel = 'noopener'; });
     $$('[data-fb]').forEach((a) => { a.href = CONFIG.facebook; a.target = '_blank'; a.rel = 'noopener'; });
+    $$('[data-tt]').forEach((a) => {
+      a.href = TIKTOK_URL || '#'; a.target = '_blank'; a.rel = 'noopener';
+      (a.closest('li') || a).hidden = !TIKTOK_URL;
+    });
+    $$('[data-map-dl]').forEach((a) => { a.href = MAP_DOWNLOAD_FILE; (a.closest('li') || a).hidden = !MAP_DOWNLOAD_ENABLED; });
     $$('[data-phone]').forEach((el) => { el.textContent = CONFIG.phone; });
     $$('[data-gps]').forEach((el) => { el.textContent = gps(); });
   }
@@ -743,8 +814,50 @@ const STRINGS = {
     };
   }
 
+  /* --- put every hand-drawn object where MAP config (top of this file) says --- */
+  function placeObjects() {
+    const at = (g, o) => {
+      g.setAttribute('transform', 'translate(' + o.x + ' ' + o.y + ')');
+      const art = g.querySelector('.sc__i > use');   // the drawing only; the name label stays upright
+      if (!art) return;
+      const tf = [o.rot ? 'rotate(' + o.rot + ')' : '', o.scale && o.scale !== 1 ? 'scale(' + o.scale + ')' : '', o.flip ? 'scale(-1 1)' : ''].join(' ').trim();
+      if (tf) art.setAttribute('transform', tf); else art.removeAttribute('transform');
+    };
+    PLACES.forEach((p) => { const g = $('.lm[data-place="' + p.id + '"]', map.svg); if (g) at(g, p); });
+    $$('.poi[data-poi]', map.svg).forEach((g) => { const o = POIS[g.dataset.poi]; if (o) at(g, o); });
+
+    // the cable, the rider on it and its label
+    const s = ZIPLINE.start, e = ZIPLINE.end;
+    const d = 'M' + s.x + ' ' + s.y + 'L' + e.x + ' ' + e.y;
+    $$('.zip__halo, .zip__cable', map.svg).forEach((p) => p.setAttribute('d', d));
+    const motion = $('.zip__rider animateMotion', map.svg); if (motion) motion.setAttribute('path', d);
+    const len = Math.hypot(e.x - s.x, e.y - s.y), ux = (e.x - s.x) / len, uy = (e.y - s.y) / len;
+    const lx = s.x + (e.x - s.x) * ZIPLINE.label + uy * 19.5, ly = s.y + (e.y - s.y) * ZIPLINE.label - ux * 19.5;   // 19.5 units to the left of the cable
+    $('.zip__lbl', map.svg).setAttribute('transform', 'translate(' + lx.toFixed(1) + ' ' + ly.toFixed(1) + ')');
+    $('.zip__label', map.svg).setAttribute('transform', 'rotate(' + (Math.atan2(uy, ux) * 180 / Math.PI).toFixed(2) + ')');
+
+    // the stairs: a white path with short steps across it
+    const st = $('#stairs', map.svg); st.toggleAttribute('hidden', !STAIRS.show);
+    const pts = STAIRS.points;
+    if (!STAIRS.show || pts.length < 2) return;
+    let steps = ''; const W = 3.4, GAP = 5.5;   // half width and step spacing, map units
+    for (let i = 1; i < pts.length; i++) {
+      const [ax, ay] = pts[i - 1], [bx, by] = pts[i]; const l = Math.hypot(bx - ax, by - ay);
+      const nx = -(by - ay) / l * W, ny = (bx - ax) / l * W;
+      for (let k = GAP / 2; k < l; k += GAP) {
+        const x = ax + (bx - ax) * k / l, y = ay + (by - ay) * k / l;
+        steps += 'M' + (x + nx).toFixed(1) + ' ' + (y + ny).toFixed(1) + 'L' + (x - nx).toFixed(1) + ' ' + (y - ny).toFixed(1);
+      }
+    }
+    const line = 'M' + pts.map((p) => p.join(' ')).join('L');
+    $('.stairs__halo', st).setAttribute('d', line);
+    $('.stairs__steps', st).setAttribute('d', steps);
+    $('.stairs__lbl', st).setAttribute('transform', 'translate(' + pts[0][0] + ' ' + pts[0][1] + ')');   // label at the top of the stairs
+  }
+
   function initMap() {
     map.svg = $('#map');
+    placeObjects();
     heroView();
     if ('ResizeObserver' in window) new ResizeObserver(() => { if (!map.open) heroView(); }).observe($('#heroSlot'));
     if (reduced && map.svg.pauseAnimations) map.svg.pauseAnimations();

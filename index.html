@@ -22,10 +22,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261005d">
+  <link rel="stylesheet" href="styles.css?v=20261007a">
   <script>document.documentElement.classList.add('js');</script>
 
-  <!-- Structured data. TODO: add "url" once the final domain is confirmed; hours/price are from the client. -->
+  <!-- Structured data. TODO: add "url" once the final domain is confirmed; the price is from the client.
+       No opening hours on purpose: they change by season and live on the Google listing. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -44,17 +45,12 @@
       "addressCountry": "XK"
     },
     "geo": { "@type": "GeoCoordinates", "latitude": 42.2075625, "longitude": 20.7476875 },
-    "hasMap": "https://www.google.com/maps/place/Zipline+Prizren/@42.2075625,20.7476875,17z",
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-      "opens": "13:00",
-      "closes": "19:00"
-    }],
+    "hasMap": "https://maps.google.com/?cid=13558656802540752476",
     "memberOf": { "@type": "Organization", "name": "European Ropes Course Association (ERCA)" },
     "sameAs": [
+      "https://www.facebook.com/p/Zipline-Prizren-61576753757141/",
       "https://www.instagram.com/ziplineprizren/",
-      "https://www.facebook.com/p/Zipline-Prizren-61576753757141/"
+      "https://www.tiktok.com/@ziplineprizren"
     ]
   }
   </script>
@@ -104,9 +100,23 @@
           <h1 data-i18n="hero_title">Fluturo mbi Prizren</h1>
           <p class="hero__sub" data-i18n="hero_sub">Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit.</p>
           <ul class="hero__facts" aria-hidden="true">
-            <li>13:00–19:00</li>
             <li>ERCA · EN 15567-1</li>
             <li>€13–€15</li>
+          </ul>
+          <!-- quick links: Google (opening hours, route) + social media with their own logos.
+               Phones: inside the photo, under the headline. Desktop: under the buttons (CSS order). -->
+          <ul class="quick" aria-label="Orari, rruga dhe rrjetet sociale" data-i18n-attr="aria-label:quick_label">
+            <li class="quick__g"><a data-hours href="#">
+              <svg class="quick__logo" aria-hidden="true"><use href="#l-google"/></svg>
+              <span><b data-i18n="quick_hours">Shiko orarin</b> <small data-i18n="quick_hours_sub">në Google</small></span>
+            </a></li>
+            <li class="quick__g"><a data-dir href="#">
+              <svg class="quick__logo" aria-hidden="true"><use href="#l-gmaps"/></svg>
+              <span><b data-i18n="quick_route">Hap rrugën</b> <small data-i18n="quick_route_sub">në Google Maps</small></span>
+            </a></li>
+            <li><a data-fb href="#"><svg class="quick__logo" aria-hidden="true"><use href="#l-fb"/></svg><span>Facebook</span></a></li>
+            <li><a data-ig href="#"><svg class="quick__logo" aria-hidden="true"><use href="#l-ig"/></svg><span>Instagram</span></a></li>
+            <li><a data-tt href="#"><svg class="quick__logo" aria-hidden="true"><use href="#l-tt"/></svg><span>TikTok</span></a></li>
           </ul>
         </div>
         <div class="hero__cta">
@@ -120,7 +130,6 @@
           </a>
         </div>
         <div class="speedlines" aria-hidden="true"><i></i><i></i><i></i></div>
-        <p class="hero__note" data-i18n="hero_note">Çdo ditë 13:00–19:00 · Mbyllur kur ka erë, shi ose mjegull</p>
         <a class="hero__erca" href="#erca">
           <svg aria-hidden="true"><use href="#i-shield"/></svg>
           <span data-i18n="hero_erca">Anëtar i ERCA · Ndërtuar sipas EN 15567-1</span>
@@ -266,10 +275,11 @@
             </g>
             <!-- /street names -->
 
-            <!-- walking route: Shadërvan square -> zipline start (shortest path on OSM footways, ~940 m) -->
+            <!-- walking route: Shadërvan square -> zipline start (shortest path on OSM footways, ~940 m);
+                 the last step ends on the Google Maps pin (ZIPLINE.start in script.js) -->
             <g class="route">
-              <path class="route__halo" d="M453.3 590.9l1.9 4.3 3.3 1.1 3.9-2.1 13.4-0.2 12.2-6.5 2.7 38.3 27.6-5.6 9.8 1.2 3.9 5.9 7.5 25.1 25.1-0.1 26.8-5.2 18.1 0.5 22.3 3.5 10.9 8.7 7.3 2.7 7.6-5.7 10-18.9 3.4-10-7.7-45.5 0.7-7.7 4.5-2.9 5.4 8 2.3 0.5 10.1 10.1 14.1 16.8 12.2 11.8 16.5 7.7 35.7 5.9 22.7 27.9 29.8 28.2 9.4 18.8 4.7 2.5 8.1-0.3 24.5-10.5"/>
-              <path class="route__line" d="M453.3 590.9l1.9 4.3 3.3 1.1 3.9-2.1 13.4-0.2 12.2-6.5 2.7 38.3 27.6-5.6 9.8 1.2 3.9 5.9 7.5 25.1 25.1-0.1 26.8-5.2 18.1 0.5 22.3 3.5 10.9 8.7 7.3 2.7 7.6-5.7 10-18.9 3.4-10-7.7-45.5 0.7-7.7 4.5-2.9 5.4 8 2.3 0.5 10.1 10.1 14.1 16.8 12.2 11.8 16.5 7.7 35.7 5.9 22.7 27.9 29.8 28.2 9.4 18.8 4.7 2.5 8.1-0.3 24.5-10.5"/>
+              <path class="route__halo" d="M453.3 590.9l1.9 4.3 3.3 1.1 3.9-2.1 13.4-0.2 12.2-6.5 2.7 38.3 27.6-5.6 9.8 1.2 3.9 5.9 7.5 25.1 25.1-0.1 26.8-5.2 18.1 0.5 22.3 3.5 10.9 8.7 7.3 2.7 7.6-5.7 10-18.9 3.4-10-7.7-45.5 0.7-7.7 4.5-2.9 5.4 8 2.3 0.5 10.1 10.1 14.1 16.8 12.2 11.8 16.5 7.7 35.7 5.9 22.7 27.9 29.8 28.2 9.4 18.8 4.7 2.5 8.1-0.3 9.3-8.8"/>
+              <path class="route__line" d="M453.3 590.9l1.9 4.3 3.3 1.1 3.9-2.1 13.4-0.2 12.2-6.5 2.7 38.3 27.6-5.6 9.8 1.2 3.9 5.9 7.5 25.1 25.1-0.1 26.8-5.2 18.1 0.5 22.3 3.5 10.9 8.7 7.3 2.7 7.6-5.7 10-18.9 3.4-10-7.7-45.5 0.7-7.7 4.5-2.9 5.4 8 2.3 0.5 10.1 10.1 14.1 16.8 12.2 11.8 16.5 7.7 35.7 5.9 22.7 27.9 29.8 28.2 9.4 18.8 4.7 2.5 8.1-0.3 9.3-8.8"/>
               <g class="sc" transform="translate(588 688)">
                 <g class="sc__i">
                   <rect class="route__pill" x="-80" y="-13" width="160" height="26" rx="13"/>
@@ -280,46 +290,53 @@
               </g>
             </g>
 
-            <!-- smaller places, named as in OpenStreetMap (no pop-ups); hidden on the small phone map -->
+            <!-- smaller places (no pop-ups); positions in POIS (script.js); hidden on the small phone map -->
             <g class="pois" aria-hidden="true">
-              <g class="poi" transform="translate(432 642)"><g class="sc__i"><use href="#p-church"/><text class="poi__l" x="-10" y="3.6">Kisha e Shën Gjergjit</text></g></g>
-              <g class="poi" transform="translate(339 686)"><g class="sc__i"><use href="#p-church"/><text x="10" y="3.6">Katedralja e Zojës Ndihmëtare</text></g></g>
-              <g class="poi" transform="translate(529 492)"><g class="sc__i"><use href="#p-mosque"/><text x="10" y="3.6">Xhamia e Arastës</text></g></g>
-              <g class="poi" transform="translate(600 416)"><g class="sc__i"><use href="#p-mosque"/><text class="poi__l" x="-10" y="3.6">Xhamia e Gazi Mehmed Pashës</text></g></g>
-              <g class="poi" transform="translate(516 230)"><g class="sc__i"><use href="#p-mosque"/><text x="10" y="3.6">Xhamia e Katip Sinanit</text></g></g>
-              <g class="poi" transform="translate(373 547)"><g class="sc__i"><use href="#p-bridge"/><text class="poi__b" y="18">Ura e Kaltër</text></g></g>
-              <g class="poi" transform="translate(659 643)"><g class="sc__i"><use href="#p-view"/><text x="10" y="3.6" data-i18n="poi_view">Pikë panoramike</text></g></g>
-              <g class="poi" transform="translate(386 407)"><g class="sc__i"><use href="#p-museum"/><text class="poi__l" x="-10" y="3.6">Muzeu Etnologjik</text></g></g>
-              <g class="poi" transform="translate(240 426)"><g class="sc__i"><use href="#p-tower"/><text x="10" y="3.6">Sahat Kulla</text></g></g>
+              <g class="poi" data-poi="gjergji" transform="translate(428.8 662.2)"><g class="sc__i"><use href="#p-church"/><text class="poi__l" x="-10" y="3.6">Kisha e Shën Gjergjit</text></g></g>
+              <g class="poi" data-poi="katedralja" transform="translate(339.5 693.4)"><g class="sc__i"><use href="#p-church"/><text x="10" y="3.6">Katedralja e Zojës Ndihmëtare</text></g></g>
+              <g class="poi" data-poi="arasta" transform="translate(529.5 495.1)"><g class="sc__i"><use href="#p-mosque"/><text x="10" y="3.6">Xhamia e Arastës</text></g></g>
+              <g class="poi" data-poi="gazi" transform="translate(598.2 411.2)"><g class="sc__i"><use href="#p-mosque"/><text class="poi__l" x="-10" y="3.6">Xhamia e Gazi Mehmed Pashës</text></g></g>
+              <g class="poi" data-poi="katip" transform="translate(515.8 228.8)"><g class="sc__i"><use href="#p-mosque"/><text x="10" y="3.6">Xhamia e Katip Sinanit</text></g></g>
+              <g class="poi" data-poi="kalter" transform="translate(372.2 550.3)"><g class="sc__i"><use href="#p-bridge"/><text class="poi__b" y="18">Ura e Kaltër</text></g></g>
+              <g class="poi" data-poi="view" transform="translate(659 643)"><g class="sc__i"><use href="#p-view"/><text x="10" y="3.6" data-i18n="poi_view">Pikë panoramike</text></g></g>
+              <g class="poi" data-poi="muzeu" transform="translate(386 407)"><g class="sc__i"><use href="#p-museum"/><text class="poi__l" x="-10" y="3.6">Muzeu Etnologjik</text></g></g>
+              <g class="poi" data-poi="sahat" transform="translate(238.5 425.2)"><g class="sc__i"><use href="#p-tower"/><text x="10" y="3.6">Sahat Kulla</text></g></g>
             </g>
 
-            <!-- the zipline cable (OSM way 1423491824) -->
+            <!-- stairs from the landing down to the road; points in STAIRS (script.js) -->
+            <g class="stairs" id="stairs" aria-hidden="true">
+              <path class="stairs__halo"/>
+              <path class="stairs__steps"/>
+              <g class="sc stairs__lbl"><g class="sc__i"><text class="stairs__txt" x="-9" y="-4" data-i18n="map_stairs">Shkallët</text></g></g>
+            </g>
+
+            <!-- the zipline cable (OSM way 1423491824, drawn longer); both ends in ZIPLINE (script.js) -->
             <g class="zip">
-              <path class="zip__halo" d="M861.4 695.4L872.6 411.2"/>
-              <path class="zip__cable" d="M861.4 695.4L872.6 411.2"/>
-              <g class="sc" transform="translate(846 590)"><g class="sc__i"><text class="zip__label" transform="rotate(-87.74)" data-i18n="map_zip">Zipline</text></g></g>
+              <path class="zip__halo" d="M848.8 700.9L862.8 345.6"/>
+              <path class="zip__cable" d="M848.8 700.9L862.8 345.6"/>
+              <g class="sc zip__lbl" transform="translate(833.5 593.5)"><g class="sc__i"><text class="zip__label" transform="rotate(-87.74)" data-i18n="map_zip">Zipline</text></g></g>
               <g class="zip__rider">
                 <use href="#s-rider" transform="scale(.62)"/>
-                <animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;.12;.72;1" calcMode="linear" path="M861.4 695.4L872.6 411.2"/>
+                <animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;.12;.72;1" calcMode="linear" path="M848.8 700.9L862.8 345.6"/>
               </g>
             </g>
 
-            <!-- landmarks (data-place = key in PLACES, script.js) -->
-            <g class="lm lm--minor" data-place="premte" transform="translate(200 402)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Kisha e Shën Premtes</text></g></g>
-            <g class="lm lm--minor" data-place="hamam" transform="translate(507 451)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hamami</text></g></g>
-            <g class="lm lm--minor" data-place="lidhja" transform="translate(630 410)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">Lidhja e Prizrenit</text></g></g>
-            <g class="lm lm--minor" data-place="rrapi" transform="translate(716 338)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Rrapi shekullor</text></g></g>
-            <g class="lm" data-place="ura" transform="translate(452 556)"><g class="sc__i"><use href="#s-bridge"/><text class="lm__name" y="-45" data-i18n="pl_ura_s">Ura e Gurit</text></g></g>
-            <g class="lm" data-place="shadervan" transform="translate(454 592)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name" y="16" data-i18n="pl_shadervan_s">Shadërvani</text></g></g>
-            <g class="lm" data-place="sinan" transform="translate(510 596)"><g class="sc__i"><use href="#s-mosque"/><text class="lm__name lm__name--start" x="18" y="16" data-i18n="pl_sinan_s">Xhamia e Sinan Pashës</text></g></g>
-            <g class="lm lm--big" data-place="kalaja" transform="translate(730 580)"><g class="sc__i"><use href="#s-castle"/><text class="lm__name lm__name--big" y="-74" data-i18n="pl_kalaja_s">Kalaja</text></g></g>
+            <!-- landmarks (data-place = key in PLACES, script.js, which also sets their position and turn) -->
+            <g class="lm lm--minor" data-place="premte" transform="translate(200.2 400.2)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Kisha e Shën Premtes</text></g></g>
+            <g class="lm lm--minor" data-place="hamam" transform="translate(513.2 462.7)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hamami</text></g></g>
+            <g class="lm lm--minor" data-place="lidhja" transform="translate(632.6 415.7)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">Lidhja e Prizrenit</text></g></g>
+            <g class="lm lm--minor" data-place="rrapi" transform="translate(732.7 359.7)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Rrapi shekullor</text></g></g>
+            <g class="lm" data-place="ura" transform="translate(460.3 552.7)"><g class="sc__i"><use href="#s-bridge" transform="rotate(90) scale(.6)"/><text class="lm__name lm__name--end" x="-16" y="-14" data-i18n="pl_ura_s">Ura e Gurit</text></g></g>
+            <g class="lm" data-place="shadervan" transform="translate(457.4 594.5)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name" y="16" data-i18n="pl_shadervan_s">Shadërvani</text></g></g>
+            <g class="lm" data-place="sinan" transform="translate(501.7 595.9)"><g class="sc__i"><use href="#s-mosque"/><text class="lm__name lm__name--start" x="18" y="16" data-i18n="pl_sinan_s">Xhamia e Sinan Pashës</text></g></g>
+            <g class="lm lm--big" data-place="kalaja" transform="translate(722.9 567.4)"><g class="sc__i"><use href="#s-castle"/><text class="lm__name lm__name--big" y="-74" data-i18n="pl_kalaja_s">Kalaja</text></g></g>
 
             <!-- zipline ends (on top of everything) -->
-            <g class="lm lm--end" data-place="landing" transform="translate(872.6 411.2)"><g class="sc__i">
+            <g class="lm lm--end" data-place="landing" transform="translate(862.8 345.6)"><g class="sc__i">
               <circle r="6.5" fill="#fff" stroke="#F76B08" stroke-width="3"/><circle r="2.2" fill="#F76B08"/>
               <text class="lm__name lm__name--start" x="12" y="4" data-i18n="pl_landing_s">Ulja</text>
             </g></g>
-            <g class="lm lm--start" data-place="start" transform="translate(861.4 695.4)"><g class="sc__i">
+            <g class="lm lm--start" data-place="start" transform="translate(848.8 700.9)"><g class="sc__i">
               <circle class="pulse" r="7"/>
               <use href="#s-pin"/>
               <text class="lm__name lm__name--zip" y="30">Zipline Prizren</text>
@@ -414,7 +431,6 @@
           <p class="section-sub" data-i18n="rules_intro"></p>
         </header>
         <ol class="rules__grid" id="rulesList"></ol>
-        <p class="rules__note reveal" data-i18n="rules_note"></p>
       </div>
     </section>
 
@@ -454,8 +470,9 @@
             <span data-phone></span>
           </a>
           <ul class="contact__social">
-            <li><a data-ig href="#">Instagram · @ziplineprizren</a></li>
-            <li><a data-fb href="#">Facebook · Zipline Prizren</a></li>
+            <li><a data-fb href="#"><svg aria-hidden="true"><use href="#l-fb"/></svg>Facebook · Zipline Prizren</a></li>
+            <li><a data-ig href="#"><svg aria-hidden="true"><use href="#l-ig"/></svg>Instagram · @ziplineprizren</a></li>
+            <li><a data-tt href="#"><svg aria-hidden="true"><use href="#l-tt"/></svg>TikTok · @ziplineprizren</a></li>
           </ul>
         </div>
 
@@ -496,8 +513,9 @@
         <a class="footer__logo" href="#top"><img src="images/logo-light.png" width="900" height="538" alt="Zipline Prizren" loading="lazy" decoding="async"></a>
         <p class="footer__tag" data-i18n="foot_tag">Fluturo mbi Prizren.</p>
         <ul class="footer__social">
-          <li><a data-ig href="#" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a></li>
-          <li><a data-fb href="#" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a></li>
+          <li><a data-fb href="#" aria-label="Facebook"><svg aria-hidden="true"><use href="#l-fb"/></svg></a></li>
+          <li><a data-ig href="#" aria-label="Instagram"><svg aria-hidden="true"><use href="#l-ig"/></svg></a></li>
+          <li><a data-tt href="#" aria-label="TikTok"><svg aria-hidden="true"><use href="#l-tt"/></svg></a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -508,14 +526,15 @@
       </div>
       <div class="footer__col">
         <h3><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-i18n="foot_hours">Orari</span></h3>
-        <p class="footer__big" data-i18n="foot_hours_v">Çdo ditë 13:00–19:00</p>
-        <p class="footer__small" data-i18n="foot_closed"></p>
+        <a class="footer__link" data-hours href="#" data-i18n="foot_hours_link">Shiko orarin në Google</a>
       </div>
       <div class="footer__col">
         <h3><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-i18n="foot_find">Na gjej</span></h3>
         <ul class="footer__list">
           <li><a class="footer__link" href="#harta" data-open-map data-i18n="foot_map">Harta e plotë</a></li>
           <li><a class="footer__link" data-dir href="#" data-i18n="foot_route">Rruga në Google Maps</a></li>
+          <!-- the owner's own map; shows once MAP_DOWNLOAD_ENABLED = true (script.js) -->
+          <li hidden><a class="footer__link" data-map-dl href="downloads/harta-zipline-prizren.pdf" download data-i18n="foot_download">Shkarko hartën</a></li>
         </ul>
       </div>
     </div>
@@ -610,11 +629,26 @@
     <symbol id="i-compass" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="#fff" stroke="#041B54" stroke-width="1.6"/><path d="M24 7l6 17h-12z" fill="#F76B08"/><path d="M24 41l-6-17h12z" fill="#fff" stroke="#041B54" stroke-width="1.4" stroke-linejoin="round"/><text x="24" y="19.5" text-anchor="middle" font-family="DM Sans, sans-serif" font-weight="700" font-size="7.5" fill="#fff">N</text></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></g></symbol>
     <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 21s-6.5-6.1-6.5-11.2a6.5 6.5 0 0 1 13 0C18.5 14.9 12 21 12 21z"/><circle cx="12" cy="9.8" r="2.3" fill="currentColor"/></symbol>
-    <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/></g><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></symbol>
-    <symbol id="i-fb" viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21z"/></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8.3 12.2l2.6 2.6 5-5.3"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261005d"></script>
+  <!-- Brand logos in their own colours (the official marks; Facebook, Instagram and TikTok shapes from
+       Simple Icons, CC0; Google Maps pin from Wikimedia Commons) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="l-ig-bg" cx=".3" cy="1.07" r="1.5">
+        <stop offset="0" stop-color="#FDF497"/><stop offset=".05" stop-color="#FDF497"/><stop offset=".45" stop-color="#FD5949"/><stop offset=".6" stop-color="#D6249F"/><stop offset=".9" stop-color="#285AEB"/>
+      </radialGradient>
+      <path id="l-ig-glyph" d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/>
+      <path id="l-tt-glyph" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+    </defs>
+    <symbol id="l-fb" viewBox="0 0 24 24"><path fill="#0866FF" d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></symbol>
+    <symbol id="l-ig" viewBox="0 0 24 24"><rect width="24" height="24" rx="6.5" fill="url(#l-ig-bg)"/><use href="#l-ig-glyph" fill="#fff" transform="translate(4.4 4.4) scale(.633)"/></symbol>
+    <symbol id="l-tt" viewBox="0 0 24 24"><rect width="24" height="24" rx="6.5" fill="#010101"/><g transform="translate(4.9 4.3) scale(.64)"><use href="#l-tt-glyph" fill="#25F4EE" transform="translate(-1.1 -.9)"/><use href="#l-tt-glyph" fill="#FE2C55" transform="translate(1.1 .9)"/><use href="#l-tt-glyph" fill="#fff"/></g></symbol>
+    <symbol id="l-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></symbol>
+    <symbol id="l-gmaps" viewBox="0 0 92.3 132.3"><path fill="#1a73e8" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z"/><path fill="#ea4335" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z"/><path fill="#4285f4" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3"/><path fill="#fbbc04" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3"/><path fill="#34a853" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2"/></symbol>
+  </svg>
+
+  <script src="script.js?v=20261007a"></script>
 </body>
 </html>
