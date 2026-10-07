@@ -431,7 +431,7 @@ const STRINGS = {
       const ico = p.icon
         ? '<svg viewBox="' + p.vb + '" aria-hidden="true"><use href="#' + p.icon + '"/></svg>'
         : '<svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="7" fill="#fff" stroke="#F76B08" stroke-width="3"/><circle r="2.5" fill="#F76B08"/></svg>';
-      return '<li><button type="button" class="place" data-go="' + p.id + '">' + ico +
+      return '<li><button type="button" class="place' + (map.pop && map.pop.id === p.id ? ' is-on' : '') + '" data-go="' + p.id + '">' + ico +   // keeps the open place marked after a language switch
         '<span class="place__txt"><b>' + place(p.id)[0] + '</b><span class="place__desc">' + place(p.id)[1] + '</span></span></button></li>';
     }).join('');
   }
@@ -557,6 +557,10 @@ const STRINGS = {
     const need = popTop() + $('#mapPop').offsetHeight + 16 + (p.h + 8) * k * ppu + 12;   // same sums as placePop(), plus a margin
     const sy = clamp(need, r.height * 0.5, r.height - 24);
     flyTo({ x: p.x - w / 2, y: p.y - sy / ppu, w, h });
+  }
+  // a tap on the place that is already open closes it and flies back out to the whole map
+  function pick(id) {
+    if (map.pop && map.pop.id === id) { hidePop(); flyTo(fit(homeBox())); } else goTo(id);
   }
 
   /* --- popover on a landmark --- */
@@ -732,7 +736,7 @@ const STRINGS = {
         if (moved < 6 && e.type === 'pointerup') {
           const hit = document.elementFromPoint(e.clientX, e.clientY);
           const lm = hit && hit.closest('.lm');
-          if (lm) goTo(lm.dataset.place); else hidePop();
+          if (lm) pick(lm.dataset.place); else hidePop();
         }
       }
     };
@@ -750,7 +754,7 @@ const STRINGS = {
     }));
     $('#mapClose').addEventListener('click', () => closeMap());
     $('#mapIntro').addEventListener('click', finishIntro);
-    $('#placesList').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) goTo(b.dataset.go); });
+    $('#placesList').addEventListener('click', (e) => { const b = e.target.closest('[data-go]'); if (b) pick(b.dataset.go); });
     $('#copyGps').addEventListener('click', () => {
       const btn = $('#copyGps'); const done = () => { btn.textContent = t('gps_copied'); setTimeout(() => { btn.textContent = t('gps_copy'); }, 1600); };
       if (navigator.clipboard) navigator.clipboard.writeText(CONFIG.lat + ', ' + CONFIG.lng).then(done, () => {}); else done();
