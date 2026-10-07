@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261008c">
+  <link rel="stylesheet" href="styles.css?v=20261008e">
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data. TODO: add "url" once the final domain is confirmed; the price is from the client.
@@ -93,22 +93,13 @@
     <section class="hero" id="top">
       <div class="hero__text">
         <div class="hero__head">
-          <!-- phones: hero.jpg (rider in front of the Kalaja hill); desktop: hero-desktop.jpg (IMG_5182, the launch
-               tower above the old town, deep blue sky behind the headline) -->
+          <!-- hero.jpg = client photo IMG_5182: the rider on the launch tower above the old town, deep blue sky behind the headline -->
           <div class="hero__photo" aria-hidden="true">
-            <picture>
-              <source media="(min-width: 1000px)" srcset="images/hero-desktop.jpg" width="1536" height="2048">
-              <img src="images/hero.jpg" alt="" width="1080" height="1440" fetchpriority="high" decoding="async">
-            </picture>
+            <img src="images/hero.jpg" alt="" width="1536" height="2048" fetchpriority="high" decoding="async">
           </div>
           <p class="eyebrow" data-i18n="hero_eyebrow">Zipline te Kalaja e Prizrenit</p>
           <h1 data-i18n="hero_title">Fluturo mbi Prizren</h1>
-          <!-- desktop shows only the second sentence (less text beside the buttons); phones show both -->
-          <p class="hero__sub"><span class="hero__sub-a" data-i18n="hero_sub_a">Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit.</span> <span data-i18n="hero_sub_b">Qyteti i vjetër poshtë teje, era në fytyrë.</span></p>
-          <ul class="hero__facts" aria-hidden="true">
-            <li>ERCA · EN 15567-1</li>
-            <li>€13–€15</li>
-          </ul>
+          <p class="hero__sub" data-i18n="hero_sub">Qyteti i vjetër poshtë teje, era në fytyrë.</p>
           <!-- quick links: Google (opening hours, route) + social media with their own logos.
                Phones: inside the photo, under the headline. Desktop: under the buttons (CSS order). -->
           <!-- (the route to Google Maps is the big orange button by the map, so it isn't repeated here) -->
@@ -138,10 +129,6 @@
           </a>
         </div>
         <div class="speedlines" aria-hidden="true"><i></i><i></i><i></i></div>
-        <a class="hero__erca" href="#erca">
-          <svg aria-hidden="true"><use href="#i-shield"/></svg>
-          <span data-i18n="hero_erca">Anëtar i ERCA · Ndërtuar sipas EN 15567-1</span>
-        </a>
       </div>
 
       <div class="hero__map">
@@ -420,7 +407,8 @@
         <path class="ridge__mid" d="M0 180v-58c80-10 140-22 220-16s140 20 230 12 150-24 250-20 160 24 260 22 160-20 250-16 170 14 230 10v66z"/>
         <g class="ridge__zip">
           <path class="ridge__post" d="M140 34v72M1330 74v66"/>
-          <path class="ridge__cable" d="M140 38Q720 112 1330 78"/>
+          <!-- one continuous line: up the left post, the cable, down the right post (so they can never come apart) -->
+          <path class="ridge__cable" d="M140 106V38Q720 112 1330 78V140"/>
           <g class="ridge__rider">
             <use href="#s-rider" transform="scale(1.35)"/>
             <animateMotion dur="9s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;.15;.8;1" calcMode="spline" keySplines="0 0 1 1;.45 0 .55 1;0 0 1 1" path="M140 38Q720 112 1330 78"/>
@@ -656,6 +644,6 @@
     <symbol id="l-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261008c"></script>
+  <script src="script.js?v=20261008e"></script>
 </body>
 </html>

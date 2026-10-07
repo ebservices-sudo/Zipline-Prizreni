@@ -155,9 +155,6 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .quick__social a { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; }
 .quick__social a:hover { transform: translateY(-2px); background: rgba(4, 22, 66, .72); box-shadow: inset 0 0 0 1.5px #fff, 0 0 0 3px var(--orange); }
 .quick__social svg { width: 24px; height: 24px; }
-.hero__erca { margin-top: 16px; display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 10px; background: #fff; border: 1.5px solid var(--stone); border-radius: 3px; font-size: .86rem; font-weight: 700; text-decoration: none; transition: border-color .2s; }
-.hero__erca svg { width: 22px; height: 22px; color: var(--blue); flex: none; }
-.hero__erca:hover { border-color: var(--navy); }
 
 .hero__map { position: relative; z-index: 1; }
 .hero__frame { position: relative; height: clamp(380px, 100vw, 600px); background: var(--paper); border-top: 4px solid var(--orange); border-bottom: 1px solid var(--stone); overflow: hidden; }
@@ -189,22 +186,19 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .hero__text > * { margin-inline: var(--gutter); }
   .hero__head { order: 1; margin-inline: 0; padding: clamp(110px, 30svh, 230px) var(--gutter) 64px; border-radius: 0 0 30px 30px; overflow: hidden; }
   .hero__photo::after { background: linear-gradient(180deg, rgba(4, 27, 84, .18) 0%, rgba(4, 27, 84, .05) 30%, rgba(4, 27, 84, .7) 68%, rgba(2, 15, 53, .96) 100%); }
+  /* bottom of the photo zoomed in, so the rider on the launch tower stands in the sky above the headline */
+  .hero__photo img { object-position: 50% 100%; transform: scale(1.4); transform-origin: 66% 100%; }
   .eyebrow { margin-bottom: 8px; }
   .hero h1 { font-size: clamp(3rem, 14vw, 4.8rem); }
   .hero__sub { margin-top: 12px; font-size: 1.02rem; line-height: 1.5; color: rgba(255, 255, 255, .92); text-shadow: 0 1px 12px rgba(4, 20, 40, .5); }
-  .hero__facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .hero__facts li { padding: 7px 12px; border-radius: 99px; font: 700 .78rem/1 var(--text); color: #fff; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .32); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .hero__map { order: 2; margin: -40px var(--gutter) 0; position: relative; z-index: 3; }
   .hero__frame { border: 0; border-radius: 22px; height: clamp(360px, 104vw, 520px); box-shadow: 0 18px 40px rgba(4, 27, 84, .28), 0 0 0 4px #fff; }
   .hero__route { margin: 14px 0 0; width: 100%; }
-  .hero__cta { order: 4; margin-top: 18px; }
+  .hero__cta { order: 4; margin-top: 18px; margin-bottom: 34px; }
   .hero__cta .btn { flex: 1 1 100%; }
   .hero__cta [data-open-map] { display: none; }   /* the map itself opens the full map */
-  .hero__erca { order: 6; align-self: flex-start; margin-bottom: 34px; }
   .quick { margin-top: 18px; }
 }
-.hero__facts { display: none; }
-@media (max-width: 999px) { .hero__facts { display: flex; } }
 @media (max-width: 639px) {
   .legend { display: none; }
   .hero .lm--minor, .hero .area, .hero .pois, .hero .streets { display: none; }   /* fewer labels on the small map; all of them show in the full map */
@@ -230,7 +224,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .quick { order: 3; margin-top: 18px; }
   .hero__text > :not(.hero__head), .hero__head > :not(.hero__photo) { position: relative; z-index: 2; }
   .hero__photo { inset: 0 auto 0 0; width: calc(max(400px, 35%) + 7%); }
-  /* hero-desktop.jpg: zoomed from the left edge, so the rider on the launch tower stands beside the text,
+  /* hero.jpg: zoomed from the left edge, so the rider on the launch tower stands beside the text,
      the blue sky sits behind the headline and the old town fills the bottom */
   .hero__photo img { object-position: 50% 40%; transform: scale(1.25); transform-origin: 0 30%; }
   /* a light shade only, enough for the white text; the rider and the Kalaja stay clear */
@@ -242,8 +236,6 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .hero .eyebrow { text-shadow: 0 1px 3px rgba(4, 20, 40, .55), 0 1px 14px rgba(4, 20, 40, .6); }
   .hero h1 { font-size: clamp(4.4rem, 6.6vw, 7.8rem); text-shadow: 0 2px 4px rgba(4, 20, 50, .25), 0 2px 30px rgba(4, 20, 50, .5); }
   .hero__sub { max-width: 36ch; color: #fff; text-shadow: 0 1px 3px rgba(4, 20, 40, .7), 0 1px 16px rgba(4, 20, 40, .6); }
-  .hero__sub-a { display: none; }   /* less text beside the buttons: the eyebrow and headline already say where */
-  .hero__erca { display: none; }   /* the ERCA section further down covers it */
   .hero .btn--ghost { color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .85); }
   .hero .btn--ghost:hover { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px #fff, 0 9px 0 rgba(0, 0, 0, .22); }
   .hero__edge { position: absolute; inset: 0; filter: drop-shadow(-7px 0 0 var(--orange)); }
@@ -309,7 +301,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .zip__label { font-family: var(--display); font-size: 17px; font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: .06em; fill: var(--orange); text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 5px; stroke-linejoin: round; }
 .stairs__halo { fill: none; stroke: #fff; stroke-width: calc(7px * var(--k)); stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
 .stairs__steps { fill: none; stroke: var(--navy); stroke-width: calc(1.5px * var(--k)); stroke-linecap: round; }
-.stairs__txt { text-anchor: end; font-size: 11px; font-weight: 500; font-style: italic; fill: #3E4C74; paint-order: stroke; stroke: #fff; stroke-width: 3.2px; stroke-linejoin: round; }
+.stairs__txt { text-anchor: end; font-size: 13px; font-weight: 700; fill: var(--navy); paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; }   /* same as the other map names (e.g. Ulja) */
 .pulse { fill: none; stroke: var(--orange); stroke-width: 2.5px; transform-box: fill-box; transform-origin: center; animation: pulse 2.2s var(--ease) infinite; }
 @keyframes pulse { from { transform: scale(.5); opacity: .95; } to { transform: scale(3.4); opacity: 0; } }
 
@@ -348,7 +340,8 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .mapx__walk { margin-top: 16px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #F2F6FC; border-radius: 4px; font-size: .9rem; font-weight: 500; }
 .mapx__places-title { margin: 20px 0 10px; font: 700 .78rem/1 var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--blue); }
 .mapx__places { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
-.place { flex: none; scroll-snap-align: start; display: flex; align-items: center; gap: 10px; min-width: 200px; max-width: 250px; padding: 10px 12px; background: #fff; border: 1.5px solid #E3E7EF; border-radius: 4px; text-align: left; cursor: pointer; transition: border-color .2s, background .2s; }
+.mapx__places > li { flex: none; }   /* never squeeze a chip (Safari shrank them and cut the names off); the row scrolls instead */
+.place { scroll-snap-align: start; display: flex; align-items: center; gap: 10px; min-width: 200px; max-width: 250px; padding: 10px 12px; background: #fff; border: 1.5px solid #E3E7EF; border-radius: 4px; text-align: left; cursor: pointer; transition: border-color .2s, background .2s; }
 .place:hover, .place.is-on { border-color: var(--navy); background: #F7F9FD; }
 .place svg { flex: none; width: 44px; height: 38px; }
 .place__txt { display: block; }
@@ -362,7 +355,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .mapx__dest .btn { order: -1; padding-block: 16px; font-size: 1.05rem; }
   .mapx__gps { margin: 10px 0 0; font-size: .82rem; justify-content: center; }
   .mapx__places { margin-top: 12px; }
-  .place { min-width: 0; padding: 8px 12px; }
+  .place { min-width: 0; max-width: none; padding: 8px 12px; }
   .place b { white-space: nowrap; }
   .place svg { width: 34px; height: 30px; }
   .mapx__title { display: none; }

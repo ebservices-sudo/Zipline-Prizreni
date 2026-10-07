@@ -110,11 +110,9 @@ const STRINGS = {
 
     hero_eyebrow: 'Zipline te Kalaja e Prizrenit',
     hero_title: 'Fluturo mbi Prizren',
-    hero_sub_a: 'Fluturo mbi luginën e Lumbardhit me nisje nga Kalaja e Prizrenit.',
-    hero_sub_b: 'Qyteti i vjetër poshtë teje, era në fytyrë.',
+    hero_sub: 'Qyteti i vjetër poshtë teje, era në fytyrë.',
     hero_cta_map: 'Shiko hartën',
     hero_cta_wa: 'Pyetje? Na shkruaj',
-    hero_erca: 'Anëtar i ERCA · Ndërtuar sipas EN 15567-1',
     quick_label: 'Orari dhe rrjetet sociale',
     quick_hours: 'Shiko orarin', quick_hours_sub: 'në Google',
     quick_follow: 'Na ndiq',
@@ -245,11 +243,9 @@ const STRINGS = {
 
     hero_eyebrow: 'Zipline at Prizren Fortress',
     hero_title: 'Fly over Prizren',
-    hero_sub_a: 'Fly across the Lumbardhi valley from Prizren Fortress.',
-    hero_sub_b: 'The old town below you, wind in your face.',
+    hero_sub: 'The old town below you, wind in your face.',
     hero_cta_map: 'See the map',
     hero_cta_wa: 'Questions? Message us',
-    hero_erca: 'ERCA member · Built to EN 15567-1',
     quick_label: 'Opening hours and social media',
     quick_hours: 'Opening hours', quick_hours_sub: 'on Google',
     quick_follow: 'Follow us',
@@ -413,6 +409,7 @@ const STRINGS = {
       const on = b.dataset.lang === lang; b.setAttribute('aria-pressed', on); b.classList.toggle('is-on', on);
     });
     renderLists(); updateLinks();
+    if (map.svg) placeHeroPhoto();   // the hours button changes width with the language
     $('#menuBtn').setAttribute('aria-label', t($('#nav').classList.contains('open') ? 'menu_close' : 'menu_open'));
     if (map.pop) showPop(map.pop.id);
   }
@@ -873,6 +870,29 @@ const STRINGS = {
     if (location.hash === '#harta') openMap({ fromHistory: true, noIntro: true });
   }
 
+  /* ----- desktop hero photo: the rider's shin stands 10 px to the right of the "opening hours" button ----- */
+  // left edge of the rider's shin in images/hero.jpg (pixels of the 1536×2048 photo); gap = space to the button
+  const HERO_LEG = { x: 685, y: 1250, gap: 10 };
+  function placeHeroPhoto() {
+    const img = $('.hero__photo img'); const btn = $('.quick__btn');
+    if (innerWidth < 1000 || !img.naturalWidth || !btn) { img.removeAttribute('style'); return; }   // phones: CSS crop
+    const box = img.parentElement.getBoundingClientRect(); const b = btn.getBoundingClientRect();
+    const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);   // the "cover" size
+    const w = img.naturalWidth * s, h = img.naturalHeight * s, px = HERO_LEG.x * s, py = HERO_LEG.y * s;
+    const tx = b.right + HERO_LEG.gap - box.left, ty = b.top + b.height / 2 - box.top;  // where the shin must land
+    // the smallest zoom that puts the shin there and still fills the whole box (no empty edges)
+    const k = Math.max(1, tx / px, (box.width - tx) / (w - px), ty / py, (box.height - ty) / (h - py));
+    img.style.cssText = 'width:' + w.toFixed(1) + 'px;height:' + h.toFixed(1) + 'px;max-width:none;object-fit:fill;transform-origin:0 0;' +
+      'transform:translate(' + (tx - k * px).toFixed(1) + 'px,' + (ty - k * py).toFixed(1) + 'px) scale(' + k.toFixed(4) + ')';
+  }
+  function initHeroPhoto() {
+    const img = $('.hero__photo img');
+    img.addEventListener('load', placeHeroPhoto);
+    addEventListener('resize', placeHeroPhoto);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeHeroPhoto);   // the button's width depends on the font
+    placeHeroPhoto();
+  }
+
   /* ----- header, menu, reveal ----- */
   function closeMenu() {
     $('#nav').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', false); $('#menuBtn').setAttribute('aria-label', t('menu_open'));
@@ -923,6 +943,6 @@ const STRINGS = {
 
   document.addEventListener('DOMContentLoaded', () => {
     map.svg = $('#map');
-    applyLang(); initForm(); initChrome(); initMap(); initReels();
+    applyLang(); initForm(); initChrome(); initMap(); initReels(); initHeroPhoto();
   });
 })();
