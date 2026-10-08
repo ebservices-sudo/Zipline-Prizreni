@@ -234,7 +234,6 @@ const STRINGS = {
     foot_hours: 'Orari', foot_hours_link: 'Shiko orarin në Google',
     foot_find: 'Na gjej', foot_map: 'Harta e plotë', foot_route: 'Rruga në Google Maps', foot_download: 'Shkarko hartën',
     foot_rights: 'Të gjitha të drejtat e rezervuara.',
-    foot_mapdata: 'Të dhënat e hartës',
     foot_credit: 'Mundësuar nga EB Services'
   },
 
@@ -369,7 +368,6 @@ const STRINGS = {
     foot_hours: 'Hours', foot_hours_link: 'See opening hours on Google',
     foot_find: 'Find us', foot_map: 'Full map', foot_route: 'Route in Google Maps', foot_download: 'Download the map',
     foot_rights: 'All rights reserved.',
-    foot_mapdata: 'Map data',
     foot_credit: 'Powered by EB Services'
   }
 };

@@ -178,6 +178,10 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .legend__walk { flex: none; width: 26px; height: 0; border-top: 3.5px dotted var(--blue); }
 .compass { position: absolute; z-index: 3; top: 12px; right: 12px; width: 44px; height: 44px; pointer-events: none; }
 .compass svg { width: 100%; height: 100%; }
+/* OpenStreetMap credit in the map corner (required by the map data licence), kept small like on other maps */
+.map-credit { position: absolute; z-index: 3; right: 0; bottom: 0; padding: 2px 7px; font-size: .66rem; line-height: 1.35; color: #5B6785; background: rgba(255, 255, 255, .78); border-top-left-radius: 3px; text-decoration: none; }
+.map-credit:hover { color: var(--navy); text-decoration: underline; }
+.map-credit--x { right: auto; left: var(--panel-w); bottom: var(--panel-h); border-radius: 0 3px 0 0; }
 
 /* phones: photo band with the headline, then the big map + Google Maps button, then the rest */
 @media (max-width: 999px) {
@@ -357,9 +361,8 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .place__txt { display: block; }
 .place b { display: block; font-size: .92rem; line-height: 1.25; }
 .place__desc { display: block; font-size: .8rem; line-height: 1.35; color: var(--ink-soft); margin-top: 2px; }
-.mapx__credit { margin-top: 14px; font-size: .75rem; color: #7A86A5; }
 @media (max-width: 899px) {
-  .mapx__dest .kicker, .mapx__dest-name, .mapx__hint, .mapx__walk, .mapx__places-title, .mapx__credit, .place__desc { display: none; }
+  .mapx__dest .kicker, .mapx__dest-name, .mapx__hint, .mapx__walk, .mapx__places-title, .place__desc { display: none; }
   .mapx__panel { padding-top: 14px; }
   .mapx__dest { display: flex; flex-direction: column; }
   .mapx__dest .btn { order: -1; padding-block: 16px; font-size: 1.05rem; }
