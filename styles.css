@@ -138,7 +138,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 }
 .quick__btn {
   position: relative; isolation: isolate; min-height: 52px; display: flex; align-items: center; gap: 10px;
-  padding: 7px 22px 7px 9px; color: #fff; text-decoration: none; font: 700 .92rem/1.15 var(--text);
+  width: 262px; max-width: 100%; padding: 7px 22px 7px 9px; color: #fff; text-decoration: none; font: 700 .92rem/1.15 var(--text);
   transition: transform .25s var(--ease);
 }
 .quick__btn::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 3px; transform: skewX(-8deg); }
@@ -186,8 +186,12 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .hero__text > * { margin-inline: var(--gutter); }
   .hero__head { order: 1; margin-inline: 0; padding: clamp(110px, 30svh, 230px) var(--gutter) 64px; border-radius: 0 0 30px 30px; overflow: hidden; }
   .hero__photo::after { background: linear-gradient(180deg, rgba(4, 27, 84, .18) 0%, rgba(4, 27, 84, .05) 30%, rgba(4, 27, 84, .7) 68%, rgba(2, 15, 53, .96) 100%); }
-  /* bottom of the photo zoomed in, so the rider on the launch tower stands in the sky above the headline */
-  .hero__photo img { object-position: 50% 100%; transform: scale(1.4); transform-origin: 66% 100%; }
+  /* the kid in the sky above the headline: the helmet 40px under the header, arms wide, the shoes just above
+     the eyebrow. min-height keeps the photo's bottom under the column's on taller boxes */
+  .hero__photo img {
+    position: absolute; top: 0; right: 0; width: 134%; height: auto; min-height: calc((100% - 40px) * 1.646); max-width: none;
+    object-fit: cover; object-position: 62% 0; transform: translateY(calc(40px - 39.25%));
+  }
   .eyebrow { margin-bottom: 8px; }
   .hero h1 { font-size: clamp(3rem, 14vw, 4.8rem); }
   .hero__sub { margin-top: 12px; font-size: 1.02rem; line-height: 1.5; color: rgba(255, 255, 255, .92); text-shadow: 0 1px 12px rgba(4, 20, 40, .5); }
@@ -199,6 +203,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .hero__cta [data-open-map] { display: none; }   /* the map itself opens the full map */
   .quick { margin-top: 18px; }
 }
+@media (min-width: 640px) and (max-width: 999px) { .hero__photo img { width: 100%; } }   /* tablets: the column is wide enough already */
 @media (max-width: 639px) {
   .legend { display: none; }
   .hero .lm--minor, .hero .area, .hero .pois, .hero .streets { display: none; }   /* fewer labels on the small map; all of them show in the full map */
@@ -224,9 +229,13 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .quick { order: 3; margin-top: 18px; }
   .hero__text > :not(.hero__head), .hero__head > :not(.hero__photo) { position: relative; z-index: 2; }
   .hero__photo { inset: 0 auto 0 0; width: calc(max(400px, 35%) + 7%); }
-  /* hero-desktop.jpg (the kid on the launch seat): the top of the photo, zoomed a little from the top-left
-     corner, so the sky and the cable sit behind the headline and the kid sits beside the buttons, arms wide */
-  .hero__photo img { object-position: 50% 0%; transform: scale(1.12); transform-origin: 0 0; }
+  /* hero-desktop.jpg (the kid on the launch seat): 112% of the column wide, from its left edge, and moved down
+     so the column ends at 66% of the photo's height, just under the kid's shoes. The kid sits beside the
+     buttons, arms wide, with the sky behind the headline. min-height keeps the photo's top above the column's. */
+  .hero__photo img {
+    position: absolute; left: 0; bottom: 0; width: 112%; height: auto; min-height: 151.5%; max-width: none;
+    object-fit: cover; object-position: 0 100%; transform: translateY(34%);
+  }
   /* a light shade only, enough for the white text; the rider and the Kalaja stay clear */
   .hero__photo::after {
     background:
@@ -434,7 +443,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .reel__play:hover::before { background-color: var(--orange); opacity: 1; }
 .reel__play:focus-visible { outline-offset: -4px; }
 @media (min-width: 900px) {
-  .reels { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; padding: 0; grid-auto-flow: row; grid-template-columns: repeat(5, 1fr); gap: 14px; overflow: visible; }
+  .reels { width: min(1240px, 100% - 2 * var(--gutter)); margin-inline: auto; padding: 0; grid-auto-flow: row; grid-template-columns: repeat(6, 1fr); gap: 14px; overflow: visible; }
 }
 .view .gallery { margin-top: clamp(10px, 1.4vw, 14px); }
 @media (min-width: 900px) { .view .gallery { margin-top: 14px; } }

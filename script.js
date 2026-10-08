@@ -157,7 +157,7 @@ const STRINGS = {
     reels_sub: 'Pamje të vërteta nga fluturimet te Zipline Prizren.',
     reel_toggle: 'Luaj ose ndal videon',
     reel_sunset: 'Perëndimi mbi Prizren', reel_gorge: 'Mbi grykën e Lumbardhit', reel_cable: 'Pamja nga kablloja',
-    reel_valley: 'Lugina dhe qyteti', reel_kalaja: 'Kodra e Kalasë',
+    reel_valley: 'Lugina dhe qyteti', reel_kalaja: 'Kodra e Kalasë', reel_landing: 'Drejt uljes',
     alt_ph_a: 'Stacioni prej druri i Zipline Prizren në shpat, me vizitorë para tij',
     alt_ph_b: 'Tarraca me pufa e karrige nën strehë, me qytetin poshtë',
     alt_ph_c: 'Fluturuese përshëndet nga kablloja në perëndim të diellit, me Prizrenin poshtë',
@@ -290,7 +290,7 @@ const STRINGS = {
     reels_sub: 'Real footage from rides at Zipline Prizren.',
     reel_toggle: 'Play or pause the video',
     reel_sunset: 'Sunset over Prizren', reel_gorge: 'Over the Lumbardhi gorge', reel_cable: 'The view from the cable',
-    reel_valley: 'The valley and the city', reel_kalaja: 'The Kalaja hill',
+    reel_valley: 'The valley and the city', reel_kalaja: 'The Kalaja hill', reel_landing: 'Coming in to land',
     alt_ph_a: 'The wooden Zipline Prizren station on the hillside, with visitors in front',
     alt_ph_b: 'The covered terrace with beanbags and chairs, the city below',
     alt_ph_c: 'A rider waves from the cable at sunset, Prizren below',
@@ -410,7 +410,6 @@ const STRINGS = {
       const on = b.dataset.lang === lang; b.setAttribute('aria-pressed', on); b.classList.toggle('is-on', on);
     });
     renderLists(); updateLinks();
-    if (map.svg) fitHoursButton();   // the hours button changes width with the language
     $('#menuBtn').setAttribute('aria-label', t($('#nav').classList.contains('open') ? 'menu_close' : 'menu_open'));
     if (map.pop) showPop(map.pop.id);
   }
@@ -875,50 +874,6 @@ const STRINGS = {
     if (location.hash === '#harta') openMap({ fromHistory: true, noIntro: true });
   }
 
-  /* ----- desktop: the "opening hours" button stretches to ~10 px from the kid in the photo -----
-     The photo stays where styles.css puts it; only the button's width changes. */
-  // left edge of the kid in images/hero-desktop.jpg, [y, x] in pixels of the 1126×2000 photo,
-  // hand → under the arm → thigh → knee → shoe
-  const HERO_LEG = [[825, 395], [860, 408], [888, 500], [915, 590], [955, 505], [980, 475], [1030, 448], [1080, 430], [1130, 418],
-    [1180, 410], [1225, 406], [1250, 415], [1280, 390], [1310, 368], [1340, 355], [1370, 352], [1385, 365]];
-  const LEG_GAP = 10;
-  const SKEW = Math.tan(8 * Math.PI / 180);   // the button's slanted edge (skewX(-8deg)) leans right at the top
-  function legAt(iy) {   // the leg's x at a photo row, or null above the hip / below the shoe
-    for (let i = 1; i < HERO_LEG.length; i++) {
-      const [y0, x0] = HERO_LEG[i - 1], [y1, x1] = HERO_LEG[i];
-      if (iy >= y0 && iy <= y1) return x0 + (x1 - x0) * (iy - y0) / (y1 - y0);
-    }
-    return null;
-  }
-  function fitHoursButton() {
-    const btn = $('.quick__btn'); const img = $('.hero__photo img');
-    if (!btn) return;
-    btn.style.width = '';
-    if (innerWidth < 1000 || !img.naturalWidth) return;   // phones show hero.jpg (another photo): the button keeps its size
-    // where the photo is drawn: object-fit "cover" + object-position, then the CSS transform (scale around transform-origin)
-    const box = img.parentElement.getBoundingClientRect(); const cs = getComputedStyle(img);
-    const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
-    const pos = cs.objectPosition.split(' ').map((v, i) => (v.endsWith('%')
-      ? (i ? box.height - img.naturalHeight * s : box.width - img.naturalWidth * s) * parseFloat(v) / 100 : parseFloat(v)));
-    const m = cs.transform === 'none' ? new DOMMatrix() : new DOMMatrix(cs.transform);
-    const [Ox, Oy] = cs.transformOrigin.split(' ').map(parseFloat);
-    const toScreenX = (ix, iy) => { const x = pos[0] + ix * s - Ox, y = pos[1] + iy * s - Oy; return box.left + Ox + m.a * x + m.c * y + m.e; };
-    const toPhotoY = (sy) => (Oy + (sy - box.top - Oy - m.f) / m.d - pos[1]) / s;
-    const b = btn.getBoundingClientRect(); const cy = b.top + b.height / 2;
-    let right = Infinity;
-    for (let sy = b.top; sy <= b.bottom; sy += 2) {   // the closest the leg comes along the button's height
-      const iy = toPhotoY(sy); const ix = legAt(iy); if (ix === null) continue;
-      right = Math.min(right, toScreenX(ix, iy) - LEG_GAP + SKEW * (sy - cy));
-    }
-    if (right !== Infinity && right - b.left > b.width) btn.style.width = (right - b.left).toFixed(1) + 'px';
-  }
-  function initHoursButton() {
-    $('.hero__photo img').addEventListener('load', fitHoursButton);
-    addEventListener('resize', fitHoursButton);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHoursButton);   // the button's own width depends on the font
-    fitHoursButton();
-  }
-
   /* ----- header, menu, reveal ----- */
   function closeMenu() {
     $('#nav').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', false); $('#menuBtn').setAttribute('aria-label', t('menu_open'));
@@ -969,6 +924,6 @@ const STRINGS = {
 
   document.addEventListener('DOMContentLoaded', () => {
     map.svg = $('#map');
-    applyLang(); initForm(); initChrome(); initMap(); initReels(); initHoursButton();
+    applyLang(); initForm(); initChrome(); initMap(); initReels();
   });
 })();
