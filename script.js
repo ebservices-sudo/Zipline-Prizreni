@@ -76,11 +76,11 @@ const POIS = {
 };
 
 /* Photos in the map pop-ups: images/places/, 720×480, cropped to 3:2.
-   `start` and `landing` are the client's own photos. The others are from
+   `start` and `landing` are the client's own photos (start: from WhatsApp, 2026-10-08, small). The others are from
    Wikimedia Commons; their licences ask for the author, the licence and a note
    that the photo was changed (we cropped them), which the pop-up shows.          */
 const PHOTOS = {
-  start:     { src: 'images/places/start.jpg' },
+  start:     { src: 'images/places/start-rider.jpg' },
   landing:   { src: 'images/places/landing.jpg' },
   kalaja:    { src: 'images/places/kalaja.jpg',    by: 'Tom.whitehead337', lic: 'CC BY-SA 4.0', file: 'Prizren_Fortress_(Kalaja_e_Prizrenit).jpg' },
   ura:       { src: 'images/places/ura.jpg',       by: 'Pudelek',          lic: 'CC BY-SA 4.0', file: 'Stone_Bridge_in_Prizren_(by_Pudelek).JPG' },
@@ -138,7 +138,7 @@ const STRINGS = {
     poi_view: 'Pikë panoramike',
     places: {
       start: ['Zipline Prizren · Pikënisja', 'Këtu fillon fluturimi mbi Lumbardh. Butoni i Google Maps të sjell pikërisht këtu.'],
-      kalaja: ['Kalaja e Prizrenit', 'Kalaja mbi qytet, me pamje nga e gjithë lugina. Pikënisja është pak më në juglindje të saj.'],
+      kalaja: ['Kalaja e Prizrenit', 'Kalaja mbi qytet, me pamje nga e gjithë lugina. Pikënisja e zipline-it është disa hapa në këmbë mbrapa Kalasë.'],
       landing: ['Ulja', 'Fluturimi mbaron përtej lumit Lumbardh.'],
       ura: ['Ura e Gurit', 'Ura e vjetër prej guri mbi Lumbardh, simboli i Prizrenit.'],
       shadervan: ['Shadërvani', 'Sheshi kryesor i qytetit të vjetër. Nga këtu nis shtegu në këmbë për te Kalaja.'],
@@ -159,10 +159,10 @@ const STRINGS = {
     reel_sunset: 'Perëndimi mbi Prizren', reel_gorge: 'Mbi grykën e Lumbardhit', reel_cable: 'Pamja nga kablloja',
     reel_valley: 'Lugina dhe qyteti', reel_kalaja: 'Kodra e Kalasë', reel_landing: 'Drejt uljes',
     alt_ph_a: 'Stacioni prej druri i Zipline Prizren në shpat, me vizitorë para tij',
-    alt_ph_b: 'Tarraca me pufa e karrige nën strehë, me qytetin poshtë',
+    alt_ph_b: 'Dy shoqe në pufat e Zipline Prizren, me kabllon dhe qytetin përpara',
     alt_ph_c: 'Fluturuese përshëndet nga kablloja në perëndim të diellit, me Prizrenin poshtë',
-    alt_ph_d: 'Fluturues me krahë hapur sapo niset nga platforma, me qytetin poshtë',
-    alt_ph_e: 'Dy shoqe në pufat e Zipline Prizren, me kabllon dhe qytetin përpara',
+    alt_ph_d: 'Tre fluturues me helmetë dhe hark, gati për fluturim',
+    alt_ph_e: 'Fluturuesi i lidhur në kabllo ngre gishtin lart, me qytetin përpara',
 
     // The official rules, word for word from the rules board at the station (Albanian side). On purpose,
     // the site leaves out the board's age (6) and height (130 cm) limits and "Fëmijë nën 6 vjeç".
@@ -195,10 +195,13 @@ const STRINGS = {
     erca_kicker: 'Siguria',
     erca_title: 'Anëtar i ERCA',
     erca_p1: 'Zipline Prizren është anëtar i European Ropes Course Association (ERCA), shoqatës evropiane të parqeve me litarë dhe zipline-ve, dhe ka nënshkruar deklaratën e vetëangazhimit të ERCA-s.',
-    erca_p2: 'Linja u ndërtua sipas standardit evropian EN 15567-1, nën mbikëqyrjen e Paul de Gast (Ropes Course Solutions), trup inspektimi dhe trajnimi i certifikuar nga ERCA.',
+    erca_p2: 'Zipline Prizreni është ndërtuar sipas standardit evropian EN 15567-1, nën mbikëqyrjen e Paul de Gast (Ropes Course Solutions), Trup Inspektues dhe Trajnues i certifikuar nga ERCA dhe Eksperti për Zipline, Dr. sc. Shpetim Lajqi.',
     erca_facts: ['Anëtar i ERCA', 'Ndërtuar sipas standardit EN 15567-1', 'Helmetë, hark dhe trajnim sigurie për çdo fluturues'],
     erca_seal_alt: 'Shenja ERCA Certified Inspection Body e Ropes Course Solutions',
     erca_seal_cap: 'Trup inspektimi i certifikuar nga ERCA, që mbikëqyri ndërtimin e linjës',
+    partners_title: 'Partnerët',
+    partner_rcs_where: 'Suedi', partner_rcs_desc: 'Trup Inspektimi dhe Trajnimi i certifikuar nga ERCA',
+    partner_ide_where: 'Prishtinë', partner_ide_desc: 'Kompani e specializuar për ndërtimin e Zipline, Parqe të Aventurave, Via Ferata',
 
     contact_kicker: 'Kontakti',
     contact_title: 'Ke një pyetje?',
@@ -271,7 +274,7 @@ const STRINGS = {
     poi_view: 'Viewpoint',
     places: {
       start: ['Zipline Prizren · Start', 'Where the ride begins, above the Lumbardhi. The Google Maps button brings you exactly here.'],
-      kalaja: ['Prizren Fortress', 'The fortress above the city, with views over the whole valley. The zipline start is just south-east of it.'],
+      kalaja: ['Prizren Fortress', 'The fortress above the city, with views over the whole valley. The zipline start is just a few steps’ walk behind it.'],
       landing: ['Landing', 'The ride ends across the Lumbardhi river.'],
       ura: ['Stone Bridge', 'The old stone bridge over the Lumbardhi, the symbol of Prizren.'],
       shadervan: ['Shadërvan', 'The old town’s main square. The footpath up to the fortress starts here.'],
@@ -292,10 +295,10 @@ const STRINGS = {
     reel_sunset: 'Sunset over Prizren', reel_gorge: 'Over the Lumbardhi gorge', reel_cable: 'The view from the cable',
     reel_valley: 'The valley and the city', reel_kalaja: 'The Kalaja hill', reel_landing: 'Coming in to land',
     alt_ph_a: 'The wooden Zipline Prizren station on the hillside, with visitors in front',
-    alt_ph_b: 'The covered terrace with beanbags and chairs, the city below',
+    alt_ph_b: 'Two friends on Zipline Prizren beanbags, the cable and the city ahead',
     alt_ph_c: 'A rider waves from the cable at sunset, Prizren below',
-    alt_ph_d: 'A rider with arms spread just leaving the platform, the city below',
-    alt_ph_e: 'Two friends on Zipline Prizren beanbags, the cable and the city ahead',
+    alt_ph_d: 'Three riders in helmets and harnesses, ready to fly',
+    alt_ph_e: 'A rider clipped to the cable gives a thumbs-up, the city ahead',
 
     rules_kicker: 'Rules',
     rules_title: 'Before you fly',
@@ -327,10 +330,13 @@ const STRINGS = {
     erca_kicker: 'Safety',
     erca_title: 'ERCA member',
     erca_p1: 'Zipline Prizren is a member of the European Ropes Course Association (ERCA), the European association for ropes courses and ziplines, and has signed ERCA’s self-commitment declaration.',
-    erca_p2: 'The line was built to the European standard EN 15567-1 under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body.',
+    erca_p2: 'Zipline Prizren was built to the European standard EN 15567-1, under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body, and of zipline expert Dr. sc. Shpetim Lajqi.',
     erca_facts: ['ERCA member', 'Built to standard EN 15567-1', 'Helmet, harness and safety training for every rider'],
     erca_seal_alt: 'ERCA Certified Inspection Body label of Ropes Course Solutions',
     erca_seal_cap: 'ERCA-certified inspection body that supervised the build of the line',
+    partners_title: 'Partners',
+    partner_rcs_where: 'Sweden', partner_rcs_desc: 'ERCA-certified inspection and training body',
+    partner_ide_where: 'Prishtina', partner_ide_desc: 'A company specialising in building ziplines, adventure parks and via ferratas',
 
     contact_kicker: 'Contact',
     contact_title: 'Got a question?',

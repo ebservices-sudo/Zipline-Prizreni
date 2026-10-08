@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261008o">
+  <link rel="stylesheet" href="styles.css?v=20261008p">
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data. TODO: add "url" once the final domain is confirmed; the price is from the client.
@@ -398,10 +398,11 @@
 
       <div class="gallery">
         <figure class="g g--a"><img src="images/gallery/station.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="The wooden Zipline Prizren station on the hillside, with visitors in front" data-i18n-attr="alt:alt_ph_a"></figure>
-        <figure class="g g--b"><img src="images/gallery/terrace.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="The covered terrace with beanbags and chairs, the city below" data-i18n-attr="alt:alt_ph_b"></figure>
+        <figure class="g g--b"><img src="images/gallery/view-beanbags.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Two friends on Zipline Prizren beanbags, the cable and the city ahead" data-i18n-attr="alt:alt_ph_b"></figure>
         <figure class="g g--c"><img src="images/gallery/sunset-rider.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="A rider waves from the cable at sunset, Prizren below" data-i18n-attr="alt:alt_ph_c"></figure>
-        <figure class="g g--d"><img src="images/gallery/launch-arms.jpg" width="1200" height="900" loading="lazy" decoding="async" alt="A rider with arms spread just leaving the platform, the city below" data-i18n-attr="alt:alt_ph_d"></figure>
-        <figure class="g g--e"><img src="images/gallery/view-beanbags.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Two friends on Zipline Prizren beanbags, the cable and the city ahead" data-i18n-attr="alt:alt_ph_e"></figure>
+        <!-- D and E: the client's photos from WhatsApp (2026-10-08), small: swap in the originals when they arrive -->
+        <figure class="g g--d"><img src="images/gallery/crew.jpg" width="468" height="588" loading="lazy" decoding="async" alt="Three riders in helmets and harnesses, ready to fly" data-i18n-attr="alt:alt_ph_d"></figure>
+        <figure class="g g--e"><img src="images/gallery/thumbs-up.jpg" width="470" height="588" loading="lazy" decoding="async" alt="A rider clipped to the cable gives a thumbs-up, the city ahead" data-i18n-attr="alt:alt_ph_e"></figure>
       </div>
       <!-- mountain ridges with a zipline across them; the last layer has the colour of the next section -->
       <svg class="ridge" viewBox="0 0 1440 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
@@ -449,9 +450,31 @@
           <p class="kicker" data-i18n="erca_kicker">Safety</p>
           <h2 data-i18n="erca_title">ERCA member</h2>
           <p class="erca__lead" data-i18n="erca_p1">Zipline Prizren is a member of the European Ropes Course Association (ERCA), the European association for ropes courses and ziplines, and has signed ERCA’s self-commitment declaration.</p>
-          <p data-i18n="erca_p2">The line was built to the European standard EN 15567-1 under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body.</p>
+          <p data-i18n="erca_p2">Zipline Prizren was built to the European standard EN 15567-1, under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body, and of zipline expert Dr. sc. Shpetim Lajqi.</p>
           <ul class="erca__facts" id="ercaFacts"></ul>
         </div>
+      </div>
+      <!-- the two companies behind the build, with their logos (text from the client, 2026-10-08) -->
+      <div class="wrap partners">
+        <p class="kicker" data-i18n="partners_title">Partners</p>
+        <ul class="partners__list">
+          <li class="partner reveal">
+            <span class="partner__logo"><img src="images/partners/ropes-course-solutions.png" width="410" height="200" loading="lazy" decoding="async" alt="Ropes Course Solutions"></span>
+            <span class="partner__txt">
+              <b>Ropes Course Solutions</b>
+              <span class="partner__where" data-i18n="partner_rcs_where">Sweden</span>
+              <span class="partner__desc" data-i18n="partner_rcs_desc">ERCA-certified inspection and training body</span>
+            </span>
+          </li>
+          <li class="partner reveal">
+            <span class="partner__logo"><img class="is-heavy" src="images/partners/ide-cert.png" width="324" height="197" loading="lazy" decoding="async" alt="IDE Cert"></span>
+            <span class="partner__txt">
+              <b>IDE Cert SH.P.K.</b>
+              <span class="partner__where" data-i18n="partner_ide_where">Prishtina</span>
+              <span class="partner__desc" data-i18n="partner_ide_desc">A company specialising in building ziplines, adventure parks and via ferratas</span>
+            </span>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -651,6 +674,6 @@
     <symbol id="l-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261008o"></script>
+  <script src="script.js?v=20261008p"></script>
 </body>
 </html>
