@@ -76,11 +76,11 @@ const POIS = {
 };
 
 /* Photos in the map pop-ups: images/places/, 720×480, cropped to 3:2.
-   `start` and `landing` are the client's own photos (start: from WhatsApp, 2026-10-08, small). The others are from
+   `start` and `landing` are the client's own photos (start: sent by the client on 2026-10-08). The others are from
    Wikimedia Commons; their licences ask for the author, the licence and a note
    that the photo was changed (we cropped them), which the pop-up shows.          */
 const PHOTOS = {
-  start:     { src: 'images/places/start-rider.jpg' },
+  start:     { src: 'images/places/start-peace.jpg' },
   landing:   { src: 'images/places/landing.jpg' },
   kalaja:    { src: 'images/places/kalaja.jpg',    by: 'Tom.whitehead337', lic: 'CC BY-SA 4.0', file: 'Prizren_Fortress_(Kalaja_e_Prizrenit).jpg' },
   ura:       { src: 'images/places/ura.jpg',       by: 'Pudelek',          lic: 'CC BY-SA 4.0', file: 'Stone_Bridge_in_Prizren_(by_Pudelek).JPG' },
