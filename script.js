@@ -235,7 +235,7 @@ const STRINGS = {
     foot_find: 'Na gjej', foot_map: 'Harta e plotë', foot_route: 'Rruga në Google Maps', foot_download: 'Shkarko hartën',
     foot_rights: 'Të gjitha të drejtat e rezervuara.',
     foot_mapdata: 'Të dhënat e hartës',
-    foot_demo: 'Faqe demo e përgatitur nga EB Services.'
+    foot_credit: 'Mundësuar nga EB Services'
   },
 
   en: {
@@ -370,7 +370,7 @@ const STRINGS = {
     foot_find: 'Find us', foot_map: 'Full map', foot_route: 'Route in Google Maps', foot_download: 'Download the map',
     foot_rights: 'All rights reserved.',
     foot_mapdata: 'Map data',
-    foot_demo: 'Demo site prepared by EB Services.'
+    foot_credit: 'Powered by EB Services'
   }
 };
 
