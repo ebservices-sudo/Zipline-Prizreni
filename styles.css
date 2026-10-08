@@ -462,9 +462,9 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .g img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
 .g:hover img { transform: scale(1.04); }
 .g--b { grid-column: 1 / 3; grid-row: 1; }
-.g--b img { object-position: 50% 62%; }
+.g--b img { object-position: 50% 58%; }
 .g--a { grid-column: 1; grid-row: 2 / 4; }
-.g--a img { object-position: 50% 55%; }
+.g--a img { object-position: 64% 50%; }
 .g--d { grid-column: 2; grid-row: 2; }
 .g--e { grid-column: 2; grid-row: 3; }
 .g--c { grid-column: 1 / 3; grid-row: 4; }
