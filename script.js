@@ -2,7 +2,7 @@
    Zipline Prizren — script.js
    1) CONFIG   : phone, location, links, map download. Edit here.
    2) MAP      : every object on the map (position, turn, mirror) + photos.
-   3) STRINGS  : ALL visible text, Albanian (sq, default) + English (en).
+   3) STRINGS  : ALL visible text, English (en, default) + Albanian (sq).
    4) Behaviour: language, links, contact form, map (hero + full screen), menu.
    ========================================================================== */
 
@@ -381,9 +381,10 @@ const STRINGS = {
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  let lang = store.get('zp-lang');
-  if (lang !== 'sq' && lang !== 'en') lang = 'sq';           // Albanian by default
-  const t = (k) => (STRINGS[lang] && STRINGS[lang][k] !== undefined ? STRINGS[lang][k] : STRINGS.sq[k]);
+  // new key (was 'zp-lang' while Albanian was the default), so earlier test clicks don't keep anyone on Albanian
+  let lang = store.get('zp-lang2');
+  if (lang !== 'sq' && lang !== 'en') lang = 'en';           // English by default
+  const t = (k) => (STRINGS[lang] && STRINGS[lang][k] !== undefined ? STRINGS[lang][k] : STRINGS.en[k]);
   const place = (id) => t('places')[id];
 
   const waLink = (text) => 'https://wa.me/' + CONFIG.waNumber + (text ? '?text=' + encodeURIComponent(text) : '');
@@ -885,7 +886,7 @@ const STRINGS = {
       menuBtn.setAttribute('aria-label', t(open ? 'menu_close' : 'menu_open'));
     });
     $$('a', nav).forEach((a) => a.addEventListener('click', closeMenu));
-    $$('.lang-btn').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('zp-lang', lang); applyLang(); }));
+    $$('.lang-btn').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; store.set('zp-lang2', lang); applyLang(); }));
     $('#year').textContent = new Date().getFullYear();
     if (reduced) $$('svg.ridge').forEach((r) => { if (r.pauseAnimations) r.pauseAnimations(); });
 

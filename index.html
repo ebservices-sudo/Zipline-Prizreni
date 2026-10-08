@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zipline Prizren — Fluturo mbi Prizren nga Kalaja</title>
-  <meta name="description" content="Zipline nga Kalaja e Prizrenit. Shiko hartën me pikënisjen, rrugën nga Shadërvani dhe rregullat e sigurisë. Pyetje? Na shkruaj në WhatsApp.">
+  <title>Zipline Prizren — Fly over Prizren from the Fortress</title>
+  <meta name="description" content="Zipline from Prizren Fortress. See the map with the start point, the walk from Shadërvan and the safety rules. Questions? Message us on WhatsApp.">
   <meta name="theme-color" content="#FAF8F4">
   <link rel="icon" href="logo.png" type="image/png">
 
@@ -12,9 +12,9 @@
        (ziplineprizren.com expired in July 2026). -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zipline Prizren">
-  <meta property="og:title" content="Zipline Prizren — Fluturo mbi Prizren nga Kalaja">
-  <meta property="og:description" content="Zipline nga Kalaja e Prizrenit. Shiko hartën me pikënisjen, rrugën nga Shadërvani dhe rregullat e sigurisë. Pyetje? Na shkruaj në WhatsApp.">
-  <meta property="og:locale" content="sq_AL">
+  <meta property="og:title" content="Zipline Prizren — Fly over Prizren from the Fortress">
+  <meta property="og:description" content="Zipline from Prizren Fortress. See the map with the start point, the walk from Shadërvan and the safety rules. Questions? Message us on WhatsApp.">
+  <meta property="og:locale" content="en_US">
   <meta property="og:image" content="images/hero.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261008n">
+  <link rel="stylesheet" href="styles.css?v=20261008o">
   <script>document.documentElement.classList.add('js');</script>
 
   <!-- Structured data. TODO: add "url" once the final domain is confirmed; the price is from the client.
@@ -57,7 +57,7 @@
 </head>
 
 <body>
-  <a class="skip" href="#main" data-i18n="skip">Kalo te përmbajtja</a>
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="header">
@@ -65,22 +65,22 @@
       <a class="brand" href="#top" aria-label="Zipline Prizren">
         <img src="logo.png" alt="" width="900" height="538">
       </a>
-      <nav id="nav" class="nav" aria-label="Navigimi kryesor" data-i18n-attr="aria-label:nav_label">
-        <a href="#harta" data-open-map data-i18n="nav_map">Harta</a>
-        <a href="#rregullat" data-i18n="nav_rules">Rregullat</a>
+      <nav id="nav" class="nav" aria-label="Main navigation" data-i18n-attr="aria-label:nav_label">
+        <a href="#harta" data-open-map data-i18n="nav_map">Map</a>
+        <a href="#rregullat" data-i18n="nav_rules">Rules</a>
         <a href="#erca" data-i18n="nav_erca">ERCA</a>
-        <a href="#kontakt" data-i18n="nav_contact">Kontakti</a>
+        <a href="#kontakt" data-i18n="nav_contact">Contact</a>
       </nav>
       <div class="bar__right">
-        <div class="lang" role="group" aria-label="Gjuha" data-i18n-attr="aria-label:lang_label">
-          <button type="button" class="lang-btn is-on" data-lang="sq" aria-pressed="true">SQ</button>
-          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang_label">
+          <button type="button" class="lang-btn" data-lang="sq" aria-pressed="false">SQ</button>
+          <button type="button" class="lang-btn is-on" data-lang="en" aria-pressed="true">EN</button>
         </div>
         <a class="btn btn--sm hide-sm" href="#kontakt">
           <svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>
-          <span data-i18n="nav_ask">Pyetje?</span>
+          <span data-i18n="nav_ask">Questions?</span>
         </a>
-        <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Hap menynë">
+        <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -97,19 +97,19 @@
           <div class="hero__photo" aria-hidden="true">
             <img src="images/hero.jpg" alt="" width="1126" height="2000" fetchpriority="high" decoding="async">
           </div>
-          <p class="eyebrow" data-i18n="hero_eyebrow">Zipline te Kalaja e Prizrenit</p>
-          <h1 data-i18n="hero_title">Fluturo mbi Prizren</h1>
-          <p class="hero__sub" data-i18n="hero_sub">Qyteti i vjetër poshtë teje, era në fytyrë.</p>
+          <p class="eyebrow" data-i18n="hero_eyebrow">Zipline at Prizren Fortress</p>
+          <h1 data-i18n="hero_title">Fly over Prizren</h1>
+          <p class="hero__sub" data-i18n="hero_sub">The old town below you, wind in your face.</p>
           <!-- quick links: Google (opening hours, route) + social media with their own logos.
                Phones: inside the photo, under the headline. Desktop: under the buttons (CSS order). -->
           <!-- (the route to Google Maps is the big orange button by the map, so it isn't repeated here) -->
-          <div class="quick" role="group" aria-label="Orari dhe rrjetet sociale" data-i18n-attr="aria-label:quick_label">
+          <div class="quick" role="group" aria-label="Opening hours and social media" data-i18n-attr="aria-label:quick_label">
             <a class="quick__btn" data-hours href="#">
               <span class="quick__chip"><svg aria-hidden="true"><use href="#l-google"/></svg></span>
-              <span><b data-i18n="quick_hours">Shiko orarin</b> <small data-i18n="quick_hours_sub">në Google</small></span>
+              <span><b data-i18n="quick_hours">Opening hours</b> <small data-i18n="quick_hours_sub">on Google</small></span>
             </a>
             <div class="quick__social">
-              <p class="quick__lbl" data-i18n="quick_follow">Na ndiq</p>
+              <p class="quick__lbl" data-i18n="quick_follow">Follow us</p>
               <ul>
                 <li><a data-fb href="#" aria-label="Facebook" title="Facebook"><svg aria-hidden="true"><use href="#l-fb"/></svg></a></li>
                 <li><a data-ig href="#" aria-label="Instagram" title="Instagram"><svg aria-hidden="true"><use href="#l-ig"/></svg></a></li>
@@ -121,11 +121,11 @@
         <div class="hero__cta">
           <button type="button" class="btn btn--lg" data-open-map>
             <svg class="ico" aria-hidden="true"><use href="#i-map"/></svg>
-            <span data-i18n="hero_cta_map">Shiko hartën</span>
+            <span data-i18n="hero_cta_map">See the map</span>
           </button>
           <a class="btn btn--lg btn--ghost" data-wa="hello" href="#kontakt">
             <svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>
-            <span data-i18n="hero_cta_wa">Pyetje? Na shkruaj</span>
+            <span data-i18n="hero_cta_wa">Questions? Message us</span>
           </a>
         </div>
         <div class="speedlines" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -139,7 +139,7 @@
                images/map-base.svg (woods, buildings, streets, river, contours), both generated by
                tools/build-map.py. Coordinates: 1 unit = 1.5 m. -->
           <svg class="map" id="map" viewBox="330 310 920 440" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="mapTitle">
-            <title id="mapTitle" data-i18n="map_title">Harta e Zipline Prizren: nga Shadërvani te Kalaja dhe te pikënisja e zipline-it</title>
+            <title id="mapTitle" data-i18n="map_title">Map of Zipline Prizren: from Shadërvan up to the fortress and the zipline start, with the Stone Bridge, Sinan Pasha Mosque and the Lumbardhi river.</title>
             <defs>
               <!-- Landmark drawings: white fill, logo-blue outline (like the castle and bridge in the logo).
                    Each is drawn around its anchor point (0,0) = where it stands on the map. -->
@@ -240,7 +240,7 @@
 
             <!-- neighbourhoods + river -->
             <g class="areas" aria-hidden="true">
-              <text class="area" x="330" y="475" data-i18n="area_oldtown">Qyteti i vjetër</text>
+              <text class="area" x="330" y="475" data-i18n="area_oldtown">Old town</text>
               <text class="area" x="630" y="318">Marash</text>
               <text class="area" x="822" y="125">Kurilla</text>
               <text class="area" x="470" y="728">Panteli</text>
@@ -250,7 +250,7 @@
               <path id="riverE" d="M968 574Q1016 589 1058 626" fill="none"/>
               <text class="river"><textPath href="#riverW" startOffset="50%">Lumbardhi</textPath></text>
               <text class="river"><textPath href="#riverE" startOffset="50%">Lumbardhi</textPath></text>
-              <text class="area area--dir" x="1392" y="1062" data-i18n="area_gorge">Gryka e Lumbardhit ↘</text>
+              <text class="area area--dir" x="1392" y="1062" data-i18n="area_gorge">Lumbardhi Gorge ↘</text>
             </g>
 
 
@@ -280,7 +280,7 @@
                   <rect class="route__pill" x="-80" y="-13" width="160" height="26" rx="13"/>
                   <circle class="route__walker" cx="-63" cy="-5.5" r="2.3"/>
                   <path class="route__walker" d="M-63.5 -2.5l-1.4 6.5M-64.9 4l-3 5.5M-64.9 4l3 5M-64.2 -0.8l-3.4 3M-64.2 -0.8l3.3 2.2"/>
-                  <text class="route__txt" x="8" y="4.5" data-i18n="map_walk">15–20 min në këmbë</text>
+                  <text class="route__txt" x="8" y="4.5" data-i18n="map_walk">15–20 min walk</text>
                 </g>
               </g>
             </g>
@@ -293,7 +293,7 @@
               <g class="poi" data-poi="gazi" transform="translate(598.2 411.2)"><g class="sc__i"><use href="#p-mosque"/><text class="poi__l" x="-10" y="3.6">Xhamia e Gazi Mehmed Pashës</text></g></g>
               <g class="poi" data-poi="katip" transform="translate(515.8 228.8)"><g class="sc__i"><use href="#p-mosque"/><text x="10" y="3.6">Xhamia e Katip Sinanit</text></g></g>
               <g class="poi" data-poi="kalter" transform="translate(372.2 550.3)"><g class="sc__i"><use href="#p-bridge"/><text class="poi__b" y="18">Ura e Kaltër</text></g></g>
-              <g class="poi" data-poi="view" transform="translate(659 643)"><g class="sc__i"><use href="#p-view"/><text x="10" y="3.6" data-i18n="poi_view">Pikë panoramike</text></g></g>
+              <g class="poi" data-poi="view" transform="translate(659 643)"><g class="sc__i"><use href="#p-view"/><text x="10" y="3.6" data-i18n="poi_view">Viewpoint</text></g></g>
               <g class="poi" data-poi="muzeu" transform="translate(386 407)"><g class="sc__i"><use href="#p-museum"/><text class="poi__l" x="-10" y="3.6">Muzeu Etnologjik</text></g></g>
               <g class="poi" data-poi="sahat" transform="translate(238.5 425.2)"><g class="sc__i"><use href="#p-tower"/><text x="10" y="3.6">Sahat Kulla</text></g></g>
             </g>
@@ -302,7 +302,7 @@
             <g class="stairs" id="stairs" aria-hidden="true">
               <path class="stairs__halo"/>
               <path class="stairs__steps"/>
-              <g class="sc stairs__lbl"><g class="sc__i"><text class="stairs__txt" x="-9" y="-4" data-i18n="map_stairs">Shkallët</text></g></g>
+              <g class="sc stairs__lbl"><g class="sc__i"><text class="stairs__txt" x="-9" y="-4" data-i18n="map_stairs">Stairs</text></g></g>
             </g>
 
             <!-- the zipline cable (OSM way 1423491824, drawn longer); both ends in ZIPLINE (script.js) -->
@@ -317,45 +317,45 @@
             </g>
 
             <!-- landmarks (data-place = key in PLACES, script.js, which also sets their position and turn) -->
-            <g class="lm lm--minor" data-place="premte" transform="translate(200.2 400.2)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Kisha e Shën Premtes</text></g></g>
-            <g class="lm lm--minor" data-place="hamam" transform="translate(513.2 462.7)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hamami</text></g></g>
-            <g class="lm lm--minor" data-place="lidhja" transform="translate(632.6 415.7)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">Lidhja e Prizrenit</text></g></g>
-            <g class="lm lm--minor" data-place="rrapi" transform="translate(732.7 359.7)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Rrapi shekullor</text></g></g>
-            <g class="lm" data-place="ura" transform="translate(452 556)"><g class="sc__i"><use href="#s-bridge"/><text class="lm__name" y="-45" data-i18n="pl_ura_s">Ura e Gurit</text></g></g>
-            <g class="lm" data-place="shadervan" transform="translate(457.4 594.5)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name" y="16" data-i18n="pl_shadervan_s">Shadërvani</text></g></g>
-            <g class="lm" data-place="sinan" transform="translate(501.7 595.9)"><g class="sc__i"><use href="#s-mosque"/><text class="lm__name lm__name--start" x="18" y="16" data-i18n="pl_sinan_s">Xhamia e Sinan Pashës</text></g></g>
-            <g class="lm lm--big" data-place="kalaja" transform="translate(722.9 567.4)"><g class="sc__i"><use href="#s-castle"/><text class="lm__name lm__name--big" y="-74" data-i18n="pl_kalaja_s">Kalaja</text></g></g>
+            <g class="lm lm--minor" data-place="premte" transform="translate(200.2 400.2)"><g class="sc__i"><use href="#s-church"/><text class="lm__name" y="17" data-i18n="pl_premte_s">Our Lady of Ljeviš</text></g></g>
+            <g class="lm lm--minor" data-place="hamam" transform="translate(513.2 462.7)"><g class="sc__i"><use href="#s-hamam"/><text class="lm__name" y="17" data-i18n="pl_hamam_s">Hammam</text></g></g>
+            <g class="lm lm--minor" data-place="lidhja" transform="translate(632.6 415.7)"><g class="sc__i"><use href="#s-house"/><text class="lm__name" y="17" data-i18n="pl_lidhja_s">League of Prizren</text></g></g>
+            <g class="lm lm--minor" data-place="rrapi" transform="translate(732.7 359.7)"><g class="sc__i"><use href="#s-tree"/><text class="lm__name" y="16" data-i18n="pl_rrapi_s">Old plane tree</text></g></g>
+            <g class="lm" data-place="ura" transform="translate(452 556)"><g class="sc__i"><use href="#s-bridge"/><text class="lm__name" y="-45" data-i18n="pl_ura_s">Stone Bridge</text></g></g>
+            <g class="lm" data-place="shadervan" transform="translate(457.4 594.5)"><g class="sc__i"><use href="#s-fountain"/><text class="lm__name" y="16" data-i18n="pl_shadervan_s">Shadërvan</text></g></g>
+            <g class="lm" data-place="sinan" transform="translate(501.7 595.9)"><g class="sc__i"><use href="#s-mosque"/><text class="lm__name lm__name--start" x="18" y="16" data-i18n="pl_sinan_s">Sinan Pasha Mosque</text></g></g>
+            <g class="lm lm--big" data-place="kalaja" transform="translate(722.9 567.4)"><g class="sc__i"><use href="#s-castle"/><text class="lm__name lm__name--big" y="-74" data-i18n="pl_kalaja_s">Fortress</text></g></g>
 
             <!-- zipline ends (on top of everything) -->
             <g class="lm lm--end" data-place="landing" transform="translate(862.8 345.6)"><g class="sc__i">
               <circle r="6.5" fill="#fff" stroke="#F76B08" stroke-width="3"/><circle r="2.2" fill="#F76B08"/>
-              <text class="lm__name lm__name--start" x="12" y="4" data-i18n="pl_landing_s">Ulja</text>
+              <text class="lm__name lm__name--start" x="12" y="4" data-i18n="pl_landing_s">Landing</text>
             </g></g>
             <g class="lm lm--start" data-place="start" transform="translate(848.8 700.9)"><g class="sc__i">
               <circle class="pulse" r="7"/>
               <use href="#s-pin"/>
               <text class="lm__name lm__name--zip" y="30">Zipline Prizren</text>
-              <text class="lm__name" y="47" data-i18n="pl_start_s">Pikënisja</text>
+              <text class="lm__name" y="47" data-i18n="pl_start_s">Start point</text>
             </g></g>
           </svg>
         </div>
 
-        <button type="button" class="hero__open" data-open-map aria-label="Hap hartën e plotë" data-i18n-attr="aria-label:map_open">
+        <button type="button" class="hero__open" data-open-map aria-label="Open the full map" data-i18n-attr="aria-label:map_open">
           <span class="chip">
             <svg aria-hidden="true"><use href="#i-expand"/></svg>
-            <span data-i18n="map_open_chip">Kliko për hartën e plotë</span>
+            <span data-i18n="map_open_chip">Click for the full map</span>
           </span>
         </button>
         <ul class="legend" aria-hidden="true">
           <li><i class="legend__zip"></i><span data-i18n="legend_zip">Zipline</span></li>
-          <li><i class="legend__walk"></i><span data-i18n="legend_walk">Shtegu nga Shadërvani</span></li>
+          <li><i class="legend__walk"></i><span data-i18n="legend_walk">Footpath from Shadërvan</span></li>
         </ul>
         <span class="compass" aria-hidden="true"><svg><use href="#i-compass"/></svg></span>
        </div>
        </div>
         <a class="btn btn--lg hero__route" data-dir href="#">
           <svg class="ico" aria-hidden="true"><use href="#i-nav"/></svg>
-          <span data-i18n="dest_btn">Hap rrugën në Google Maps</span>
+          <span data-i18n="dest_btn">Open the route in Google Maps</span>
         </a>
       </div>
     </section>
@@ -363,45 +363,45 @@
     <!-- ============ 1b. FACTS (desktop): a strip of page colour between the hero and the sunset band ============ -->
     <div class="facts">
       <ul class="wrap facts__list">
-        <li><span class="facts__k" data-i18n="fact_start_k">Pikënisja</span><span class="facts__v" data-i18n="fact_start_v">Te Kalaja e Prizrenit</span></li>
-        <li><span class="facts__k" data-i18n="fact_walk_k">Në këmbë</span><span class="facts__v" data-i18n="fact_walk_v">15–20 min nga Shadërvani</span></li>
-        <li><span class="facts__k" data-i18n="fact_weight_k">Pesha</span><span class="facts__v" data-i18n="fact_weight_v">40–100 kg</span></li>
-        <li><span class="facts__k" data-i18n="fact_gear_k">Pajisjet</span><span class="facts__v" data-i18n="fact_gear_v">Helmetë, hark, trajnim</span></li>
+        <li><span class="facts__k" data-i18n="fact_start_k">Start point</span><span class="facts__v" data-i18n="fact_start_v">At Prizren Fortress</span></li>
+        <li><span class="facts__k" data-i18n="fact_walk_k">On foot</span><span class="facts__v" data-i18n="fact_walk_v">15–20 min from Shadërvan</span></li>
+        <li><span class="facts__k" data-i18n="fact_weight_k">Weight</span><span class="facts__v" data-i18n="fact_weight_v">40–100 kg</span></li>
+        <li><span class="facts__k" data-i18n="fact_gear_k">Gear</span><span class="facts__v" data-i18n="fact_gear_v">Helmet, harness, briefing</span></li>
       </ul>
     </div>
 
     <!-- ============ 2. THE SETTING: sunset band, reels, photos of the place (all client photos/videos) ============ -->
     <section class="view" id="pamja" aria-labelledby="viewTitle">
       <div class="band zoom">
-        <img class="band__img" src="images/ambient-sunset.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_band">
+        <img class="band__img" src="images/ambient-sunset.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Three friends on Zipline Prizren beanbags, with the sunset over Prizren" data-i18n-attr="alt:alt_band">
         <div class="wrap band__text">
-          <p class="kicker kicker--light" data-i18n="view_kicker">Ambienti</p>
-          <h2 id="viewTitle" data-i18n="view_title">Prizreni nga lart</h2>
-          <p class="band__sub" data-i18n="view_sub"></p>
+          <p class="kicker kicker--light" data-i18n="view_kicker">The setting</p>
+          <h2 id="viewTitle" data-i18n="view_title">Prizren from above</h2>
+          <p class="band__sub" data-i18n="view_sub">The start sits on the slope above the Lumbardhi valley, with all of Prizren in front of you. The terrace has beanbags and shade: watch the others fly, then it’s your turn.</p>
         </div>
       </div>
 
       <div class="wrap reels__head reveal">
-        <h3 data-i18n="reels_title">Nga kablloja</h3>
-        <p data-i18n="reels_sub"></p>
+        <h3 data-i18n="reels_title">From the cable</h3>
+        <p data-i18n="reels_sub">Real footage from rides at Zipline Prizren.</p>
       </div>
       <!-- muted loops cut from the client's own videos (8–9 s); landing.mp4 = their Instagram story highlight
            (24 s, filmed from the river, Instagram's bars and stickers cropped off). They load and play only while on screen -->
       <ul class="reels">
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/sunset.jpg" data-src="images/reels/sunset.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_sunset">Perëndimi mbi Prizren</span></li>
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/gorge.jpg" data-src="images/reels/gorge.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_gorge">Mbi grykën e Lumbardhit</span></li>
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/landing.jpg" data-src="images/reels/landing.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_landing">Drejt uljes</span></li>
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/cable.jpg" data-src="images/reels/cable.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_cable">Pamja nga kablloja</span></li>
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/valley.jpg" data-src="images/reels/valley.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_valley">Lugina dhe qyteti</span></li>
-        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/kalaja.jpg" data-src="images/reels/kalaja.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Luaj ose ndal videon" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_kalaja">Kodra e Kalasë</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/sunset.jpg" data-src="images/reels/sunset.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_sunset">Sunset over Prizren</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/gorge.jpg" data-src="images/reels/gorge.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_gorge">Over the Lumbardhi gorge</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/landing.jpg" data-src="images/reels/landing.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_landing">Coming in to land</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/cable.jpg" data-src="images/reels/cable.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_cable">The view from the cable</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/valley.jpg" data-src="images/reels/valley.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_valley">The valley and the city</span></li>
+        <li class="reel"><video muted loop playsinline preload="none" poster="images/reels/kalaja.jpg" data-src="images/reels/kalaja.mp4" aria-hidden="true"></video><button type="button" class="reel__play" aria-label="Play or pause the video" data-i18n-attr="aria-label:reel_toggle"></button><span class="reel__cap" data-i18n="reel_kalaja">The Kalaja hill</span></li>
       </ul>
 
       <div class="gallery">
-        <figure class="g g--a"><img src="images/gallery/station.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_a"></figure>
-        <figure class="g g--b"><img src="images/gallery/terrace.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_b"></figure>
-        <figure class="g g--c"><img src="images/gallery/sunset-rider.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_c"></figure>
-        <figure class="g g--d"><img src="images/gallery/launch-arms.jpg" width="1200" height="900" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_d"></figure>
-        <figure class="g g--e"><img src="images/gallery/view-beanbags.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="" data-i18n-attr="alt:alt_ph_e"></figure>
+        <figure class="g g--a"><img src="images/gallery/station.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="The wooden Zipline Prizren station on the hillside, with visitors in front" data-i18n-attr="alt:alt_ph_a"></figure>
+        <figure class="g g--b"><img src="images/gallery/terrace.jpg" width="1600" height="1200" loading="lazy" decoding="async" alt="The covered terrace with beanbags and chairs, the city below" data-i18n-attr="alt:alt_ph_b"></figure>
+        <figure class="g g--c"><img src="images/gallery/sunset-rider.jpg" width="1050" height="1400" loading="lazy" decoding="async" alt="A rider waves from the cable at sunset, Prizren below" data-i18n-attr="alt:alt_ph_c"></figure>
+        <figure class="g g--d"><img src="images/gallery/launch-arms.jpg" width="1200" height="900" loading="lazy" decoding="async" alt="A rider with arms spread just leaving the platform, the city below" data-i18n-attr="alt:alt_ph_d"></figure>
+        <figure class="g g--e"><img src="images/gallery/view-beanbags.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="Two friends on Zipline Prizren beanbags, the cable and the city ahead" data-i18n-attr="alt:alt_ph_e"></figure>
       </div>
       <!-- mountain ridges with a zipline across them; the last layer has the colour of the next section -->
       <svg class="ridge" viewBox="0 0 1440 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
@@ -424,9 +424,9 @@
     <section class="section rules" id="rregullat">
       <div class="wrap">
         <header class="section-head reveal">
-          <p class="kicker kicker--light" data-i18n="rules_kicker">Rregullat</p>
-          <h2 data-i18n="rules_title">Para se të fluturosh</h2>
-          <p class="section-sub" data-i18n="rules_intro"></p>
+          <p class="kicker kicker--light" data-i18n="rules_kicker">Rules</p>
+          <h2 data-i18n="rules_title">Before you fly</h2>
+          <p class="section-sub" data-i18n="rules_intro">Rules for the use of Zip Line Prizren</p>
         </header>
         <ol class="rules__grid" id="rulesList"></ol>
       </div>
@@ -439,17 +439,17 @@
              certified inspection bodies), not to Zipline Prizren, so the caption must keep naming them.
              No link to ERCA's website: the member profile there shows the owner's private phone number. -->
         <figure class="erca__badge reveal">
-          <img class="erca__seal" src="images/erca-inspection-body.png" width="600" height="600" loading="lazy" decoding="async" alt="ERCA Certified Inspection Body" data-i18n-attr="alt:erca_seal_alt">
+          <img class="erca__seal" src="images/erca-inspection-body.png" width="600" height="600" loading="lazy" decoding="async" alt="ERCA Certified Inspection Body label of Ropes Course Solutions" data-i18n-attr="alt:erca_seal_alt">
           <figcaption class="erca__cap">
             <b>Ropes Course Solutions</b>
-            <span data-i18n="erca_seal_cap">Trup inspektimi i certifikuar nga ERCA, që mbikëqyri ndërtimin e linjës</span>
+            <span data-i18n="erca_seal_cap">ERCA-certified inspection body that supervised the build of the line</span>
           </figcaption>
         </figure>
         <div class="erca__body">
-          <p class="kicker" data-i18n="erca_kicker">Siguria</p>
-          <h2 data-i18n="erca_title">Anëtar i ERCA</h2>
-          <p class="erca__lead" data-i18n="erca_p1"></p>
-          <p data-i18n="erca_p2"></p>
+          <p class="kicker" data-i18n="erca_kicker">Safety</p>
+          <h2 data-i18n="erca_title">ERCA member</h2>
+          <p class="erca__lead" data-i18n="erca_p1">Zipline Prizren is a member of the European Ropes Course Association (ERCA), the European association for ropes courses and ziplines, and has signed ERCA’s self-commitment declaration.</p>
+          <p data-i18n="erca_p2">The line was built to the European standard EN 15567-1 under the supervision of Paul de Gast (Ropes Course Solutions), an ERCA-certified inspection and training body.</p>
           <ul class="erca__facts" id="ercaFacts"></ul>
         </div>
       </div>
@@ -459,10 +459,10 @@
     <section class="section contact" id="kontakt">
       <div class="wrap contact__grid">
         <div class="contact__intro reveal">
-          <p class="kicker" data-i18n="contact_kicker">Kontakti</p>
-          <h2 data-i18n="contact_title">Ke një pyetje?</h2>
-          <p data-i18n="contact_sub"></p>
-          <p class="contact__direct-lbl" data-i18n="contact_direct">Ose na shkruaj direkt:</p>
+          <p class="kicker" data-i18n="contact_kicker">Contact</p>
+          <h2 data-i18n="contact_title">Got a question?</h2>
+          <p data-i18n="contact_sub">Write it here and we open WhatsApp with your message ready. The team replies there.</p>
+          <p class="contact__direct-lbl" data-i18n="contact_direct">Or message us directly on WhatsApp:</p>
           <a class="contact__number" data-wa="plain" href="#">
             <svg aria-hidden="true"><use href="#i-wa"/></svg>
             <span data-phone></span>
@@ -476,23 +476,23 @@
 
         <form class="form reveal" id="askForm" novalidate>
           <div class="field">
-            <label for="qName"><span data-i18n="q_name">Emri</span> <em data-i18n="q_optional">(opsional)</em></label>
+            <label for="qName"><span data-i18n="q_name">Name</span> <em data-i18n="q_optional">(optional)</em></label>
             <input id="qName" name="name" type="text" autocomplete="name">
           </div>
           <fieldset class="field">
-            <legend data-i18n="q_topic">Tema</legend>
+            <legend data-i18n="q_topic">Topic</legend>
             <div class="topics" id="qTopics"></div>
           </fieldset>
           <div class="field">
-            <label for="qText" data-i18n="q_text">Pyetja jote</label>
+            <label for="qText" data-i18n="q_text">Your question</label>
             <textarea id="qText" name="question" rows="5" required aria-describedby="qTextErr"></textarea>
             <p class="err" id="qTextErr" role="alert"></p>
           </div>
           <button type="submit" class="btn btn--lg btn--block">
             <svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg>
-            <span data-i18n="q_btn">Dërgo në WhatsApp</span>
+            <span data-i18n="q_btn">Send on WhatsApp</span>
           </button>
-          <p class="form__hint" data-i18n="q_hint"></p>
+          <p class="form__hint" data-i18n="q_hint">The button opens WhatsApp on your phone, or WhatsApp Web on a computer.</p>
         </form>
       </div>
     </section>
@@ -509,7 +509,7 @@
       <div class="footer__brand">
         <!-- images/logo-light.png = logo.png recoloured for dark backgrounds (navy → white, blue → light blue, orange kept) -->
         <a class="footer__logo" href="#top"><img src="images/logo-light.png" width="900" height="538" alt="Zipline Prizren" loading="lazy" decoding="async"></a>
-        <p class="footer__tag" data-i18n="foot_tag">Fluturo mbi Prizren.</p>
+        <p class="footer__tag" data-i18n="foot_tag">Fly over Prizren.</p>
         <ul class="footer__social">
           <li><a data-fb href="#" aria-label="Facebook"><svg aria-hidden="true"><use href="#l-fb"/></svg></a></li>
           <li><a data-ig href="#" aria-label="Instagram"><svg aria-hidden="true"><use href="#l-ig"/></svg></a></li>
@@ -517,29 +517,29 @@
         </ul>
       </div>
       <div class="footer__col">
-        <h3><svg aria-hidden="true"><use href="#i-wa"/></svg><span data-i18n="foot_contact">Kontakti</span></h3>
-        <p class="footer__small" data-i18n="foot_wa">WhatsApp dhe telefon</p>
+        <h3><svg aria-hidden="true"><use href="#i-wa"/></svg><span data-i18n="foot_contact">Contact</span></h3>
+        <p class="footer__small" data-i18n="foot_wa">WhatsApp and phone</p>
         <a class="footer__phone" data-wa="plain" href="#"><span data-phone></span></a>
-        <a class="footer__link" href="#kontakt" data-i18n="foot_ask">Dërgo një pyetje</a>
+        <a class="footer__link" href="#kontakt" data-i18n="foot_ask">Send a question</a>
       </div>
       <div class="footer__col">
-        <h3><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-i18n="foot_hours">Orari</span></h3>
-        <a class="footer__link" data-hours href="#" data-i18n="foot_hours_link">Shiko orarin në Google</a>
+        <h3><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-i18n="foot_hours">Hours</span></h3>
+        <a class="footer__link" data-hours href="#" data-i18n="foot_hours_link">See opening hours on Google</a>
       </div>
       <div class="footer__col">
-        <h3><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-i18n="foot_find">Na gjej</span></h3>
+        <h3><svg aria-hidden="true"><use href="#i-pin"/></svg><span data-i18n="foot_find">Find us</span></h3>
         <ul class="footer__list">
-          <li><a class="footer__link" href="#harta" data-open-map data-i18n="foot_map">Harta e plotë</a></li>
-          <li><a class="footer__link" data-dir href="#" data-i18n="foot_route">Rruga në Google Maps</a></li>
+          <li><a class="footer__link" href="#harta" data-open-map data-i18n="foot_map">Full map</a></li>
+          <li><a class="footer__link" data-dir href="#" data-i18n="foot_route">Route in Google Maps</a></li>
           <!-- the owner's own map; shows once MAP_DOWNLOAD_ENABLED = true (script.js) -->
-          <li hidden><a class="footer__link" data-map-dl href="downloads/harta-zipline-prizren.pdf" download data-i18n="foot_download">Shkarko hartën</a></li>
+          <li hidden><a class="footer__link" data-map-dl href="downloads/harta-zipline-prizren.pdf" download data-i18n="foot_download">Download the map</a></li>
         </ul>
       </div>
     </div>
     <div class="footer__mark" aria-hidden="true"><span>Zipline Prizreni</span></div>
     <div class="wrap footer__bottom">
-      <p>© <span id="year">2026</span> Zipline Prizren. <span data-i18n="foot_rights">Të gjitha të drejtat e rezervuara.</span></p>
-      <p><span data-i18n="foot_mapdata">Të dhënat e hartës</span> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · <span data-i18n="foot_demo">Faqe demo e përgatitur nga EB Services.</span></p>
+      <p>© <span id="year">2026</span> Zipline Prizren. <span data-i18n="foot_rights">All rights reserved.</span></p>
+      <p><span data-i18n="foot_mapdata">Map data</span> © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · <span data-i18n="foot_demo">Demo site prepared by EB Services.</span></p>
     </div>
   </footer>
 
@@ -550,40 +550,40 @@
     </div>
 
     <div class="mapx__top">
-      <p class="mapx__title" id="mapxTitle" data-i18n="mapx_title">Harta e Zipline Prizren</p>
+      <p class="mapx__title" id="mapxTitle" data-i18n="mapx_title">Zipline Prizren map</p>
       <!-- the same language switch as in the header, so nobody has to leave the map to change it -->
-      <div class="lang mapx__lang" role="group" aria-label="Gjuha" data-i18n-attr="aria-label:lang_label">
-        <button type="button" class="lang-btn is-on" data-lang="sq" aria-pressed="true">SQ</button>
-        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      <div class="lang mapx__lang" role="group" aria-label="Language" data-i18n-attr="aria-label:lang_label">
+        <button type="button" class="lang-btn" data-lang="sq" aria-pressed="false">SQ</button>
+        <button type="button" class="lang-btn is-on" data-lang="en" aria-pressed="true">EN</button>
       </div>
       <div class="mapx__tools">
-        <button type="button" class="tool" data-zoom="in" aria-label="Zmadho" data-i18n-attr="aria-label:zoom_in"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
-        <button type="button" class="tool" data-zoom="out" aria-label="Zvogëlo" data-i18n-attr="aria-label:zoom_out"><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
-        <button type="button" class="tool" data-zoom="reset" aria-label="Rikthe pamjen" data-i18n-attr="aria-label:zoom_reset"><svg aria-hidden="true"><use href="#i-reset"/></svg></button>
-        <button type="button" class="tool tool--close" id="mapClose" aria-label="Mbyll hartën" data-i18n-attr="aria-label:map_close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+        <button type="button" class="tool" data-zoom="in" aria-label="Zoom in" data-i18n-attr="aria-label:zoom_in"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button type="button" class="tool" data-zoom="out" aria-label="Zoom out" data-i18n-attr="aria-label:zoom_out"><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
+        <button type="button" class="tool" data-zoom="reset" aria-label="Reset view" data-i18n-attr="aria-label:zoom_reset"><svg aria-hidden="true"><use href="#i-reset"/></svg></button>
+        <button type="button" class="tool tool--close" id="mapClose" aria-label="Close map" data-i18n-attr="aria-label:map_close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
       </div>
     </div>
 
     <aside class="mapx__panel">
       <div class="mapx__dest">
-        <p class="kicker" data-i18n="dest_kicker">Destinacioni</p>
-        <p class="mapx__dest-name" data-i18n="dest_name">Zipline Prizren · Pikënisja</p>
+        <p class="kicker" data-i18n="dest_kicker">Destination</p>
+        <p class="mapx__dest-name" data-i18n="dest_name">Zipline Prizren · Start</p>
         <p class="mapx__gps">GPS <b data-gps></b>
-          <button type="button" class="mapx__copy" id="copyGps" data-i18n="gps_copy">Kopjo</button>
+          <button type="button" class="mapx__copy" id="copyGps" data-i18n="gps_copy">Copy</button>
         </p>
         <a class="btn btn--block" data-dir href="#">
           <svg class="ico" aria-hidden="true"><use href="#i-nav"/></svg>
-          <span data-i18n="dest_btn">Hap rrugën në Google Maps</span>
+          <span data-i18n="dest_btn">Open the route in Google Maps</span>
         </a>
-        <p class="mapx__hint" data-i18n="dest_hint">Google Maps hapet me rrugën nga vendndodhja jote deri te pikënisja.</p>
+        <p class="mapx__hint" data-i18n="dest_hint">Google Maps opens with the route from where you are to the start point.</p>
       </div>
       <div class="mapx__walk">
         <i class="legend__walk"></i>
-        <p data-i18n="walk_info">Në këmbë nga Shadërvani: rreth 940 m, 15–20 min përpjetë.</p>
+        <p data-i18n="walk_info">On foot from Shadërvan: about 940 m, 15–20 min uphill.</p>
       </div>
-      <p class="mapx__places-title" data-i18n="places_title">Vendet në hartë</p>
+      <p class="mapx__places-title" data-i18n="places_title">Places on the map</p>
       <ul class="mapx__places" id="placesList"></ul>
-      <p class="mapx__credit"><span data-i18n="foot_mapdata">Të dhënat e hartës</span> © OpenStreetMap</p>
+      <p class="mapx__credit"><span data-i18n="foot_mapdata">Map data</span> © OpenStreetMap</p>
     </aside>
 
     <div class="mapx__scale" aria-hidden="true"><i id="scaleBar"></i><span id="scaleTxt">200 m</span></div>
@@ -610,12 +610,12 @@
         <path class="intro__cable" id="introCable" d="M600 272Q1080 520 1640 900" pathLength="1"/>
         <g id="introRider" transform="translate(600 272)"><use href="#s-rider" transform="scale(2.6)"/></g>
       </svg>
-      <p class="intro__skip" data-i18n="intro_skip">Kliko për ta kaluar</p>
+      <p class="intro__skip" data-i18n="intro_skip">Tap to skip</p>
     </div>
   </div>
 
   <!-- Floating "question?" button → contact section -->
-  <a class="wa-float" href="#kontakt" aria-label="Pyetje? Na shkruaj në WhatsApp" data-i18n-attr="aria-label:wa_float">
+  <a class="wa-float" href="#kontakt" aria-label="Questions? Message us on WhatsApp" data-i18n-attr="aria-label:wa_float">
     <svg aria-hidden="true"><use href="#i-wa"/></svg>
   </a>
 
@@ -651,6 +651,6 @@
     <symbol id="l-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></symbol>
   </svg>
 
-  <script src="script.js?v=20261008n"></script>
+  <script src="script.js?v=20261008o"></script>
 </body>
 </html>
