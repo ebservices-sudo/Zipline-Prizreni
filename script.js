@@ -8,9 +8,10 @@
 
 /* ---------- 1) CONFIG ---------------------------------------------------- */
 // The opening hours are not on the site (the owner changes them by season); every
-// "Orari" link opens the Google listing, where he keeps them up to date. This is the
-// listing's permanent link; an empty string falls back to a Google Maps search.
-const GOOGLE_PROFILE_URL = 'https://maps.google.com/?cid=13558656802540752476';
+// "Orari" link opens the business's Google Maps page (not a route), where he keeps them
+// up to date. The link the user gave on 2026-10-08, without its tracking parameters;
+// an empty string falls back to a Google Maps search.
+const GOOGLE_PROFILE_URL = 'https://www.google.com/maps/place/Zipline+Prizren/@42.2075664,20.7451126,835m/data=!3m2!1e3!4b1!4m6!3m5!1s0x135395718dc05e7f:0xbc2a06866ae00e5c!8m2!3d42.2075625!4d20.7476875!16s%2Fg%2F11xll4wk2b';
 const TIKTOK_URL = 'https://www.tiktok.com/@ziplineprizren';   // empty string = TikTok buttons hidden
 // "Shkarko hartën" (footer): put the owner's map at MAP_DOWNLOAD_FILE, then set the flag to true.
 const MAP_DOWNLOAD_ENABLED = false;
@@ -50,8 +51,8 @@ const PLACES = [
   { id: 'start',       ...ZIPLINE.start, h: 42,   icon: 's-pin',       vb: '-16 -42 32 44' },
   { id: 'kalaja',      x: 722.9,  y: 567.4,  h: 92,   icon: 's-castle',    vb: '-62 -68 126 72' },
   { id: 'landing',     ...ZIPLINE.end,   h: 8,    icon: null },
-  // the bridge crosses the Lumbardhi north-south (OSM way 88338996), so its drawing is turned across the river
-  { id: 'ura',         x: 460.3,  y: 552.7,  rot: 90, scale: .6, h: 32, icon: 's-bridge', vb: '-54 -42 108 56' },
+  // the bridge as first drawn: the owner preferred it to the version turned across the river (2026-10-08)
+  { id: 'ura',         x: 452,    y: 556,    h: 44,   icon: 's-bridge',    vb: '-54 -42 108 56' },
   { id: 'shadervan',   x: 457.4,  y: 594.5,  h: 18,   icon: 's-fountain',  vb: '-12 -18 24 20' },
   { id: 'sinan',       x: 501.7,  y: 595.9,  h: 68,   icon: 's-mosque',    vb: '-24 -68 48 70' },
   { id: 'hamam',       x: 513.2,  y: 462.7,  h: 28,   icon: 's-hamam',     vb: '-28 -30 56 32' },
@@ -874,10 +875,12 @@ const STRINGS = {
     if (location.hash === '#harta') openMap({ fromHistory: true, noIntro: true });
   }
 
-  /* ----- desktop: the "opening hours" button stretches to ~10 px from the rider's leg in the photo -----
+  /* ----- desktop: the "opening hours" button stretches to ~10 px from the kid in the photo -----
      The photo stays where styles.css puts it; only the button's width changes. */
-  // left edge of the rider's leg in images/hero.jpg, [y, x] in pixels of the 1536×2048 photo, hip → knee → shin → shoe
-  const HERO_LEG = [[980, 683], [1100, 683], [1130, 694], [1160, 699], [1190, 688], [1220, 685], [1290, 684], [1320, 678], [1340, 675], [1400, 680]];
+  // left edge of the kid in images/hero-desktop.jpg, [y, x] in pixels of the 1126×2000 photo,
+  // hand → under the arm → thigh → knee → shoe
+  const HERO_LEG = [[825, 395], [860, 408], [888, 500], [915, 590], [955, 505], [980, 475], [1030, 448], [1080, 430], [1130, 418],
+    [1180, 410], [1225, 406], [1250, 415], [1280, 390], [1310, 368], [1340, 355], [1370, 352], [1385, 365]];
   const LEG_GAP = 10;
   const SKEW = Math.tan(8 * Math.PI / 180);   // the button's slanted edge (skewX(-8deg)) leans right at the top
   function legAt(iy) {   // the leg's x at a photo row, or null above the hip / below the shoe
@@ -891,7 +894,7 @@ const STRINGS = {
     const btn = $('.quick__btn'); const img = $('.hero__photo img');
     if (!btn) return;
     btn.style.width = '';
-    if (innerWidth < 1000 || !img.naturalWidth) return;   // phones: the leg is above the headline, the button keeps its size
+    if (innerWidth < 1000 || !img.naturalWidth) return;   // phones show hero.jpg (another photo): the button keeps its size
     // where the photo is drawn: object-fit "cover" + object-position, then the CSS transform (scale around transform-origin)
     const box = img.parentElement.getBoundingClientRect(); const cs = getComputedStyle(img);
     const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
