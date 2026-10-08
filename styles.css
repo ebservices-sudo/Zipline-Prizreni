@@ -515,8 +515,7 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
 .erca__badge:hover .erca__seal { transform: rotate(0deg) translateY(-4px); }
 .erca__cap { max-width: 30ch; text-align: center; font-size: .92rem; line-height: 1.45; color: var(--ink-soft); }
 .erca__cap b { display: block; margin-bottom: 4px; font: 800 italic 1.35rem/1.05 var(--display); letter-spacing: .02em; text-transform: uppercase; color: var(--navy); }
-.erca__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 28px; margin-bottom: 22px; }
-.erca__logo { height: clamp(48px, 5vw, 70px); width: auto; }
+.erca h2 { margin-bottom: 22px; }
 .erca__lead { font-size: 1.15rem; }
 .erca__body > p + p { margin-top: 14px; color: var(--ink-soft); }
 .erca__facts { margin-top: 26px; display: grid; gap: 12px; }
